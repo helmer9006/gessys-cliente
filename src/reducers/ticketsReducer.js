@@ -1,50 +1,46 @@
 //CADA REDUCER TIENE SU PROPIO STATE
 //IMPORTANDO TYPES
 import {
-  TRAER_TICKET,
-  TRAER_TICKET_EXITO,
-  TRAER_TICKET_ERROR,
-  AGREGAR_TICKET,
-  AGREGAR_TICKET_EXITO,
-  AGREGAR_TICKET_ERROR,
+  COMENZAR_DESCARGA_TICKETS,
+  DESCARGA_TICKETS_ERROR,
+  DESCARGA_TICKETS_EXITO,
+
 } from "../types";
 
 const initialState = {
   tickets: [],
-  mensajeError: {},
+  mensajeError: null,
   error: null,
   loading: false,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case TRAER_TICKET:
+
+    case COMENZAR_DESCARGA_TICKETS:
       return {
         ...state,
-        loading: action.payload,
-      };
-    case TRAER_TICKET_EXITO:
-      return {
-        ...state,
-        loading: false,
-        error: false,
-        mensajeError: {},
-        documentos: action.payload,
-      };
-    case TRAER_TICKET_ERROR:
-      return {
-        ...state,
-        loading: false,
-        mensajeError: action.payload,
-        error: true,
-        documentos: state,
-      };
-    case AGREGAR_TICKET:
-      return {
-        ...state,
-        loading: true,
-      };
+        loading: action.payload
+      }
+      case DESCARGA_TICKETS_EXITO:
+        return {
+          ...state,
+          loading: false,
+          tickets: action.payload,
+          error: null,
+          mensajeError: null
+        }  
+
+        case DESCARGA_TICKETS_ERROR:
+          return {
+            ...state,
+            loading: false,
+            mensajeError: action.payload,
+            error: true
+          }    
     default:
       return state;
   }
 }
+
+
