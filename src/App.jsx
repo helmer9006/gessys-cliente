@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Usuarios from "./components/Usuarios";
 import Configuracion from "./components/Configuracion";
@@ -7,12 +7,39 @@ import NuevoTicket from "./components/tickets/NuevoTicket";
 import EditarTicket from "./components/tickets/EditarTicket";
 import ComponentMenu from "./components/Menu";
 import Login from "./components/Login";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  useLocation,
+  withRouter,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; //para acceder al store
-import { CerrarSesionUsuarioAction } from "./actions/authActions";
+import {
+  CerrarSesionUsuarioAction,
+  extraerUsuarioStorageAction,
+} from "./actions/authActions";
+
 //ANT DESING
-import { Row, Menu, Dropdown, Button, message, Space, Tooltip } from "antd";
-import { DownOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  Row,
+  Menu,
+  Dropdown,
+  Button,
+  message,
+  Space,
+  Tooltip,
+  Col,
+} from "antd";
+import {
+  DownOutlined,
+  PlusOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 
 //REDUX
 import { Provider } from "react-redux";
@@ -20,17 +47,25 @@ import store from "./store";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const App = () => {
+const App = ({ history }) => {
+  //extraer usuario autenticado del storage
+
+  const extraerUsuarioStorage = () => dispatch(extraerUsuarioStorageAction());
+
+  useEffect(() => {
+    extraerUsuarioStorage();
+  }, []);
+
+  const location = useLocation();
+  // console.log('esta es la ruta '  , location.pathname)
 
   // utilizar use dispatch para crear una función
   const dispatch = useDispatch();
 
-  const isLogin = useSelector((state) => state.auth.isLogin);
-
   // mandar llamar el action de productoAction
-  const CerrarSesionUsuario = () => dispatch( CerrarSesionUsuarioAction());
+  const CerrarSesionUsuario = () => dispatch(CerrarSesionUsuarioAction());
 
-
+  //STATE LOCAL
   const [collapsed, setCollapsed] = useState(false);
 
   const onCollapse = (collapsed) => {
@@ -46,21 +81,26 @@ const App = () => {
     </Menu>
   );
 
+  //FUNCION PARA CERRAR SESION
   function handleMenuClick(e) {
-    CerrarSesionUsuario()
-    message.success({
-      content: 'Sesión Cerrada',
-      className: 'custom-class',
+    CerrarSesionUsuario();
+    message.info({
+      content: "Sesión cerrada correctamente.",
+      className: "custom-class",
       duration: 3,
       style: {
         // marginTop: '20vh',
       },
     });
-
   }
 
+  //recuperar variable de estado del Login
+  const isLogin = useSelector((state) => state.auth.isLogin);
+
+  //FUNCION PARA VALIDAR TOKEN GUARDADOP EN STORAGE
+
   return (
-    <Router>
+    <>
       {isLogin ? (
         <Layout style={{ minHeight: "100vh" }}>
           <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -70,8 +110,24 @@ const App = () => {
             <ComponentMenu />
           </Sider>
           <Layout className="site-layout">
-            <Header className="site-layout-background" style={{ padding: '20px' }}>
-              <Row type="flex" align="middle" justify="end" style={{height: "100%"}}>
+            <Header
+              className="site-layout-background"
+              style={{ padding: "20px" }}
+            >
+              <Row
+                type="flex"
+                align="middle"
+                justify="end"
+                // style={{ height: "100%" }}
+              >
+                {location.pathname != "/configuracion" ? (
+                  <Link to={`${location.pathname}/nuevo`}>
+                    <Button type="primary" icon={<PlusOutlined />}>
+                      Nuevo
+                    </Button>
+                  </Link>
+                ) : null}
+
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"
@@ -81,11 +137,9 @@ const App = () => {
             </Header>
             <Content style={{ margin: "20px 16px" }}>
               <Switch>
-                {/* <Route exact path="/" component={Login} /> */}
                 <Route exact path="/tickets" component={Tickets} />
                 <Route exact path="/tickets/nuevo" component={NuevoTicket} />
                 <Route exact path="/tickets/editar" component={EditarTicket} />
-
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
               </Switch>
@@ -98,7 +152,7 @@ const App = () => {
       ) : (
         <Login />
       )}
-    </Router>
+    </>
   );
 };
 

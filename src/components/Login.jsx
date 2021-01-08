@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,13 +13,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import App from "../App";
 
 //#region REDUX
 
 //ACTION DE REDUX
 import { AutenticarUsuarioAction } from "../actions/authActions";
-import { mostrarAlerta, ocultarAlertaAction } from '../actions/alertaActions';
-
+import { mostrarAlerta, ocultarAlertaAction } from "../actions/alertaActions";
+import { message } from "antd";
 //#endregion
 
 function Copyright() {
@@ -68,7 +70,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login({history}) {
+const Login = ({ history }) => {
+
   //ESTILOS DE MATERIAL-UI
   const classes = useStyles();
 
@@ -90,8 +93,7 @@ export default function Login({history}) {
   const { email, password } = usuario;
 
   // mandar llamar el action de productoAction
-  const loginUsuario = producto => dispatch( AutenticarUsuarioAction(usuario) );
-
+  const loginUsuario = (producto) => dispatch(AutenticarUsuarioAction(usuario));
 
   //funcion para capturar los datos
   const onChange = (e) => {
@@ -106,26 +108,25 @@ export default function Login({history}) {
     e.preventDefault();
 
     //validar que no esten vacios los campos
-    if(email.trim() === '' || password.trim() === '') {
-
-      const alerta = {
-          msg: 'Ambos campos son obligatorios',
-          classes: 'alert alert-danger text-center text-uppercase p3'
-      }
-      dispatch( mostrarAlerta(alerta) );
-
+    if (email.trim() === "" || password.trim() === "") {
+      message.error({
+        content: "Ambos campos son obligatorios",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
       return;
-  }
-      // si no hay errores
-      dispatch( ocultarAlertaAction() );
+    }
+    // si no hay errores
+    dispatch(ocultarAlertaAction());
 
-        // crear el nuevo producto
-        loginUsuario(usuario);
-        console.log(usuario)
-        // redireccionar
-        // history.push('/');
- 
-    
+    // crear el nuevo producto
+    loginUsuario(usuario);
+    console.log(usuario);
+    // redireccionar
+    // history.push('/');
   };
 
   return (
@@ -200,4 +201,7 @@ export default function Login({history}) {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default withRouter(Login);
+// export default Login

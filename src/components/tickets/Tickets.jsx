@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
 import { Link } from "react-router-dom";
-import { Card, Button, Row, Col, Tag } from "antd";
+import { Card, Button, Row, Col, Tag, Tabs } from "antd";
 
 import {
   FullscreenExitOutlined,
@@ -15,21 +15,28 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
-const Tickets = ({history}) => {
-  const [selectedRow, setSelectedRow] = useState(null);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    //consultar API
-    const cargarTickets = () => dispatch(obtenerTicketsAction());
-    cargarTickets();
-  }, []);
+const Tickets = ({ history }) => {
+  //invocando paneles
+  const { TabPane } = Tabs;
 
   //OBTENER LOS TICKETS EL STATE O STORE
 
   const error = useSelector((state) => state.tickets.error);
   const mensajeError = useSelector((state) => state.tickets.mensajeError);
   const tickets = useSelector((state) => state.tickets.tickets);
+  const token = useSelector((state) => state.auth.token);
+
+  const [selectedRow, setSelectedRow] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //consultar API
+    console.log('token desde ticket ', token)
+    console.log('token desde ticket localstorgae',localStorage.getItem("gessys_token"))
+    const cargarTickets = () => dispatch(obtenerTicketsAction(token));
+    cargarTickets();
+  }, []);
+
   const {
     _id,
     actualizacion,
@@ -69,7 +76,11 @@ const Tickets = ({history}) => {
     { title: "Actualizacion", field: "actualizacion" },
   ];
   //#endregion
-
+ 
+ //funcion para capturar tab seleccionado
+  function callback(key) {
+    console.log(key);
+  }
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -77,15 +88,7 @@ const Tickets = ({history}) => {
         bordered={false}
         style={{ width: FullscreenExitOutlined }}
       >
-        <Row justify="end" style={{ margin: 10 }}>
-          <Col span={24}>
-            <Link to={"/tickets/nuevo"}>
-              <Button type="primary" icon={<PlusOutlined />}>
-                Nuevo
-              </Button>
-            </Link>
-          </Col>
-        </Row>
+
         {error ? (
           <Tag icon={<CloseCircleOutlined />} color="error">
             {mensajeError
@@ -93,15 +96,18 @@ const Tickets = ({history}) => {
               : "Se ha presentado un error, comuniquese con el área de soporte"}
           </Tag>
         ) : null}
-        <MaterialTable
+
+        <Tabs defaultActiveKey="1" onChange={callback}>
+          <TabPane tab="NUEVOS" key="1">
+          <MaterialTable
           columns={columns}
           data={tickets}
-          title="Listado de tickets"
+          title=""
           actions={[
             {
               icon: "edit",
               tooltip: "Editar Ticket",
-              onClick: (event, rowData) => alert('Vas a editar ' + rowData._id),
+              onClick: (event, rowData) => alert("Vas a editar " + rowData._id),
             },
             // {
             //   icon: "delete",
@@ -110,25 +116,39 @@ const Tickets = ({history}) => {
             //     alert("has seleccionado editar " + rowData.titulo),
             // },
           ]}
-          onRowClick={((evt, selectedRow) => {setSelectedRow(selectedRow.tableData.id)
+          onRowClick={(evt, selectedRow) => {
+            setSelectedRow(selectedRow.tableData.id);
             //history.push('/tickets/editar');
-            alert(setSelectedRow(selectedRow.tableData.id))
-          })}
+            alert(setSelectedRow(selectedRow.tableData.id));
+          }}
           options={{
             actionsColumnIndex: -1,
             // selection: true, //para activar los input de selección
-            rowStyle: rowData => ({
-              backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
-            })
+            rowStyle: (rowData) => ({
+              backgroundColor:
+                selectedRow === rowData.tableData.id ? "#EEE" : "#FFF",
+            }),
           }}
           localization={{
             header: {
               actions: "Acciones",
             },
           }}
-           //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}
+          //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}
           // onSelectionChange={(rows) => alert('has seleccionado editar ' + rowData.titulo)}
         />
+          </TabPane>
+          <TabPane tab="RESUELTOS" key="2">
+            RESUELTOS
+          </TabPane>
+          <TabPane tab="EN PROCESO" key="3">
+            EN PROCESO
+          </TabPane>
+          <TabPane tab="CANCELADOS" key="4">
+            CANCELADOS
+          </TabPane>
+        </Tabs>
+
       </Card>
     </div>
   );

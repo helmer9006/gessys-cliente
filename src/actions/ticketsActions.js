@@ -19,13 +19,14 @@ import {
 // })
 
 //#region OBTENIENDO LOS TICKETS DEL API
-export function obtenerTicketsAction() {
+export function obtenerTicketsAction(token) {
+  console.log('token desde action ticket ', token)
   return async (dispatch) => {
     dispatch(descargarTickets());
     try {
       const respuesta = await clienteAxios.get("/tickets", {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYmFkYWFlMmQ5MjlkMjE1Yzg5YjJiOSIsIm5vbWJyZSI6IkhlbG1lciBWaWxsYXJyZWFsIiwiZW1haWwiOiJoZWxtZXJ2aWxsYXJyZWFsQGhvdG1haWwuY29tIiwicGVyZmlsIjoiYWRtaW5pc3RyYWRvciIsImRlcGVuZGVuY2lhIjoiNWZiYWRhNTkyZDkyOWQyMTVjODliMmI4IiwiZXN0YWRvIjp0cnVlLCJpYXQiOjE2MDc5NDg4MTAsImV4cCI6MTYwNzk3NzYxMH0.iyC8ZnpfJk1SCAZl8bsWehUY8SGGW70F4ONAvDEHmpU`,
+          Authorization: `Bearer ${token}`,
         },
       });
       dispatch(descargaTicketsExitosa(respuesta.data))
