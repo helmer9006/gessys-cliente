@@ -8,6 +8,7 @@ import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
 import { Link } from "react-router-dom";
 import { Card, Button, Row, Col, Tag, Tabs } from "antd";
+import TablaTickets from "./tablaTickets";
 
 import {
   FullscreenExitOutlined,
@@ -16,27 +17,50 @@ import {
 } from "@ant-design/icons";
 
 const Tickets = ({ history }) => {
-  //invocando paneles
-  const { TabPane } = Tabs;
 
-  //OBTENER LOS TICKETS EL STATE O STORE
+    //INVOCANDO PANELES PARA EL TAB
+
+    const { TabPane } = Tabs;
+
+  //STATE LOCAL
+
+  const [estadoTicket, setEstadoTicket] = useState("nuevo");
+  const [selectedRow, setSelectedRow] = useState(null);
+  
+  const dispatch = useDispatch();
+
+
+  //#region OBTENER ESTADOS DEL STORE
 
   const error = useSelector((state) => state.tickets.error);
   const mensajeError = useSelector((state) => state.tickets.mensajeError);
   const tickets = useSelector((state) => state.tickets.tickets);
   const token = useSelector((state) => state.auth.token);
+//#endregion
 
-  const [selectedRow, setSelectedRow] = useState(null);
-  const dispatch = useDispatch();
+
 
   useEffect(() => {
     //consultar API
-    console.log('token desde ticket ', token)
-    console.log('token desde ticket localstorgae',localStorage.getItem("gessys_token"))
     const cargarTickets = () => dispatch(obtenerTicketsAction(token));
     cargarTickets();
   }, []);
 
+  //#region FILTRAR LOS TICKET POR ESTADO PARA MOSTRAR EN TAB CORRESPONDIENTE
+
+  const ticketsFiltrados = tickets.filter(
+    (item) => item.estado === `${estadoTicket}`
+  );
+  //#endregion  
+
+  //#region CAPTURAR TAB SELECCIONADO
+
+  function callback(key) {
+    setEstadoTicket(key);
+  }
+  //#endregion
+
+  //#region DESTRUCTURING DE TICKETS
   const {
     _id,
     actualizacion,
@@ -51,9 +75,11 @@ const Tickets = ({ history }) => {
     tipo,
     titulo,
     usuario,
-  } = tickets;
+  } = ticketsFiltrados;
 
-  //#region DATOS  TABLA
+  //#endregion
+
+  //#region DATOS TABLA
   const data = [
     {
       codigo: codigo,
@@ -76,11 +102,7 @@ const Tickets = ({ history }) => {
     { title: "Actualizacion", field: "actualizacion" },
   ];
   //#endregion
- 
- //funcion para capturar tab seleccionado
-  function callback(key) {
-    console.log(key);
-  }
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -88,7 +110,6 @@ const Tickets = ({ history }) => {
         bordered={false}
         style={{ width: FullscreenExitOutlined }}
       >
-
         {error ? (
           <Tag icon={<CloseCircleOutlined />} color="error">
             {mensajeError
@@ -97,58 +118,70 @@ const Tickets = ({ history }) => {
           </Tag>
         ) : null}
 
-        <Tabs defaultActiveKey="1" onChange={callback}>
-          <TabPane tab="NUEVOS" key="1">
-          <MaterialTable
-          columns={columns}
-          data={tickets}
-          title=""
-          actions={[
-            {
-              icon: "edit",
-              tooltip: "Editar Ticket",
-              onClick: (event, rowData) => alert("Vas a editar " + rowData._id),
-            },
-            // {
-            //   icon: "delete",
-            //   tooltip: "Eliminar Ticket",
-            //   onClick: (event, rowData) =>
-            //     alert("has seleccionado editar " + rowData.titulo),
-            // },
-          ]}
-          onRowClick={(evt, selectedRow) => {
-            setSelectedRow(selectedRow.tableData.id);
-            //history.push('/tickets/editar');
-            alert(setSelectedRow(selectedRow.tableData.id));
-          }}
-          options={{
-            actionsColumnIndex: -1,
-            // selection: true, //para activar los input de selección
-            rowStyle: (rowData) => ({
-              backgroundColor:
-                selectedRow === rowData.tableData.id ? "#EEE" : "#FFF",
-            }),
-          }}
-          localization={{
-            header: {
-              actions: "Acciones",
-            },
-          }}
-          //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}
-          // onSelectionChange={(rows) => alert('has seleccionado editar ' + rowData.titulo)}
-        />
+        <Tabs defaultActiveKey="nuevo" onChange={callback}>
+          <TabPane tab="NUEVOS" key="nuevo">
+            <MaterialTable
+              columns={columns}
+              data={ticketsFiltrados}
+              title=""
+              actions={[
+                {
+                  icon: "edit",
+                  tooltip: "Editar Ticket",
+                  onClick: (event, rowData) =>
+                    alert("Vas a editar " + rowData._id),
+                },
+                // {
+                //   icon: "delete",
+                //   tooltip: "Eliminar Ticket",
+                //   onClick: (event, rowData) =>
+                //     alert("has seleccionado editar " + rowData.titulo),
+                // },
+              ]}
+              onRowClick={(evt, selectedRow) => {
+                setSelectedRow(selectedRow.tableData.id);
+                //history.push('/tickets/editar');
+                alert(setSelectedRow(selectedRow.tableData.id));
+              }}
+              options={{
+                actionsColumnIndex: -1,
+                // selection: true, //para activar los input de selección
+                rowStyle: (rowData) => ({
+                  backgroundColor:
+                    selectedRow === rowData.tableData.id ? "#EEE" : "#FFF",
+                }),
+              }}
+              localization={{
+                header: {
+                  actions: "Acciones",
+                },
+              }}
+              //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}
+              // onSelectionChange={(rows) => alert('has seleccionado editar ' + rowData.titulo)}
+            />
           </TabPane>
-          <TabPane tab="RESUELTOS" key="2">
-            RESUELTOS
+          <TabPane tab="RESUELTOS" key="resuelto">
+            <TablaTickets
+              tickets={ticketsFiltrados}
+              data={data}
+              columns={columns}
+            />
           </TabPane>
-          <TabPane tab="EN PROCESO" key="3">
-            EN PROCESO
+          <TabPane tab="EN PROCESO" key="proceso">
+            <TablaTickets
+              tickets={ticketsFiltrados}
+              data={data}
+              columns={columns}
+            />
           </TabPane>
-          <TabPane tab="CANCELADOS" key="4">
-            CANCELADOS
+          <TabPane tab="CANCELADOS" key="cancelado">
+            <TablaTickets
+              tickets={ticketsFiltrados}
+              data={data}
+              columns={columns}
+            />
           </TabPane>
         </Tabs>
-
       </Card>
     </div>
   );

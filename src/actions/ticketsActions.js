@@ -20,7 +20,6 @@ import {
 
 //#region OBTENIENDO LOS TICKETS DEL API
 export function obtenerTicketsAction(token) {
-  console.log('token desde action ticket ', token)
   return async (dispatch) => {
     dispatch(descargarTickets());
     try {

@@ -24,6 +24,7 @@ import {
 
 //ANT DESING
 import {
+  Avatar,
   Row,
   Menu,
   Dropdown,
@@ -95,13 +96,16 @@ const App = ({ history }) => {
   }
 
   //recuperar variable de estado del Login
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  //const isLogin = useSelector((state) => state.auth.isLogin);
+
+  const Auth = useSelector((state) => state.auth);
+  const { isLogin, usuario } = Auth;
 
   //FUNCION PARA VALIDAR TOKEN GUARDADOP EN STORAGE
 
   return (
     <>
-      {isLogin ? (
+      { isLogin ? (
         <Layout style={{ minHeight: "100vh" }}>
           <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
             <div className="logo" />
@@ -120,6 +124,10 @@ const App = ({ history }) => {
                 justify="end"
                 // style={{ height: "100%" }}
               >
+                <p style={{ margin: "15px" }}>
+                  {" "}
+                  Hola  <strong> {usuario.nombre}</strong>
+                </p>
                 {location.pathname != "/configuracion" ? (
                   <Link to={`${location.pathname}/nuevo`}>
                     <Button type="primary" icon={<PlusOutlined />}>
@@ -127,7 +135,8 @@ const App = ({ history }) => {
                     </Button>
                   </Link>
                 ) : null}
-
+                 {/* <Avatar size="large" icon={<UserOutlined />} /> */}
+                
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"
