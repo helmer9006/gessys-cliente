@@ -17,18 +17,16 @@ import {
 } from "@ant-design/icons";
 
 const Tickets = ({ history }) => {
+  //INVOCANDO PANELES PARA EL TAB
 
-    //INVOCANDO PANELES PARA EL TAB
-
-    const { TabPane } = Tabs;
+  const { TabPane } = Tabs;
 
   //STATE LOCAL
 
   const [estadoTicket, setEstadoTicket] = useState("nuevo");
   const [selectedRow, setSelectedRow] = useState(null);
-  
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
 
   //#region OBTENER ESTADOS DEL STORE
 
@@ -36,13 +34,12 @@ const Tickets = ({ history }) => {
   const mensajeError = useSelector((state) => state.tickets.mensajeError);
   const tickets = useSelector((state) => state.tickets.tickets);
   const token = useSelector((state) => state.auth.token);
-//#endregion
 
-
-
+  //#endregion
   useEffect(() => {
     //consultar API
-    const cargarTickets = () => dispatch(obtenerTicketsAction(token));
+
+    const cargarTickets = () => dispatch(obtenerTicketsAction());
     cargarTickets();
   }, []);
 
@@ -51,7 +48,7 @@ const Tickets = ({ history }) => {
   const ticketsFiltrados = tickets.filter(
     (item) => item.estado === `${estadoTicket}`
   );
-  //#endregion  
+  //#endregion
 
   //#region CAPTURAR TAB SELECCIONADO
 
@@ -110,54 +107,20 @@ const Tickets = ({ history }) => {
         bordered={false}
         style={{ width: FullscreenExitOutlined }}
       >
-        {error ? (
+        {/* {error ? (
           <Tag icon={<CloseCircleOutlined />} color="error">
             {mensajeError
               ? mensajeError
               : "Se ha presentado un error, comuniquese con el área de soporte"}
           </Tag>
-        ) : null}
+        ) : null} */}
 
         <Tabs defaultActiveKey="nuevo" onChange={callback}>
           <TabPane tab="NUEVOS" key="nuevo">
-            <MaterialTable
+            <TablaTickets
+              tickets={ticketsFiltrados}
+              data={data}
               columns={columns}
-              data={ticketsFiltrados}
-              title=""
-              actions={[
-                {
-                  icon: "edit",
-                  tooltip: "Editar Ticket",
-                  onClick: (event, rowData) =>
-                    alert("Vas a editar " + rowData._id),
-                },
-                // {
-                //   icon: "delete",
-                //   tooltip: "Eliminar Ticket",
-                //   onClick: (event, rowData) =>
-                //     alert("has seleccionado editar " + rowData.titulo),
-                // },
-              ]}
-              onRowClick={(evt, selectedRow) => {
-                setSelectedRow(selectedRow.tableData.id);
-                //history.push('/tickets/editar');
-                alert(setSelectedRow(selectedRow.tableData.id));
-              }}
-              options={{
-                actionsColumnIndex: -1,
-                // selection: true, //para activar los input de selección
-                rowStyle: (rowData) => ({
-                  backgroundColor:
-                    selectedRow === rowData.tableData.id ? "#EEE" : "#FFF",
-                }),
-              }}
-              localization={{
-                header: {
-                  actions: "Acciones",
-                },
-              }}
-              //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}
-              // onSelectionChange={(rows) => alert('has seleccionado editar ' + rowData.titulo)}
             />
           </TabPane>
           <TabPane tab="RESUELTOS" key="resuelto">

@@ -1,36 +1,83 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+import { Row, Card, Col, message } from "antd";
 
+//#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
-  Form,
-  Input,
+  FormControl,
+  InputLabel,
   Button,
-  Radio,
+  Input,
+  TextareaAutosize,
+  TextField,
+  OutlinedInput,
+  InputAdornment,
   Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Card,
-  Row,
-  Col,
-} from "antd";
+  MenuItem,
+} from "@material-ui/core";
+import Icon from "@material-ui/core/Icon";
+import SaveIcon from "@material-ui/icons/Save";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { sizing } from "@material-ui/system";
 
-const { TextArea } = Input;
+//#endregion
+
+//REDUX
+import { useSelector, useDispatch } from "react-redux";
+
+//ACTIONS DE REDUX
+import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
+import { obtenerCategoriasAction } from "../../actions/categoriasActions";
+import { CrearTicketsAction } from "../../actions/ticketsActions";
+import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
 const NuevoTicket = () => {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+  }));
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  //#region OBTENER ESTADOS DEL STORE
+
+  const token = useSelector((state) => state.auth.token);
+  const error = useSelector((state) => state.dependencias.error);
+  const mensajeError = useSelector((state) => state.dependencias.mensajeError);
+  const dependencias = useSelector((state) => state.dependencias.dependencias);
+  const categorias = useSelector((state) => state.categorias.categorias);
+  
+
+  //#endregion
+
+  useEffect(() => {
+    //consultar API
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+  }, []);
+
   const [ticket, setTicket] = useState({
     //codigo - hacer consulta al api, traer el ultio y aumentar codigo
     titulo: "",
     descripcion: "",
-    tipo: "",
-    dependencia: "",
-    categoria: "",
-    prioridad: "",
+    tipo: "soporte",
+    dependencia: "5fbada592d929d215c89b2b8",
+    categoria: "5fc10c5bfe1c973840c10f76",
+    prioridad: "baja",
   });
 
+  //DESTRUCTURING
   const {
     titulo,
     descripcion,
@@ -40,105 +87,197 @@ const NuevoTicket = () => {
     prioridad,
   } = ticket;
 
-  const OnChance = (e) => {
+  const handleChange = (event) => {
     setTicket({
       ...ticket,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
-  const OnChanceSelect = (value) => {
-    setTicket({
-      tipo: value,
-      dependencia: value,
-      categoria: value,
-      prioridad: value,
-    });
-    // setTicket({ dependencia: value });
-    // setTicket({ categoria: value });
-    // setTicket({ prioridad: value });
-    // setTicket({ dependencia: value });
+  //mandar a llamar el action de productos
+  // mandar llamar el action de productoAction
+  const crearTicket = (ticket) => dispatch(CrearTicketsAction(ticket));
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (
+      titulo.trim() === "" ||
+      descripcion.trim() === "" ||
+      dependencia.trim() === "" ||
+      categoria.trim() === "" ||
+      tipo.trim() === "" ||
+      prioridad.trim() === ""
+    ) {
+      message.error({
+        content: "Todos los campos son obligatorios",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+      return;
+    }
+    //SINO HAY ERRORES
+
+    crearTicket(ticket);
+    dispatch(obtenerTicketsAction());
+    history.push('/tickets');
   };
+
+  //#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
+  const OpcionesDependencias = [];
+
+  //FILTRAR DEPENDENCIAS POR ESTADO SOPORTE TRUE
+  const dependenciasDeSoporte = dependencias.filter(
+    (item) => item.soporte === true
+  );
+
+  dependenciasDeSoporte.forEach((element) => {
+    OpcionesDependencias.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.nombre}
+      </MenuItem>
+    );
+  });
+
+  //#endregion
+
+  //#region  CREANDO OPCIONES CATEGORIAS
+
+  //ARRAY PARA ALMACENAR LAS OPCIONES
+  const OpcionesCategorias = [];
+
+  //FILTRAR CATEGORIAS POR DEPENDENCIA SELECCIONADA
+
+  const categoriasDeSoporte = categorias.filter(
+    (item) => item.dependencia === dependencia
+  );
+
+  categoriasDeSoporte.forEach((element) => {
+    OpcionesCategorias.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.nombre}
+      </MenuItem>
+    );
+  });
+
+  //#endregion
 
   return (
-    <>
-      <Card title="Agregando Nuevo Ticket">
-        <Form
-          // labelCol={{ span: 18 }}
-          //wrapperCol={{ span: 18 }}
-          layout="horizontal"
-          // initialValues={{ size: componentSize }}
-          // onValuesChange={onFormLayoutChange}
-          //size={componentSize}
-        >
-          <Row gutter={[8, 8]}>
-            <Col span={18} push={6}>
-              <Form.Item>
-                <Input placeholder="Titulo" name="titulo" onChange={OnChance} />
-              </Form.Item>
-              <Form.Item>
-                <TextArea
-                  placeholder="Descripción"
-                  autoSize={{ minRows: 16, maxRows: 16 }}
-                  name="descripcion"
-                  onChange={OnChance}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary">Guardar</Button>
-              </Form.Item>
-            </Col>
-            <Col span={6} pull={18}>
-              <Form.Item>
-                <Select
-                  placeholder="Seleccionar Dependencia"
-                  name={dependencia}
-                  onChange={OnChanceSelect}
-                >
-                  <Select.Option value="5fbada592d929d215c89b2b8">
-                    SISTEMAS
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item>
-                <Select
-                  placeholder="Seleccionar Categoría"
-                  name="categoria"
-                  onChange={OnChanceSelect}
-                >
-                  <Select.Option value="5fc10c5bfe1c973840c10f76">
-                    MEDICAMENTOS
-                  </Select.Option>
-                  <Select.Option value="5ffcfb317f6d7d5bc810d5ee">
-                    HISTORIA CLINICA
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item>
-                <Select
-                  name="tipo"
-                  onChange={OnChanceSelect}
-                  placeholder="Seleccionar Tipo"
-                >
-                  <Select.Option value="soporte">Soporte</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item>
-                <Select
-                  name="prioridad"
-                  onChange={OnChanceSelect}
-                  placeholder="Seleccionar Prioridad"
-                >
-                  <Select.Option value="baja">Baja</Select.Option>
-                  <Select.Option value="media">Media</Select.Option>
-                  <Select.Option value="alta">Alta</Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-    </>
+    <Card title="Agregando Nuevo Ticket">
+      <Row gutter={[8, 8]}>
+        <Col span={18} push={6}>
+          <FormControl className="anchoCompleto">
+            <TextField
+              name="titulo"
+              label="Titulo"
+              variant="outlined"
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl className="anchoCompleto">
+            <TextField
+              name="descripcion"
+              id="descripcion"
+              label="Descripcion"
+              multiline
+              rows={16}
+              variant="outlined"
+              onChange={handleChange}
+              // Col={16}
+            />
+          </FormControl>
+        </Col>
+        <Col span={6} pull={18}>
+          <FormControl variant="outlined" className="anchoCompleto">
+            <InputLabel id="dependencia">Dependencia</InputLabel>
+            <Select
+              labelId="dependencia"
+              name="dependencia"
+              id="dependencia"
+              value={dependencia}
+              onChange={handleChange}
+              label="Dependencia"
+            >
+              <MenuItem value="">
+                <em>Seleccionar Dependencia</em>
+              </MenuItem>
+              {OpcionesDependencias}
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined" className="anchoCompleto">
+            <InputLabel id="categoria">Categoria</InputLabel>
+            <Select
+              labelId="categoria"
+              name="categoria"
+              id="categoria"
+              value={categoria}
+              onChange={handleChange}
+              label="Categoria"
+            >
+              <MenuItem value="">
+                <em>Seleccionar Categoria</em>
+              </MenuItem>
+              {OpcionesCategorias}
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined" className="anchoCompleto">
+            <InputLabel id="tipo">Tipo</InputLabel>
+            <Select
+              labelId="tipo"
+              name="tipo"
+              id="tipo"
+              value={tipo}
+              onChange={handleChange}
+              label="Tipo"
+            >
+              <MenuItem value="">
+                <em>Seleccionar Tipo</em>
+              </MenuItem>
+              <MenuItem key="soporte" value="soporte">
+                SOPORTE
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined" className="anchoCompleto">
+            <InputLabel id="prioridad">Prioridad</InputLabel>
+            <Select
+              labelId="prioridad"
+              name="prioridad"
+              id="prioridad"
+              value={prioridad}
+              onChange={handleChange}
+              label="Prioridad"
+            >
+              <MenuItem value="">
+                <em>Seleccionar Prioridad</em>
+              </MenuItem>
+              <MenuItem key="baja" value="baja">
+                BAJA
+              </MenuItem>
+              <MenuItem key="media" value="media">
+                MEDIA
+              </MenuItem>
+              <MenuItem key="alta" value="alta">
+                ALTA
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            startIcon={<SaveIcon />}
+            size="large"
+            type="submit"
+            onClick={onSubmit}
+          >
+            Guardar Ticket
+          </Button>
+        </Col>
+      </Row>
+    </Card>
   );
 };
 

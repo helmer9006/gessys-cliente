@@ -126,7 +126,7 @@ const App = ({ history }) => {
               >
                 <p style={{ margin: "15px" }}>
                   {" "}
-                  Hola  <strong> {usuario.nombre}</strong>
+                  Hola,  <strong> {usuario.nombre}</strong>
                 </p>
                 {location.pathname != "/configuracion" ? (
                   <Link to={`${location.pathname}/nuevo`}>
@@ -135,7 +135,7 @@ const App = ({ history }) => {
                     </Button>
                   </Link>
                 ) : null}
-                 {/* <Avatar size="large" icon={<UserOutlined />} /> */}
+                 {/* <Avatar size="large" icon={<UserOutlined />} /> */} 
                 
                 <Dropdown.Button
                   overlay={menuAuth}
@@ -144,11 +144,11 @@ const App = ({ history }) => {
                 ></Dropdown.Button>
               </Row>
             </Header>
-            <Content style={{ margin: "20px 16px" }}>
+            <Content style={{ margin: " 0px 0px" }}>
               <Switch>
                 <Route exact path="/tickets" component={Tickets} />
                 <Route exact path="/tickets/nuevo" component={NuevoTicket} />
-                <Route exact path="/tickets/editar" component={EditarTicket} />
+                <Route exact path="/tickets/editar/:id" component={EditarTicket} />
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
               </Switch>

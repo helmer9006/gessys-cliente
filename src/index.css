@@ -25,3 +25,8 @@ code {
   .ant-layout-header {
     line-height: 0px;
 }
+
+.anchoCompleto {
+  margin: 0.5rem !important;
+  width: 100%;
+}

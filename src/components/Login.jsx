@@ -20,7 +20,6 @@ import App from "../App";
 
 //ACTION DE REDUX
 import { AutenticarUsuarioAction } from "../actions/authActions";
-import { mostrarAlerta, ocultarAlertaAction } from "../actions/alertaActions";
 import { message } from "antd";
 //#endregion
 
@@ -106,7 +105,6 @@ const Login = ({ history }) => {
   //Funcion para enviar los datos del formulario, al dar clic en iniciar
   const submitLogin = (e) => {
     e.preventDefault();
-
     //validar que no esten vacios los campos
     if (email.trim() === "" || password.trim() === "") {
       message.error({
@@ -120,7 +118,6 @@ const Login = ({ history }) => {
       return;
     }
     // si no hay errores
-    dispatch(ocultarAlertaAction());
 
     // crear el nuevo producto
     loginUsuario(usuario);
