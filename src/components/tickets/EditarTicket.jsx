@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-import { Row, Card, Col, message } from "antd";
+import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
@@ -25,74 +25,76 @@ import { sizing } from "@material-ui/system";
 
 //#endregion
 
-
-
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
 //ACTIONS DE REDUX
-import { editarTicketAction } from '../../actions/ticketsActions';
+import { editarTicketAction } from "../../actions/ticketsActions";
 import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 
-
-
 const EditarTickets = () => {
 
-    //#region ESTILOS PERSONALIZADOS MATERIAL
+    const { Text, Link } = Typography;
 
-    const useStyles = makeStyles((theme) => ({
-        root: {
-          flexGrow: 1,
-        },
-        button: {
-          margin: theme.spacing(1),
-        },
-      }));
+  //#region ESTILOS PERSONALIZADOS MATERIAL
 
-      const classes = useStyles();
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+  }));
 
-      //#endregion
+  const classes = useStyles();
 
-    const history = useHistory();
-    const dispatch = useDispatch();
+  //#endregion
 
-    //#region OBTENER ESTADOS DEL STORE
-    const dependencias = useSelector((state) => state.dependencias.dependencias);
-    const categorias = useSelector((state) => state.categorias.categorias);
-    const usuario = useSelector((state) => state.auth.usuario)
+  const history = useHistory();
+  const dispatch = useDispatch();
 
-    //STATE LOCAL
-    const [ticket, setTicket] = useState({
-        //codigo - hacer consulta al api, traer el ultio y aumentar codigo
-        titulo: "",
-        descripcion: "",
-        tipo: "",
-        dependencia: "",
-        categoria: "",
-        prioridad: "",
-      });
+  //#region OBTENER ESTADOS DEL STORE
+  const dependencias = useSelector((state) => state.dependencias.dependencias);
+  const categorias = useSelector((state) => state.categorias.categorias);
+  const usuarioAuth = useSelector((state) => state.auth.usuario);
 
-      const [estadoElemento, setEstadoElemento] = useState('false')
+  //STATE LOCAL
+  const [ticket, setTicket] = useState({
+    //codigo - hacer consulta al api, traer el ultio y aumentar codigo
+    titulo: "",
+    descripcion: "",
+    tipo: "",
+    dependencia: "",
+    categoria: "",
+    prioridad: "",
+    estado: "",
+    usuario: "",
+    creacion: "",
+  });
 
-          // producto a editar
-    const ticketEditar = useSelector(state => state.tickets.ticketEditar);
-      // llenar el state automaticamente
-      useEffect( () => {
-        setTicket(ticketEditar);
-        const cargarDependencias = () => dispatch(obtenerDependenciasAction());
-        const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-        cargarDependencias();
-        cargarCategorias();
-    }, [ticketEditar]);
+  const [estadoElementos, setEstadoElementos] = useState(false);
+  const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
+  // producto a editar
+  const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
+  // llenar el state automaticamente
+  useEffect(() => {
+    setTicket(ticketEditar);
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+    estadoControles(usuarioAuth.perfil);
+  }, [ticketEditar]);
 
-    //capturar datos del formulario
-    const handleChange = (event) => {
-        setTicket({
-          ...ticket,
-          [event.target.name]: event.target.value,
-        });
-      };
+  //capturar datos del formulario
+  const handleChange = (event) => {
+    setTicket({
+      ...ticket,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   //DESTRUCTURING
   const {
@@ -102,8 +104,10 @@ const EditarTickets = () => {
     dependencia,
     categoria,
     prioridad,
+    estado,
+    usuario,
+    creacion,
   } = ticket;
-
 
   //mandar a llamar el action de tickets
 
@@ -130,57 +134,62 @@ const EditarTickets = () => {
     //SINO HAY ERRORES
 
     dispatch(editarTicketAction(ticket));
-    history.push('/tickets');
+    history.push("/tickets");
   };
 
+  //#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
+  const OpcionesDependencias = [];
 
-
-
-
-//#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
-const OpcionesDependencias = [];
-
-//FILTRAR DEPENDENCIAS POR ESTADO SOPORTE TRUE
-const dependenciasDeSoporte = dependencias.filter(
-  (item) => item.soporte === true
-);
-
-dependenciasDeSoporte.forEach((element) => {
-  OpcionesDependencias.push(
-    <MenuItem key={element._id} value={element._id}>
-      {element.nombre}
-    </MenuItem>
+  //FILTRAR DEPENDENCIAS POR ESTADO SOPORTE TRUE
+  const dependenciasDeSoporte = dependencias.filter(
+    (item) => item.soporte === true
   );
-});
 
-//#endregion
+  dependenciasDeSoporte.forEach((element) => {
+    OpcionesDependencias.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.nombre}
+      </MenuItem>
+    );
+  });
 
-//#region  CREANDO OPCIONES CATEGORIAS
+  //#endregion
 
-//ARRAY PARA ALMACENAR LAS OPCIONES
-const OpcionesCategorias = [];
+  //#region  CREANDO OPCIONES CATEGORIAS
 
-//FILTRAR CATEGORIAS POR DEPENDENCIA SELECCIONADA
+  //ARRAY PARA ALMACENAR LAS OPCIONES
+  const OpcionesCategorias = [];
 
-const categoriasDeSoporte = categorias.filter(
-  (item) => item.dependencia === dependencia
-);
+  //FILTRAR CATEGORIAS POR DEPENDENCIA SELECCIONADA
 
-categoriasDeSoporte.forEach((element) => {
-  OpcionesCategorias.push(
-    <MenuItem key={element._id} value={element._id}>
-      {element.nombre}
-    </MenuItem>
+  const categoriasDeSoporte = categorias.filter(
+    (item) => item.dependencia === dependencia
   );
-});
 
-//#endregion
+  categoriasDeSoporte.forEach((element) => {
+    OpcionesCategorias.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.nombre}
+      </MenuItem>
+    );
+  });
 
-//VALIDAR TIPO DE USUARIO PARA ESTADO DE ELEMENTOS
- console.log('perfil'+usuario.perfil)
- if(usuario.perfil ==='estandar'){
-     setEstadoElemento('true')
- }
+  //#endregion
+
+  //#region DISPONER EDICION DE CONTROLES(CAMPOS)
+
+  const estadoControles = (perfil) => {
+    //VALIDAR TIPO DE USUARIO PARA ESTADO DE ELEMENTOS
+    if (perfil === "estandar") {
+      setEstadoElementos(true);
+      setEstadoElementoEstado(true);
+    } else if (perfil === "especial") {
+      setEstadoElementos(true);
+      setEstadoElementoEstado(false);
+    }
+  };
+
+  //#endregion
 
   return (
     <Card title="Editando Ticket">
@@ -193,7 +202,6 @@ categoriasDeSoporte.forEach((element) => {
               variant="outlined"
               value={titulo}
               onChange={handleChange}
-              
             />
           </FormControl>
           <FormControl className="anchoCompleto">
@@ -208,6 +216,12 @@ categoriasDeSoporte.forEach((element) => {
               // Col={16}
             />
           </FormControl>
+          <Divider />
+          <Text strong>{usuario}</Text> <Text>{creacion}</Text>
+          <br/>
+          <Text>{descripcion}</Text>
+          <Divider />
+
         </Col>
         <Col span={6} pull={18}>
           <FormControl variant="outlined" className="anchoCompleto">
@@ -219,7 +233,7 @@ categoriasDeSoporte.forEach((element) => {
               value={dependencia}
               onChange={handleChange}
               label="Dependencia"
-              disabled = {estadoElemento}
+              disabled={estadoElementos}
             >
               <MenuItem value="">
                 <em>Seleccionar Dependencia</em>
@@ -236,7 +250,7 @@ categoriasDeSoporte.forEach((element) => {
               value={categoria}
               onChange={handleChange}
               label="Categoria"
-              disabled = {estadoElemento}
+              disabled={estadoElementos}
             >
               <MenuItem value="">
                 <em>Seleccionar Categoria</em>
@@ -253,7 +267,7 @@ categoriasDeSoporte.forEach((element) => {
               value={tipo}
               onChange={handleChange}
               label="Tipo"
-              disabled = {estadoElemento}
+              disabled={estadoElementos}
             >
               <MenuItem value="">
                 <em>Seleccionar Tipo</em>
@@ -272,7 +286,7 @@ categoriasDeSoporte.forEach((element) => {
               value={prioridad}
               onChange={handleChange}
               label="Prioridad"
-              disabled = {estadoElemento}
+              disabled={estadoElementos}
             >
               <MenuItem value="">
                 <em>Seleccionar Prioridad</em>
@@ -285,6 +299,34 @@ categoriasDeSoporte.forEach((element) => {
               </MenuItem>
               <MenuItem key="alta" value="alta">
                 ALTA
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined" className="anchoCompleto">
+            <InputLabel id="estado">Estado</InputLabel>
+            <Select
+              labelId="estado"
+              name="estado"
+              id="estado"
+              value={estado}
+              onChange={handleChange}
+              label="Estado"
+              disabled={estadoElementoEstado}
+            >
+              <MenuItem value="">
+                <em>Seleccionar Estado</em>
+              </MenuItem>
+              <MenuItem key="nuevo" value="nuevo">
+                NUEVO
+              </MenuItem>
+              <MenuItem key="proceso" value="proceso">
+                PROCESO
+              </MenuItem>
+              <MenuItem key="resuelto" value="resuelto">
+                RESUELTO
+              </MenuItem>
+              <MenuItem key="cancelado" value="cancelado">
+                CANCELADO
               </MenuItem>
             </Select>
           </FormControl>
@@ -305,5 +347,4 @@ categoriasDeSoporte.forEach((element) => {
   );
 };
 
- 
 export default EditarTickets;

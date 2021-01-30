@@ -11,7 +11,7 @@ import {
 import Swal from "sweetalert2";
 
 //ANT DESING
-import {  message,  } from "antd";
+import { message } from "antd";
 
 //CREAR TOKEN DE LOGIN
 export function AutenticarUsuarioAction(paramUsuario) {
@@ -31,6 +31,7 @@ export function AutenticarUsuarioAction(paramUsuario) {
       //Si todo sale bien, actualizar el state
       dispatch(autenticarUsuarioExito({ token: token, usuario: usuario }));
     } catch (error) {
+      
       console.log(error.response.data.msg);
       // Si hay error
       dispatch(autenticarUsuarioError(error.response.data.msg));
@@ -59,15 +60,27 @@ export function extraerUsuarioStorageAction() {
     } catch (error) {
       console.log(error);
       // Si hay error
-      dispatch(autenticarUsuarioError(error.response.data.msg));
-      message.error({
-        content: `${error.response.data.msg}`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
+      if (typeof(error.response.data.msg) != "undefined") {
+        dispatch(autenticarUsuarioError(error.response.data.msg));
+        message.error({
+          content: `${error.response.data.msg}`,
+          className: "custom-class",
+          duration: 3,
+          style: {
+            // marginTop: '20vh',
+          },
+        });
+      } else {
+        console.log(error.response);
+        message.error({
+          content: `${error.response.message}`,
+          className: "custom-class",
+          duration: 3,
+          style: {
+            // marginTop: '20vh',
+          },
+        });
+      }
     }
   };
 }
