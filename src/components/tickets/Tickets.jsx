@@ -48,20 +48,21 @@ const Tickets = ({ history }) => {
     (item) => item.estado === `${estadoTicket}`
   );
 
-  
+  //ESTRUCTURAR TICKETS
   const formato = (ticketsFiltrados) => {
     let datos = [];
-
     ticketsFiltrados.map((item) => {
       let objeto = {};
       for (let indice in item) {
-        if (
-          indice === "categoria" ||
-          indice === "depenencia" ||
-          indice === "usuario"
-        ) {
-          objeto[indice] = item[indice].nombre;
-          objeto['idCategoria'] = item[indice]._id;
+        if (indice === "categoria") {
+          objeto[indice] = item[indice]._id;
+          objeto["nombreCategoria"] = item[indice].nombre;
+        } else if (indice === "dependencia") {
+          objeto[indice] = item[indice]._id;
+          objeto["nombreDependencia"] = item[indice].nombre;
+        } else if (indice === "usuario") {
+          objeto[indice] = item[indice]._id;
+          objeto["nombreUsuario"] = item[indice].nombre;
         } else {
           objeto[indice] = item[indice];
         }
@@ -71,47 +72,44 @@ const Tickets = ({ history }) => {
     return datos;
   };
 
-  const valores = formato(ticketsFiltrados)
+  const valores = formato(ticketsFiltrados);
   //#endregion
 
   //#region CAPTURAR TAB SELECCIONADO
 
-  function callback(key) {
+  function cambiaTab(key) {
     setEstadoTicket(key);
   }
   //#endregion
-
 
   //#region DESTRUCTURING DE TICKETS
   const [
     _id,
     actualizacion,
-    // categoria:{_id:idCategoria, nombre:nombreCategoria},
     categoria,
+    nombreCategoria,
     codigo,
     creacion,
-    // dependencia,
     descripcion,
     estado,
     mensaje,
     prioridad,
     tipo,
     titulo,
-    // usuario,
   ] = valores;
   // console.log(ticketsFiltrados[0].categoria.nombre)
   // const {_id:idDependencia, nombre:nombreDependencia} = dependencia
   // const { _id:idUsuario, nombre:nombreUsuario} = usuario
   // const{ _id:idCategoria, nombre:nombreCategoria} = categoria
   //#endregion
-  // console.log(idCategoria)
+
   //#region DATOS TABLA
   const data = [
     {
       codigo: codigo,
       titulo: titulo,
-      descripcion: descripcion,
-      categoria: categoria,
+      prioridad: prioridad,
+      nombreCategoria: nombreCategoria,
       creacion: creacion,
     },
   ];
@@ -122,8 +120,8 @@ const Tickets = ({ history }) => {
   const columns = [
     { title: "Codigo", field: "codigo" },
     { title: "Titulo", field: "titulo" },
-    { title: "Descripcion", field: "descripcion" },
-    { title: "Categoria", field: "categoria" },
+    { title: "Categoria", field: "nombreCategoria" },
+    { title: "Prioridad", field: "prioridad" },
     { title: "Creación", field: "creacion" },
     { title: "Actualizacion", field: "actualizacion" },
   ];
@@ -144,34 +142,19 @@ const Tickets = ({ history }) => {
           </Tag>
         ) : null} */}
 
-        <Tabs defaultActiveKey="nuevo" onChange={callback}>
+        <Tabs defaultActiveKey="nuevo" onChange={cambiaTab}>
           <TabPane tab="NUEVOS" key="nuevo">
-            <TablaTickets
-              tickets={valores}
-              data={data}
-              columns={columns}
-            />
+            <TablaTickets tickets={valores} data={data} columns={columns} />
+          </TabPane>
+
+          <TabPane tab="EN PROCESO" key="proceso">
+            <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
           <TabPane tab="RESUELTOS" key="resuelto">
-            <TablaTickets
-              tickets={valores}
-              data={data}
-              columns={columns}
-            />
-          </TabPane>
-          <TabPane tab="EN PROCESO" key="proceso">
-            <TablaTickets
-              tickets={valores}
-              data={data}
-              columns={columns}
-            />
+            <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
           <TabPane tab="CANCELADOS" key="cancelado">
-            <TablaTickets
-              tickets={valores}
-              data={data}
-              columns={columns}
-            />
+            <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
         </Tabs>
       </Card>

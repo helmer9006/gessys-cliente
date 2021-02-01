@@ -1,5 +1,7 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
+
+
 //IMPORTANDO TYPES
 import {
   AUTENTICAR_USUARIO,
@@ -31,7 +33,6 @@ export function AutenticarUsuarioAction(paramUsuario) {
       //Si todo sale bien, actualizar el state
       dispatch(autenticarUsuarioExito({ token: token, usuario: usuario }));
     } catch (error) {
-      
       console.log(error.response.data.msg);
       // Si hay error
       dispatch(autenticarUsuarioError(error.response.data.msg));
@@ -60,7 +61,6 @@ export function extraerUsuarioStorageAction() {
     } catch (error) {
       console.log(error);
       // Si hay error
-      if (typeof(error.response.data.msg) != "undefined") {
         dispatch(autenticarUsuarioError(error.response.data.msg));
         message.error({
           content: `${error.response.data.msg}`,
@@ -70,27 +70,19 @@ export function extraerUsuarioStorageAction() {
             // marginTop: '20vh',
           },
         });
-      } else {
-        console.log(error.response);
-        message.error({
-          content: `${error.response.message}`,
-          className: "custom-class",
-          duration: 3,
-          style: {
-            // marginTop: '20vh',
-          },
-        });
-      }
+      
     }
   };
 }
 
 //CERRAR SESION
 export function CerrarSesionUsuarioAction() {
+ 
   return async (dispatch) => {
     try {
       //actualizar el state
       dispatch(CerrarSesionUsuario());
+
     } catch (error) {
       console.log(error);
       // Si hay error

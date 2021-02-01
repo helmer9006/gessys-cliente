@@ -72,8 +72,8 @@ const NuevoTicket = () => {
     titulo: "",
     descripcion: "",
     tipo: "soporte",
-    dependencia: "5fbada592d929d215c89b2b8",
-    categoria: "5fc10c5bfe1c973840c10f76",
+    dependencia: "6014cf4f7c97f543c4e9233b",
+    categoria: "6014d2bf5f0dec0f105498f6",
     prioridad: "baja",
   });
 

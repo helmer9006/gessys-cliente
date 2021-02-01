@@ -7,7 +7,7 @@ import NuevoTicket from "./components/tickets/NuevoTicket";
 import EditarTicket from "./components/tickets/EditarTicket";
 import ComponentMenu from "./components/Menu";
 import Login from "./components/Login";
-
+import { useHistory } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Route,
@@ -48,7 +48,10 @@ import store from "./store";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const App = ({ history }) => {
+const App = () => {
+
+  const history = useHistory();
+
   //extraer usuario autenticado del storage
 
   const extraerUsuarioStorage = () => dispatch(extraerUsuarioStorageAction());
@@ -93,6 +96,7 @@ const App = ({ history }) => {
         // marginTop: '20vh',
       },
     });
+    history.push('/');
   }
 
   //recuperar variable de estado del Login

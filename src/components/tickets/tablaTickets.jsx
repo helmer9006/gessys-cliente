@@ -27,19 +27,19 @@ const TablaTickets = ({tickets, data, columns}) => {
       columns={columns}
       data={tickets}
       title=""
-      actions={[
-        {
-          icon: "edit",
-          tooltip: "Editar Ticket",
-          onClick: (event, rowData) =>  alert("Vas a editar " + rowData),
-        },
+      //actions={[
+       // {
+          //icon: "edit",
+          //tooltip: "Editar Ticket",
+         // onClick: (event, rowData) =>  alert("Vas a editar " + rowData),
+        //},
         // {
         //   icon: "delete",
         //   tooltip: "Eliminar Ticket",
         //   onClick: (event, rowData) =>
         //     alert("has seleccionado editar " + rowData.titulo),
         // },
-      ]}
+      //]}
       onRowClick={(evt, selectedRow) => {
        // setSelectedRow(selectedRow.tableData.id);
        redireccionarEdicion(selectedRow)
@@ -54,7 +54,7 @@ const TablaTickets = ({tickets, data, columns}) => {
       // }}
       localization={{
         header: {
-          actions: "Acciones",
+          // actions: "Acciones",
         },
       }}
       //onSelectionChange={(event, rowdata) => alert('You selected ' + rowdata._id)}

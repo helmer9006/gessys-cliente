@@ -18,10 +18,12 @@ import {
 } from "@material-ui/core";
 import Icon from "@material-ui/core/Icon";
 import SaveIcon from "@material-ui/icons/Save";
+import SendIcon from "@material-ui/icons/Send";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { sizing } from "@material-ui/system";
+import Mensajes from "../mensajes/Mensajes";
 
 //#endregion
 
@@ -32,10 +34,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { editarTicketAction } from "../../actions/ticketsActions";
 import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
+import { CrearMensajesAction } from "../../actions/mensajesActions";
+import { obtenerMensajesAction } from "../../actions/mensajesActions";
+
+
 
 const EditarTickets = () => {
-
-    const { Text, Link } = Typography;
+  const { Text, Link } = Typography;
 
   //#region ESTILOS PERSONALIZADOS MATERIAL
 
@@ -59,12 +64,17 @@ const EditarTickets = () => {
   const dependencias = useSelector((state) => state.dependencias.dependencias);
   const categorias = useSelector((state) => state.categorias.categorias);
   const usuarioAuth = useSelector((state) => state.auth.usuario);
-
+  // producto a editar
+  const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
+  
+  // if(!ticket) return;
   //STATE LOCAL
-  const [ticket, setTicket] = useState({
-    //codigo - hacer consulta al api, traer el ultio y aumentar codigo
-    titulo: "",
+  const [mensaje, setMensaje] = useState({
     descripcion: "",
+    ticket: (ticketEditar._id),
+  });
+  const [ticket, setTicket] = useState({
+    titulo: "",
     tipo: "",
     dependencia: "",
     categoria: "",
@@ -76,38 +86,52 @@ const EditarTickets = () => {
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
-  // producto a editar
-  const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
-  // llenar el state automaticamente
+
   useEffect(() => {
     setTicket(ticketEditar);
     const cargarDependencias = () => dispatch(obtenerDependenciasAction());
     const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+
+
     cargarDependencias();
     cargarCategorias();
+
     estadoControles(usuarioAuth.perfil);
   }, [ticketEditar]);
 
   //capturar datos del formulario
-  const handleChange = (event) => {
+  const handleChangeTicket = (event) => {
     setTicket({
       ...ticket,
       [event.target.name]: event.target.value,
     });
   };
 
+  const handleChangeMensaje = (event) => {
+    setMensaje({
+      ...mensaje,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   //DESTRUCTURING
   const {
+    _id,
     titulo,
-    descripcion,
+    descripcion: descripcionEditar,
     tipo,
     dependencia,
+    nombreDependencia,
     categoria,
+    nombreCategoria,
     prioridad,
     estado,
     usuario,
+    nombreUsuario,
     creacion,
   } = ticket;
+
+  const { descripcion } = mensaje;
 
   //mandar a llamar el action de tickets
 
@@ -115,7 +139,6 @@ const EditarTickets = () => {
     event.preventDefault();
     if (
       titulo.trim() === "" ||
-      descripcion.trim() === "" ||
       dependencia.trim() === "" ||
       categoria.trim() === "" ||
       tipo.trim() === "" ||
@@ -135,6 +158,24 @@ const EditarTickets = () => {
 
     dispatch(editarTicketAction(ticket));
     history.push("/tickets");
+  };
+
+  const onSubmitMensaje = (event) => {
+    event.preventDefault();
+    if (descripcion.trim() === "") {
+      message.error({
+        content: "Todos los campos son obligatorios",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+      return;
+    }
+    dispatch(CrearMensajesAction(mensaje));
+    const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
+    cargarMensajes(ticketEditar._id);
   };
 
   //#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
@@ -201,27 +242,43 @@ const EditarTickets = () => {
               label="Titulo"
               variant="outlined"
               value={titulo}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
             />
           </FormControl>
           <FormControl className="anchoCompleto">
             <TextField
               name="descripcion"
               id="descripcion"
-              label="Descripcion"
+              label="Mensaje"
               multiline
               rows={16}
               variant="outlined"
-              onChange={handleChange}
+              onChange={handleChangeMensaje}
               // Col={16}
             />
           </FormControl>
-          <Divider />
-          <Text strong>{usuario}</Text> <Text>{creacion}</Text>
-          <br/>
-          <Text>{descripcion}</Text>
-          <Divider />
-
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            startIcon={<SendIcon />}
+            size="large"
+            type="submit"
+            onClick={onSubmitMensaje}
+          ></Button>
+          <Mensajes   ticketEditar={ticketEditar}/>
+          <Card
+            style={{
+              borderRadius: "7px 7px 7px 7px",
+              boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+              backgroundColor: "#fff",
+              margin: "20px 0px 10px 0px",
+            }}
+          >
+            <Text strong>{nombreUsuario}</Text> <Text>{creacion}</Text>
+            <br />
+            <Text>{descripcionEditar}</Text>
+          </Card>
         </Col>
         <Col span={6} pull={18}>
           <FormControl variant="outlined" className="anchoCompleto">
@@ -231,7 +288,7 @@ const EditarTickets = () => {
               name="dependencia"
               id="dependencia"
               value={dependencia}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
               label="Dependencia"
               disabled={estadoElementos}
             >
@@ -248,7 +305,7 @@ const EditarTickets = () => {
               name="categoria"
               id="categoria"
               value={categoria}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
               label="Categoria"
               disabled={estadoElementos}
             >
@@ -265,7 +322,7 @@ const EditarTickets = () => {
               name="tipo"
               id="tipo"
               value={tipo}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
               label="Tipo"
               disabled={estadoElementos}
             >
@@ -284,7 +341,7 @@ const EditarTickets = () => {
               name="prioridad"
               id="prioridad"
               value={prioridad}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
               label="Prioridad"
               disabled={estadoElementos}
             >
@@ -309,7 +366,7 @@ const EditarTickets = () => {
               name="estado"
               id="estado"
               value={estado}
-              onChange={handleChange}
+              onChange={handleChangeTicket}
               label="Estado"
               disabled={estadoElementoEstado}
             >
@@ -339,7 +396,7 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitEditar}
           >
-            Editar Ticket
+            Guardar Cambios Ticket
           </Button>
         </Col>
       </Row>

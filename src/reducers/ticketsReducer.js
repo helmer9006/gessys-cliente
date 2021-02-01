@@ -34,7 +34,7 @@ export default function (state = initialState, action) {
         return {
             ...state,
             loading: false,
-            productos: [...state.tickets, action.payload]
+            tickets: [...state.tickets, action.payload]
         }
       case DESCARGA_TICKETS_EXITO:
         return {

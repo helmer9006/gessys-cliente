@@ -28,6 +28,8 @@ export function obtenerTicketsAction() {
       const respuesta = await clienteAxios.get("/tickets");
       dispatch(descargaTicketsExitosa(respuesta.data));
     } catch (error) {
+      const {response= ''} = error
+      console.log(response)
       message.error({
         content: `${error.response.data.msg}`,
         className: "custom-class",
@@ -81,6 +83,14 @@ export function CrearTicketsAction(ticket) {
       // insertar en la API
       await clienteAxios.post("/tickets", ticket);
       dispatch(crearTicketExito(ticket));
+      message.success({
+        content: "Ticket Creado correctamente",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
     } catch (error) {
       console.log(error.response.data.errors);
       message.error({
@@ -138,8 +148,16 @@ export function editarTicketAction(ticket) {
     }
 
     try {
-      await clienteAxios.put(`/tickets/${ticket.id}`, ticket);
+      await clienteAxios.put(`/tickets`, ticket);
       dispatch(editarTicketExito(ticket));
+      message.success({
+        content: `Ticket actualizado correctamente.`,
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
     } catch (error) {
       console.log(error);
       dispatch(editarTicketError());
