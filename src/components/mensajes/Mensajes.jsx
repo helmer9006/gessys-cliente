@@ -61,7 +61,7 @@ const Mensajes = ({ ticketEditar }) => {
               <Text strong>{mensaje.nombreUsuario}</Text>{" "}
               <Text>{mensaje.creacion}</Text>
               <br />
-              <Text>{mensaje.descripcion}</Text>
+              <Text style={{  width: 90}} className='salto-linea'>{mensaje.descripcion}</Text>
             </Card>
           ))}
     </>
