@@ -24,6 +24,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { sizing } from "@material-ui/system";
 import Mensajes from "../mensajes/Mensajes";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 //#endregion
 
@@ -36,8 +37,6 @@ import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearMensajesAction } from "../../actions/mensajesActions";
 import { obtenerMensajesAction } from "../../actions/mensajesActions";
-
-
 
 const EditarTickets = () => {
   const { Text, Link } = Typography;
@@ -66,12 +65,12 @@ const EditarTickets = () => {
   const usuarioAuth = useSelector((state) => state.auth.usuario);
   // producto a editar
   const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
-  
+
   // if(!ticket) return;
   //STATE LOCAL
   const [mensaje, setMensaje] = useState({
     descripcion: "",
-    ticket: (ticketEditar._id),
+    ticket: ticketEditar._id,
   });
   const [ticket, setTicket] = useState({
     titulo: "",
@@ -91,7 +90,6 @@ const EditarTickets = () => {
     setTicket(ticketEditar);
     const cargarDependencias = () => dispatch(obtenerDependenciasAction());
     const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-
 
     cargarDependencias();
     cargarCategorias();
@@ -265,12 +263,14 @@ const EditarTickets = () => {
             size="large"
             type="submit"
             onClick={onSubmitMensaje}
+            align="right"
           ></Button>
-          <Mensajes   ticketEditar={ticketEditar}/>
+          <Mensajes ticketEditar={ticketEditar} />
           <Card
             style={{
               borderRadius: "7px 7px 7px 7px",
-              boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+              boxShadow:
+                "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
               backgroundColor: "#fff",
               margin: "20px 0px 10px 0px",
             }}
@@ -387,6 +387,18 @@ const EditarTickets = () => {
               </MenuItem>
             </Select>
           </FormControl>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            startIcon={<ArrowBackIosIcon />}
+            size="large"
+            type="submit"
+            onClick={() => history.push("/tickets")}
+          >
+            VOLVER
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -396,7 +408,7 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitEditar}
           >
-            Guardar Cambios Ticket
+            Guardar Cambios
           </Button>
         </Col>
       </Row>
