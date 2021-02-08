@@ -59,6 +59,7 @@ export default function (state = initialState, action) {
                 ticketEditar: action.payload
             }
             case TICKET_EDITADO_EXITO:
+              localStorage.setItem('ticketEditado', action.payload)
               return {
                   ...state,
                   ticketEditar: null,

@@ -91,12 +91,10 @@ const EditarTickets = () => {
     setTicket(ticketEditar);
     const cargarDependencias = () => dispatch(obtenerDependenciasAction());
     const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-
-
     cargarDependencias();
     cargarCategorias();
 
-    estadoControles(usuarioAuth.perfil);
+    // estadoControles(usuarioAuth.perfil);
   }, [ticketEditar]);
 
   //capturar datos del formulario
@@ -175,6 +173,10 @@ const EditarTickets = () => {
     }
     dispatch(CrearMensajesAction(mensaje));
     const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
+    setMensaje({
+      ...mensaje,
+      descripcion: ''
+    })
     cargarMensajes(ticketEditar._id);
   };
 
@@ -254,6 +256,7 @@ const EditarTickets = () => {
               rows={16}
               variant="outlined"
               onChange={handleChangeMensaje}
+              value={mensaje.descripcion}
               // Col={16}
             />
           </FormControl>

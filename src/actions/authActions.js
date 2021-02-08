@@ -1,5 +1,6 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
+import getJson from '../functions/getJson';
 
 
 //IMPORTANDO TYPES
@@ -61,9 +62,11 @@ export function extraerUsuarioStorageAction() {
     } catch (error) {
       console.log(error);
       // Si hay error
-        dispatch(autenticarUsuarioError(error.response.data.msg));
+      const validarData = getJson(error,['response', 'data', 'msg'], 'El servidor no esta disponible')
+        dispatch(autenticarUsuarioError(validarData));
+        // dispatch(autenticarUsuarioError(error.response.data.msg));
         message.error({
-          content: `${error.response.data.msg}`,
+          content: `${validarData}`,
           className: "custom-class",
           duration: 3,
           style: {
