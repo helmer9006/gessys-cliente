@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
 import { css } from "@emotion/core";
-
+import Avatar from "../Avatar";
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
@@ -52,16 +52,28 @@ const Mensajes = ({ ticketEditar }) => {
             <Card
               style={{
                 borderRadius: "7px 7px 7px 7px",
-                boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+                boxShadow:
+                  "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                 backgroundColor: "#fff",
-                margin: "20px 0px 10px 0px",
+                margin: "30px 0px 10px 0px",
               }}
               key={mensaje._id}
             >
-              <Text strong>{mensaje.nombreUsuario}</Text>{" "}
-              <Text>{mensaje.creacion}</Text>
+              <Row flex justify="start" gutter={8} align="middle">
+                <Col>
+                  <Avatar name={mensaje.nombreUsuario} size="small" />
+                </Col>
+                <Col>
+                  <Text strong>{mensaje.nombreUsuario}</Text>
+                </Col>
+                <Col>
+                  <Text>{mensaje.creacion}</Text>
+                </Col>
+              </Row>
               <br />
-              <Text style={{  width: 90}} className='salto-linea'>{mensaje.descripcion}</Text>
+              <Text style={{ width: 90 }} className="salto-linea">
+                {mensaje.descripcion}
+              </Text>
             </Card>
           ))}
     </>

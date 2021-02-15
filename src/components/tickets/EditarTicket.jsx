@@ -24,6 +24,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { sizing } from "@material-ui/system";
 import Mensajes from "../mensajes/Mensajes";
+import Avatar from "../Avatar";
 
 //#endregion
 
@@ -36,8 +37,6 @@ import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearMensajesAction } from "../../actions/mensajesActions";
 import { obtenerMensajesAction } from "../../actions/mensajesActions";
-
-
 
 const EditarTickets = () => {
   const { Text, Link } = Typography;
@@ -66,12 +65,12 @@ const EditarTickets = () => {
   const usuarioAuth = useSelector((state) => state.auth.usuario);
   // producto a editar
   const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
-  
+
   // if(!ticket) return;
   //STATE LOCAL
   const [mensaje, setMensaje] = useState({
     descripcion: "",
-    ticket: (ticketEditar._id),
+    ticket: ticketEditar._id,
   });
   const [ticket, setTicket] = useState({
     titulo: "",
@@ -175,8 +174,8 @@ const EditarTickets = () => {
     const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
     setMensaje({
       ...mensaje,
-      descripcion: ''
-    })
+      descripcion: "",
+    });
     cargarMensajes(ticketEditar._id);
   };
 
@@ -269,16 +268,27 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitMensaje}
           ></Button>
-          <Mensajes   ticketEditar={ticketEditar}/>
+          <Mensajes ticketEditar={ticketEditar} />
           <Card
             style={{
               borderRadius: "7px 7px 7px 7px",
-              boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+              boxShadow:
+                "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
               backgroundColor: "#fff",
-              margin: "20px 0px 10px 0px",
+              margin: "30px 0px 10px 0px",
             }}
           >
-            <Text strong>{nombreUsuario}</Text> <Text>{creacion}</Text>
+            <Row flex justify="start" gutter={8} align="middle">
+              <Col>
+                <Avatar name={nombreUsuario} size="small" />
+              </Col>
+              <Col>
+                <Text strong>{nombreUsuario} </Text>
+              </Col>
+              <Col>
+                <Text>{creacion} </Text>
+              </Col>
+            </Row>
             <br />
             <Text>{descripcionEditar}</Text>
           </Card>

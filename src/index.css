@@ -48,3 +48,49 @@ code {
 .salto-linea {
   white-space: pre-line;
 }
+
+/* AVATAR */
+
+.avatar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: #7B1FA2;
+}
+
+.avatar.small{
+  width: 40px;
+  height: 40px;
+}
+
+.avatar.medium{
+  width: 60px;
+  height: 60px;
+}
+
+.avatar.big{
+  width: 80px;
+  height: 80px;
+}
+
+.avatar span{
+  /* font-family: var(--font-primary); */
+  font-size: 16px;
+  color: white;
+  font-weight: 400;
+}
+
+.avatar.medium span{
+  font-size: 22px;
+}
+.avatar.big span{
+  font-size: 30px;
+}
+
+/* GUTTER ANT D */
+
+.gutter-box {
+  padding: 5px 0;
+}

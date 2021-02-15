@@ -7,7 +7,8 @@ import NuevoTicket from "./components/tickets/NuevoTicket";
 import EditarTicket from "./components/tickets/EditarTicket";
 import ComponentMenu from "./components/Menu";
 import Login from "./components/Login";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import Avatar from "./components/Avatar";
 import {
   BrowserRouter as Router,
   Route,
@@ -24,7 +25,7 @@ import {
 
 //ANT DESING
 import {
-  Avatar,
+  // Avatar,
   Row,
   Menu,
   Dropdown,
@@ -49,7 +50,6 @@ import store from "./store";
 const { Header, Content, Footer, Sider } = Layout;
 
 const App = () => {
-
   const history = useHistory();
 
   //extraer usuario autenticado del storage
@@ -96,7 +96,7 @@ const App = () => {
         // marginTop: '20vh',
       },
     });
-    history.push('/');
+    history.push("/");
   }
 
   //recuperar variable de estado del Login
@@ -109,7 +109,7 @@ const App = () => {
 
   return (
     <>
-      { isLogin ? (
+      {isLogin ? (
         <Layout style={{ minHeight: "100vh" }}>
           <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
             <div className="logo" />
@@ -130,7 +130,7 @@ const App = () => {
               >
                 <p style={{ margin: "15px" }}>
                   {" "}
-                  Hola,  <strong> {usuario.nombre}</strong>
+                  Hola, <strong> {usuario.nombre}</strong>
                 </p>
                 {location.pathname != "/configuracion" ? (
                   <Link to={`${location.pathname}/nuevo`}>
@@ -139,8 +139,9 @@ const App = () => {
                     </Button>
                   </Link>
                 ) : null}
-                 {/* <Avatar size="large" icon={<UserOutlined />} /> */} 
-                
+                {/* <Avatar size="large" icon={<UserOutlined />} /> */}
+
+                <Avatar name={usuario.nombre} size="small" />
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"
@@ -152,7 +153,11 @@ const App = () => {
               <Switch>
                 <Route exact path="/tickets" component={Tickets} />
                 <Route exact path="/tickets/nuevo" component={NuevoTicket} />
-                <Route exact path="/tickets/editar/:id" component={EditarTicket} />
+                <Route
+                  exact
+                  path="/tickets/editar/:id"
+                  component={EditarTicket}
+                />
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
               </Switch>
