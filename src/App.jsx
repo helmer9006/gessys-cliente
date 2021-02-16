@@ -76,15 +76,6 @@ const App = () => {
     setCollapsed(collapsed);
   };
 
-  //ITEMS MENU AUTH
-  const menuAuth = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1" icon={<LogoutOutlined />}>
-        Cerrar Sesión
-      </Menu.Item>
-    </Menu>
-  );
-
   //FUNCION PARA CERRAR SESION
   function handleMenuClick(e) {
     CerrarSesionUsuario();
@@ -104,6 +95,15 @@ const App = () => {
 
   const Auth = useSelector((state) => state.auth);
   const { isLogin, usuario } = Auth;
+
+  //ITEMS MENU AUTH
+  const menuAuth = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="2" icon={<LogoutOutlined />}>
+        Cerrar Sesión
+      </Menu.Item>
+    </Menu>
+  );
 
   //FUNCION PARA VALIDAR TOKEN GUARDADOP EN STORAGE
 

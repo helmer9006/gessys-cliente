@@ -6,7 +6,7 @@ const Avatar = ({name='', size}) => {
 
   let container = classNames("avatar", size);
 
-  const _getName = () => {
+  const extraerIniciales = () => {
     return name
       .split(" ")
       .map((item) => item.charAt(0))
@@ -15,7 +15,7 @@ const Avatar = ({name='', size}) => {
   };
 
   return <div className={container}>
-     <span>{_getName()}</span>
+     <span>{extraerIniciales()}</span>
   </div>;
 };
 
