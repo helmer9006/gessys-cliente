@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
+
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
@@ -9,12 +10,25 @@ import { obtenerTicketsAction } from "../../actions/ticketsActions";
 import { Link } from "react-router-dom";
 import { Card, Button, Row, Col, Tag, Tabs } from "antd";
 import TablaTickets from "./tablaTickets";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import TabsUI from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 import {
   FullscreenExitOutlined,
   PlusOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 const Tickets = ({ history }) => {
   //INVOCANDO PANELES PARA EL TAB
@@ -127,6 +141,13 @@ const Tickets = ({ history }) => {
   ];
   //#endregion
 
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -141,7 +162,31 @@ const Tickets = ({ history }) => {
               : "Se ha presentado un error, comuniquese con el área de soporte"}
           </Tag>
         ) : null} */}
+        <Paper className={classes.root} >
+          <TabsUI
+            value={value}
+            onChange={handleChange}
+            indicatorColor="#primary"
+            textColor="primary"
+            centered
+          >
+            <Tab label="OTROS TICKETS" />
+            <Tab label="MIS TICKETS" />
+          </TabsUI>
+        </Paper>
+        <Paper className={classes.root} >
+          <TabsUI
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
 
+          >
+            <Tab label="OTROS TICKETS" />
+            <Tab label="MIS TICKETS" />
+          </TabsUI>
+        </Paper>
+        
         <Tabs defaultActiveKey="nuevo" onChange={cambiaTab}>
           <TabPane tab="NUEVOS" key="nuevo">
             <TablaTickets tickets={valores} data={data} columns={columns} />
@@ -157,6 +202,7 @@ const Tickets = ({ history }) => {
             <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
         </Tabs>
+      
       </Card>
     </div>
   );
