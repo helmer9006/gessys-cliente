@@ -24,7 +24,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { sizing } from "@material-ui/system";
 import Mensajes from "../mensajes/Mensajes";
-import Avatar from "../Avatar";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 //#endregion
 
@@ -267,6 +267,7 @@ const EditarTickets = () => {
             size="large"
             type="submit"
             onClick={onSubmitMensaje}
+            align="right"
           ></Button>
           <Mensajes ticketEditar={ticketEditar} />
           <Card
@@ -400,6 +401,18 @@ const EditarTickets = () => {
               </MenuItem>
             </Select>
           </FormControl>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            startIcon={<ArrowBackIosIcon />}
+            size="large"
+            type="submit"
+            onClick={() => history.push("/tickets")}
+          >
+            VOLVER
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -409,7 +422,7 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitEditar}
           >
-            Guardar Cambios Ticket
+            Guardar Cambios
           </Button>
         </Col>
       </Row>
