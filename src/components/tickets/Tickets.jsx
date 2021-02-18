@@ -14,20 +14,26 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TabsUI from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
 import {
   FullscreenExitOutlined,
   PlusOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
   },
+  tabs: {
+    width: "100%",
+    backgroundColor: "#d5d5d5",
+    color: "#333",
+  },
+  tab: {
+    minWidth: '50%',
+    width: '50%',
+  },
+
 }));
 
 const Tickets = ({ history }) => {
@@ -162,31 +168,19 @@ const Tickets = ({ history }) => {
               : "Se ha presentado un error, comuniquese con el área de soporte"}
           </Tag>
         ) : null} */}
-        <Paper className={classes.root} >
-          <TabsUI
-            value={value}
-            onChange={handleChange}
-            indicatorColor="#primary"
-            textColor="primary"
-            centered
-          >
-            <Tab label="OTROS TICKETS" />
-            <Tab label="MIS TICKETS" />
-          </TabsUI>
-        </Paper>
-        <Paper className={classes.root} >
+        <Paper className={classes.root}>
           <TabsUI
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
-
+            centered
           >
-            <Tab label="OTROS TICKETS" />
-            <Tab label="MIS TICKETS" />
+            <Tab label="TICKETS" className={classes.tab} />
+            <Tab label="MIS TICKETS" className={classes.tab} />
           </TabsUI>
         </Paper>
-        
+
         <Tabs defaultActiveKey="nuevo" onChange={cambiaTab}>
           <TabPane tab="NUEVOS" key="nuevo">
             <TablaTickets tickets={valores} data={data} columns={columns} />
@@ -202,7 +196,6 @@ const Tickets = ({ history }) => {
             <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
         </Tabs>
-      
       </Card>
     </div>
   );

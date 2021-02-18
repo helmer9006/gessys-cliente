@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-
+import Avatar from '../Avatar';
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI

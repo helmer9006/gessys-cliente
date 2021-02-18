@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
+import Avatar from '../Avatar'
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
