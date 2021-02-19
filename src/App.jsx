@@ -132,16 +132,15 @@ const App = () => {
                   {" "}
                   Hola, <strong> {usuario.nombre}</strong>
                 </p>
-                {location.pathname != "/configuracion" ? (
+                {/* {location.pathname != "/configuracion" ? (
                   <Link to={`${location.pathname}/nuevo`}>
                     <Button type="primary" icon={<PlusOutlined />}>
                       Nuevo
                     </Button>
                   </Link>
-                ) : null}
+                ) : null} */}
                 {/* <Avatar size="large" icon={<UserOutlined />} /> */}
-
-                <Avatar name={usuario.nombre} size="small" />
+                {/* <Avatar name={usuario.nombre} size="small" /> */}
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"

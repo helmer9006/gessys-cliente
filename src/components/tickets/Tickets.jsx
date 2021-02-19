@@ -20,6 +20,8 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
+import Pruebas from "./prueba";
+
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
@@ -168,6 +170,7 @@ const Tickets = ({ history }) => {
               : "Se ha presentado un error, comuniquese con el área de soporte"}
           </Tag>
         ) : null} */}
+         <Pruebas/>
         <Paper className={classes.root}>
           <TabsUI
             value={value}
@@ -180,7 +183,6 @@ const Tickets = ({ history }) => {
             <Tab label="MIS TICKETS" className={classes.tab} />
           </TabsUI>
         </Paper>
-
         <Tabs defaultActiveKey="nuevo" onChange={cambiaTab}>
           <TabPane tab="NUEVOS" key="nuevo">
             <TablaTickets tickets={valores} data={data} columns={columns} />
@@ -196,6 +198,8 @@ const Tickets = ({ history }) => {
             <TablaTickets tickets={valores} data={data} columns={columns} />
           </TabPane>
         </Tabs>
+       
+
       </Card>
     </div>
   );

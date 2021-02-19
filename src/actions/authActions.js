@@ -34,11 +34,12 @@ export function AutenticarUsuarioAction(paramUsuario) {
       //Si todo sale bien, actualizar el state
       dispatch(autenticarUsuarioExito({ token: token, usuario: usuario }));
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error);
+      const validarData = getJson(error,['response', 'data', 'msg'], 'El servidor no esta disponible')
       // Si hay error
-      dispatch(autenticarUsuarioError(error.response.data.msg));
+      dispatch(autenticarUsuarioError(validarData));
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
