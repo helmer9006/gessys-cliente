@@ -279,7 +279,7 @@ const EditarTickets = () => {
               margin: "30px 0px 10px 0px",
             }}
           >
-            <Row flex justify="start" gutter={8} align="middle">
+            <Row  justify="start" gutter={8} align="middle">
               <Col>
                 <Avatar name={nombreUsuario} size="small" />
               </Col>

@@ -58,7 +58,7 @@ const Mensajes = ({ ticketEditar }) => {
               }}
               key={mensaje._id}
             >
-              <Row flex justify="start" gutter={8} align="middle">
+              <Row justify="start" gutter={8} align="middle">
                 <Col>
                   <Avatar name={mensaje.nombreUsuario} size="small" />
                 </Col>

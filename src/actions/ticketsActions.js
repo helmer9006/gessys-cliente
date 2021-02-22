@@ -1,5 +1,7 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
+import getJson from "../functions/getJson";
+
 //IMPORTANDO TYPES
 import {
   COMENZAR_DESCARGA_TICKETS,
@@ -26,24 +28,23 @@ export function obtenerTicketsAction() {
     }
     try {
       const respuesta = await clienteAxios.get("/tickets");
-      dispatch(descargaTicketsExitosa(respuesta.data));
+      const ticketsFiltrados =  filtrarTickets(respuesta.data)
+      dispatch(descargaTicketsExitosa(ticketsFiltrados));
     } catch (error) {
-      const {response= ''} = error
-      console.log(response)
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al obtener tickets"
+      );
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
           // marginTop: '20vh',
         },
       });
-      dispatch(descargaTicketsError(error.response.data.msg));
-      if (error.response.status === 403) {
-        dispatch(autenticarUsuarioError(error.response.data.msg));
-        console.log("entréee");
-      }
-      console.log(error.response.status);
+      dispatch(descargaTicketsError(validarData));
     }
   };
 }
@@ -177,3 +178,29 @@ const editarTicketError = () => ({
   type: TICKET_EDITADO_ERROR,
   payload: true,
 });
+
+
+const filtrarTickets =  (tickets) => {
+  // console.log(tickets);
+  let datos = [];
+   tickets.map((item) => {
+    let objeto = {};
+    for (let indice in item) {
+      if (indice === "categoria") {
+        objeto[indice] = item[indice]._id;
+        objeto["nombreCategoria"] = item[indice].nombre;
+      } else if (indice === "dependencia") {
+        objeto[indice] = item[indice]._id;
+        objeto["nombreDependencia"] = item[indice].nombre;
+      } else if (indice === "usuario") {
+        objeto[indice] = item[indice]._id;
+        objeto["nombreUsuario"] = item[indice].nombre;
+      } else {
+        objeto[indice] = item[indice];
+      }
+    }
+    datos.push(objeto);
+  });
+  console.log(datos);
+  return datos;
+};

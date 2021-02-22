@@ -47,17 +47,11 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `scrollable-force-tab-${index}`,
-    'aria-controls': `scrollable-force-tabpanel-${index}`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: '100%',
+    width: '50%',
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -80,25 +74,25 @@ export default function ScrollableTabsButtonForce() {
         //   scrollButtons="on"
           indicatorColor="primary"
           textColor="primary"
-          aria-label="scrollable force tabs example"
+          // aria-label="scrollable force tabs example"
           centered
         >
-          <Tab label="NUEVOS" icon={<LocalOfferRoundedIcon />} {...a11yProps(0)} />
-          <Tab label="PROCESO" icon={<RepeatRoundedIcon />} {...a11yProps(1)} />
-          <Tab label="RESUELTOS" icon={<DoneAllRoundedIcon />} {...a11yProps(2)} />
-          <Tab label="CANCELADOS" icon={<CloseRoundedIcon />} {...a11yProps(3)} />
+          <Tab label="NUEVOS" icon={<LocalOfferRoundedIcon />} />
+          <Tab label="PROCESO" icon={<RepeatRoundedIcon />} />
+          <Tab label="RESUELTOS" icon={<DoneAllRoundedIcon />} />
+          <Tab label="CANCELADOS" icon={<CloseRoundedIcon />} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} key='nuevos'>
         NUEVOS
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={1} key='proceso'>
         PROCESO
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={2} key='resueltos'>
         RESUELTOS
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={3} key='cancelados'>
         CANCELADOS
       </TabPanel>
      

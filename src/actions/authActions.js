@@ -127,3 +127,4 @@ const usuarioAutenticado = (usuario) => ({
   type: USUARIO_AUTENTICADO,
   payload: usuario,
 });
+

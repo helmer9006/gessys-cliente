@@ -53,10 +53,9 @@ const App = () => {
   const history = useHistory();
 
   //extraer usuario autenticado del storage
-
   const extraerUsuarioStorage = () => dispatch(extraerUsuarioStorageAction());
 
-  useEffect(() => {
+  useEffect(() =>  {
     extraerUsuarioStorage();
   }, []);
 
@@ -120,13 +119,13 @@ const App = () => {
           <Layout className="site-layout">
             <Header
               className="site-layout-background"
-              style={{ padding: "20px" }}
+              style={{ padding: "20px", backgroundColor: '#333' }}
             >
               <Row
                 type="flex"
                 align="middle"
                 justify="end"
-                // style={{ height: "100%" }}
+                height= '30px'
               >
                 <p style={{ margin: "15px" }}>
                   {" "}
