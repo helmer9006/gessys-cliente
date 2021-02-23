@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import MaterialTable from "material-table";
-import getTickets from "../../hook/useTickets";
+
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
@@ -48,6 +47,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
+
 //FUNCION QUE RETORNA EL TAB PANELES
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,19 +87,18 @@ const Tickets = ({ history }) => {
   const token = useSelector((state) => state.auth.token);
   const usuarioState = useSelector((state) => state.auth.usuario);
   const [ticketsFiltrados, setTicketsFiltrados] = useState([]);
-
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [valueEstado, setValueEstado] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setTicketsFiltrados(filtrarTickets(valueEstado, newValue));
+    setTicketsFiltrados(filtrarTickets(tickets, valueEstado, newValue));
   };
 
   const handleChangeEstados = (e, newValue) => {
     setValueEstado(newValue);
-    setTicketsFiltrados(filtrarTickets(newValue, value));
+    setTicketsFiltrados(filtrarTickets(tickets, newValue, value));
   };
 
   const dispatch = useDispatch();
@@ -110,40 +110,42 @@ const Tickets = ({ history }) => {
   useEffect(() => {
     //consultar API
     obtenerTickets();
-    console.log(tickets);
-    filtrarTickets(valueEstado, value);
+
     //#endregion
   }, []);
 
   //#region FILTRAR LOS TICKET POR ESTabTADO PARA MOSTRAR EN TAB CORRESPONDIENTE
 
-  const filtrarTickets = (EstadoArg, valueArg) => {
+  const filtrarTickets = (ticketsArg, EstadoArg, valueArg) => {
     let listEstados = ["nuevo", "proceso", "resuelto", "cancelado"];
 
     let res = [];
     const { id, dependencia } = usuarioState;
-
+    console.log("ticket", ticketsArg);
+    console.log("valueArg", valueArg);
     switch (valueArg) {
       case 1: //TICKETS
         console.log("1");
-
-        res = tickets.filter(
+        res = ticketsArg.filter(
           (item) =>
             item.estado === listEstados[EstadoArg] &&
             item.dependencia === dependencia
         );
-        console.log(res);
+        console.log("res", res);
+        console.log("ticket", ticketsArg);
         break;
       case 0: //MIS TICKETS
         console.log("2");
 
-        res = tickets.filter(
+        res = ticketsArg.filter(
           (item) =>
             item.estado === listEstados[EstadoArg] && item.usuario === id
         );
-        console.log(res);
+        console.log("res", res);
+        console.log("ticket", ticketsArg);
         break;
     }
+
     return res;
   };
 
@@ -243,7 +245,7 @@ const Tickets = ({ history }) => {
               textColor="primary"
               centered
             >
-              <Tab label="MIS TICKETS" className={classes.tab} />
+              <Tab label="MIS TICKETS" className={classes.tab} id="nuevos"/>
               <Tab label="TICKETS" className={classes.tab} />
             </TabsUI>
           </Paper>

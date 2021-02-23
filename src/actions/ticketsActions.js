@@ -27,9 +27,9 @@ export function obtenerTicketsAction() {
       tokenAuth(token);
     }
     try {
-      const respuesta = await clienteAxios.get("/tickets");
-      const ticketsFiltrados =  filtrarTickets(respuesta.data)
-      dispatch(descargaTicketsExitosa(ticketsFiltrados));
+    const respuesta = await clienteAxios.get("/tickets");
+     const tickets = await filtrarTickets(respuesta.data)
+      dispatch(descargaTicketsExitosa(tickets));
     } catch (error) {
       const validarData = getJson(
         error,
@@ -128,11 +128,11 @@ const crearTicketsError = (error) => ({
 // COLOCANDO EN EL STATE EL PRODUCTO A EDITAR
 export function obtenerTicketEditarAction(ticket) {
   return (dispatch) => {
-    dispatch(obtenerProductoEditar(ticket));
+    dispatch(obtenerTicketEditar(ticket));
   };
 }
 
-const obtenerProductoEditar = (ticket) => ({
+const obtenerTicketEditar = (ticket) => ({
   type: OBTENER_TICKET_EDITAR,
   payload: ticket,
 });
@@ -199,7 +199,7 @@ const filtrarTickets =  (tickets) => {
         objeto[indice] = item[indice];
       }
     }
-    datos.push(objeto);
+     datos.push(objeto);
   });
   console.log(datos);
   return datos;
