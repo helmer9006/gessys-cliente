@@ -119,7 +119,7 @@ const App = () => {
           <Layout className="site-layout">
             <Header
               className="site-layout-background"
-              style={{ padding: "20px", backgroundColor: '#333' }}
+              style={{ padding: "20px"}}
             >
               <Row
                 type="flex"

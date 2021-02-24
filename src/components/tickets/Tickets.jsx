@@ -285,21 +285,20 @@ const Tickets = ({ history }) => {
   };
   //#endregion
 
-
   const tickets = useSelector((state) => state.tickets.tickets);
   const dispatch = useDispatch();
-  const obtenerTickets =  () =>  dispatch(obtenerTicketsAction());
-
+  const obtenerTickets = () => dispatch(obtenerTicketsAction());
 
   //#region OBTENER ESTADOS DEL STORE
   useEffect(() => {
     obtenerTickets();
-    filtrarTickets(tickets, valueEstado, value);
     //#endregion
   }, []);
 
-
-
+  useEffect(() => {
+    if (!tickets) return;
+    setTicketsFiltrados(filtrarTickets(tickets, valueEstado, value));
+  }, [tickets]);
 
   //#region FILTRAR LOS TICKET POR ESTabTADO PARA MOSTRAR EN TAB CORRESPONDIENTE
 
@@ -308,28 +307,19 @@ const Tickets = ({ history }) => {
 
     let res = null;
     const { id, dependencia } = usuarioState;
-    console.log("ticket", ticketsArg);
-    console.log("valueArg", valueArg);
     switch (valueArg) {
       case 1: //TICKETS
-        console.log("1");
         res = ticketsArg.filter(
           (item) =>
             item.estado === listEstados[EstadoArg] &&
             item.dependencia === dependencia
         );
-        console.log("res", res);
-        console.log("ticket", ticketsArg);
         break;
       case 0: //MIS TICKETS
-        console.log("2");
-
         res = ticketsArg.filter(
           (item) =>
             item.estado === listEstados[EstadoArg] && item.usuario === id
         );
-        console.log("res", res);
-        console.log("ticket", ticketsArg);
         break;
     }
 
