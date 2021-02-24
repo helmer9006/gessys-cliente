@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Menu } from "antd";
 import {
   PieChartOutlined,
   UserOutlined,
@@ -23,6 +23,7 @@ const Menus = () => {
           <Link to="/configuracion">Configuracion</Link>
         </Menu.Item>
       </Menu>
+
     </>
   );
 };
