@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Avatar from '../Avatar';
+import Avatar from "../Avatar";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
@@ -82,6 +82,17 @@ const EditarTickets = () => {
     usuario: "",
     creacion: "",
   });
+
+  useEffect(() => {
+    setTicket(ticketEditar);
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+
+    // estadoControles(usuarioAuth.perfil);
+  }, [ticketEditar]);
+
   //DESTRUCTURING
   const {
     _id,
@@ -103,26 +114,13 @@ const EditarTickets = () => {
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
-  
+  //colocar en blanco categoria al cambiar la dependencia
   useEffect(() => {
-    if (dependencia) return;
+    
     setTicket({
-      ...ticket,
-      categoria: ""
-    })
+      categoria: "",
+    });
   }, [dependencia]);
-
-  useEffect(() => {
-    setTicket(ticketEditar);
-    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
-    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-    cargarDependencias();
-    cargarCategorias();
-
-    // estadoControles(usuarioAuth.perfil);
-  }, [ticketEditar]);
-
-
 
   //capturar datos del formulario
   const handleChangeTicket = (event) => {
@@ -131,15 +129,12 @@ const EditarTickets = () => {
       [event.target.name]: event.target.value,
     });
   };
-
   const handleChangeMensaje = (event) => {
     setMensaje({
       ...mensaje,
       [event.target.name]: event.target.value,
     });
   };
-
-
 
   //mandar a llamar el action de tickets
 
@@ -290,7 +285,7 @@ const EditarTickets = () => {
               margin: "30px 0px 10px 0px",
             }}
           >
-            <Row  justify="start" gutter={8} align="middle">
+            <Row justify="start" gutter={8} align="middle">
               <Col>
                 <Avatar name={nombreUsuario} size="small" />
               </Col>

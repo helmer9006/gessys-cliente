@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { Row, Card, Col, message } from "antd";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
@@ -48,25 +48,7 @@ const NuevoTicket = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  //#region OBTENER ESTADOS DEL STORE
-
-  const token = useSelector((state) => state.auth.token);
-  const error = useSelector((state) => state.dependencias.error);
-  const mensajeError = useSelector((state) => state.dependencias.mensajeError);
-  const dependencias = useSelector((state) => state.dependencias.dependencias);
-  const categorias = useSelector((state) => state.categorias.categorias);
-  
-
-  //#endregion
-
-  useEffect(() => {
-    //consultar API
-    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
-    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-    cargarDependencias();
-    cargarCategorias();
-  }, []);
-// console.log(categorias[0] .[_id"]
+  //
   const [ticket, setTicket] = useState({
     //codigo - hacer consulta al api, traer el ultio y aumentar codigo
     titulo: "",
@@ -86,6 +68,31 @@ const NuevoTicket = () => {
     categoria,
     prioridad,
   } = ticket;
+
+  //#region OBTENER ESTADOS DEL STORE
+
+  const token = useSelector((state) => state.auth.token);
+  const error = useSelector((state) => state.dependencias.error);
+  const mensajeError = useSelector((state) => state.dependencias.mensajeError);
+  const dependencias = useSelector((state) => state.dependencias.dependencias);
+  const categorias = useSelector((state) => state.categorias.categorias);
+
+  //#endregion
+
+  useEffect(() => {
+    //consultar API
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+  }, []);
+
+  useEffect(() => {
+    setTicket({
+      ...ticket,
+      categoria: "",
+    });
+  }, [dependencia]);
 
   const handleChange = (event) => {
     setTicket({
@@ -122,7 +129,7 @@ const NuevoTicket = () => {
 
     crearTicket(ticket);
     dispatch(obtenerTicketsAction());
-    history.push('/tickets');
+    history.push("/tickets");
   };
 
   //#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
