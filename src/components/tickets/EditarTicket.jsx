@@ -103,6 +103,14 @@ const EditarTickets = () => {
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
+  
+  useEffect(() => {
+    if (dependencia) return;
+    setTicket({
+      ...ticket,
+      categoria: ""
+    })
+  }, [dependencia]);
 
   useEffect(() => {
     setTicket(ticketEditar);
@@ -114,13 +122,7 @@ const EditarTickets = () => {
     // estadoControles(usuarioAuth.perfil);
   }, [ticketEditar]);
 
-  // useEffect(() => {
-  //   if (dependencia) return;
-  //   setTicket({
-  //     ...ticket,
-  //     categoria: ""
-  //   })
-  // }, [dependencia]);
+
 
   //capturar datos del formulario
   const handleChangeTicket = (event) => {
