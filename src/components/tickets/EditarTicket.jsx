@@ -82,35 +82,6 @@ const EditarTickets = () => {
     usuario: "",
     creacion: "",
   });
-
-  const [estadoElementos, setEstadoElementos] = useState(false);
-  const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
-
-  useEffect(() => {
-    setTicket(ticketEditar);
-    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
-    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-    cargarDependencias();
-    cargarCategorias();
-
-    // estadoControles(usuarioAuth.perfil);
-  }, [ticketEditar]);
-
-  //capturar datos del formulario
-  const handleChangeTicket = (event) => {
-    setTicket({
-      ...ticket,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleChangeMensaje = (event) => {
-    setMensaje({
-      ...mensaje,
-      [event.target.name]: event.target.value,
-    });
-  };
-
   //DESTRUCTURING
   const {
     _id,
@@ -129,6 +100,44 @@ const EditarTickets = () => {
   } = ticket;
 
   const { descripcion } = mensaje;
+
+  const [estadoElementos, setEstadoElementos] = useState(false);
+  const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
+
+  useEffect(() => {
+    setTicket(ticketEditar);
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+
+    // estadoControles(usuarioAuth.perfil);
+  }, [ticketEditar]);
+
+  // useEffect(() => {
+  //   if (dependencia) return;
+  //   setTicket({
+  //     ...ticket,
+  //     categoria: ""
+  //   })
+  // }, [dependencia]);
+
+  //capturar datos del formulario
+  const handleChangeTicket = (event) => {
+    setTicket({
+      ...ticket,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleChangeMensaje = (event) => {
+    setMensaje({
+      ...mensaje,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+
 
   //mandar a llamar el action de tickets
 

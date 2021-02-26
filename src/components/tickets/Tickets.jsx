@@ -77,8 +77,6 @@ const Tickets = ({ history }) => {
 
   //STATE LOCAL
 
-  // const [estadoTicket, setEstadoTicket] = useState("nuevo");
-  // const [selectedRow, setSelectedRow] = useState(null);
   const error = useSelector((state) => state.tickets.error);
   const mensajeError = useSelector((state) => state.tickets.mensajeError);
 
@@ -101,179 +99,9 @@ const Tickets = ({ history }) => {
     },
   ]);
   const classes = useStyles();
-  const [value, setValue] = useState(0);
-  const [valueEstado, setValueEstado] = useState(0);
+  const [value, setValue] = useState(0); //estado tab para filtro tickets y mis tickets seleccionado
+  const [valueEstado, setValueEstado] = useState(0); // estado tab de filtro por estado seleccionado
 
-  //   const res = [{
-  //     codigo: 9,
-  //     estado: 'nuevo',
-  //     mensaje: [],
-  //     _id: '6031f1a2758e6a70a0406784',
-  //     titulo: 'MI TICKET DE ENFERMERIA',
-  //     descripcion: 'pruebaaaaaaaaaa\na\nsdf\na\nsdf\nasdf',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '60171536dcde3d8f74b775ed',
-  //     nombreUsuario: 'Enfermera Sexto Piso',
-  //     creacion: '2021-02-21T05:37:38.251Z',
-  //     __v: 0
-  //   },
-  //   {
-  //     codigo: 8,
-  //     estado: 'cancelado',
-  //     mensaje: [],
-  //     _id: '6031c1af71a7a65f70c88030',
-  //     titulo: 'TICKET DE SISTEMAS PARA OTRA',
-  //     descripcion: 'asdfasdfasdf',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-02-21T02:13:03.855Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-21T04:38:46.858Z'
-  //   },
-  //   {
-  //     codigo: 7,
-  //     estado: 'proceso',
-  //     mensaje: [],
-  //     _id: '601e0173f2c5d176e5e39646',
-  //     creacion: '2021-02-06T02:39:32.220Z',
-  //     titulo: 'PRUEBA FECHA',
-  //     descripcion: 'ok',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     __v: 0,
-  //     actualizacion: '2021-02-21T04:39:20.321Z'
-  //   },
-  //   {
-  //     codigo: 6,
-  //     estado: 'nuevo',
-  //     mensaje: [],
-  //     _id: '601e00ade258167271625f0d',
-  //     titulo: 'PRUEBA FECHA UPDATE',
-  //     descripcion: 'prueba fecha',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-02-06T02:36:29.835Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-06T02:36:54.303Z'
-  //   },
-  //   {
-  //     codigo: 5,
-  //     estado: 'resuelto',
-  //     mensaje: [],
-  //     _id: '60175e063f130b9354111e33',
-  //     titulo: 'ERROR DE EPICRISIS',
-  //     descripcion: 'epircrisis con error en la fecha',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '60171536dcde3d8f74b775ed',
-  //     nombreUsuario: 'Enfermera Sexto Piso',
-  //     creacion: '2021-02-01T01:48:54.178Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-01T04:20:23.661Z'
-  //   },
-  //   {
-  //     codigo: 4,
-  //     estado: 'resuelto',
-  //     mensaje: [],
-  //     _id: '60157869f8bc8fbd1c6f3a93',
-  //     titulo: 'ELIMINAR EVOLUCION',
-  //     descripcion: 'eliminar evolucion de ayer',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'baja',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-01-30T15:16:57.026Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-01T01:58:35.500Z'
-  //   },
-  //   {
-  //     codigo: 3,
-  //     estado: 'cancelado',
-  //     mensaje: [],
-  //     _id: '6015437bf8bc8fbd1c6f3a92',
-  //     titulo: 'PRUEBA',
-  //     descripcion: 'prueba',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'media',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-01-30T11:31:07.087Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-01T01:59:10.025Z'
-  //   },
-  //   {
-  //     codigo: 2,
-  //     estado: 'nuevo',
-  //     mensaje: [],
-  //     _id: '6015308911259c84fcc22e72',
-  //     titulo: 'ARREGLO AMPICILINA UPDATE',
-  //     descripcion: 'no se deja registrar hoy a las 22 h',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'media',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-01-30T10:10:17.122Z',
-  //     __v: 0,
-  //     actualizacion: '2021-02-01T02:07:51.408Z'
-  //   },
-  //   {
-  //     codigo: 1,
-  //     estado: 'nuevo',
-  //     mensaje: [],
-  //     _id: '6014d5d240f9ee5598309baa',
-  //     titulo: 'ARREGLAR HC ADM 912525',
-  //     descripcion: 'arreglo de historia clincia',
-  //     tipo: 'soporte',
-  //     dependencia: '6014cf4f7c97f543c4e9233b',
-  //     nombreDependencia: 'SISTEMAS',
-  //     categoria: '6014d2bf5f0dec0f105498f6',
-  //     nombreCategoria: 'MEDICAMENTOS',
-  //     prioridad: 'alta',
-  //     usuario: '6014d092b7c2825d34cf447a',
-  //     nombreUsuario: 'Helmer Villarreal',
-  //     creacion: '2021-01-30T03:43:14.925Z',
-  //     __v: 0
-  //   }
-  // ]
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setTicketsFiltrados(filtrarTickets(tickets, valueEstado, newValue));
@@ -285,11 +113,11 @@ const Tickets = ({ history }) => {
   };
   //#endregion
 
+  //#region OBTENER ESTADOS DEL STORE
   const tickets = useSelector((state) => state.tickets.tickets);
   const dispatch = useDispatch();
   const obtenerTickets = () => dispatch(obtenerTicketsAction());
 
-  //#region OBTENER ESTADOS DEL STORE
   useEffect(() => {
     obtenerTickets();
     //#endregion
@@ -321,43 +149,12 @@ const Tickets = ({ history }) => {
             item.estado === listEstados[EstadoArg] && item.usuario === id
         );
         break;
+      default:
+        break;
     }
-
     return res;
   };
 
-  // //ESTRUCTURAR TICKETS
-  // // const formato = (res) => {
-  // //   let datos = [];
-  // //   res.map((item) => {
-  // //     let objeto = {};
-  // //     for (let indice in item) {
-  // //       if (indice === "categoria") {
-  // //         objeto[indice] = item[indice]._id;
-  // //         objeto["nombreCategoria"] = item[indice].nombre;
-  // //       } else if (indice === "dependencia") {
-  // //         objeto[indice] = item[indice]._id;
-  // //         objeto["nombreDependencia"] = item[indice].nombre;
-  // //       } else if (indice === "usuario") {
-  // //         objeto[indice] = item[indice]._id;
-  // //         objeto["nombreUsuario"] = item[indice].nombre;
-  // //       } else {
-  // //         objeto[indice] = item[indice];
-  // //       }
-  // //     }
-  // //     datos.push(objeto);
-  // //   });
-  // //   return datos;
-  // // };
-
-  // // const valores = formato(ticketsFiltrados);
-  // //#endregion
-
-  //#region CAPTURAR TAB SELECCIONADO
-
-  // function cambiaTab(key) {
-  //   setEstadoTicket(key);
-  // }
   //#endregion
 
   //#region DESTRUCTURING DE TICKETS
@@ -375,10 +172,7 @@ const Tickets = ({ history }) => {
     tipo,
     titulo,
   ] = ticketsFiltrados;
-  // console.log(ticketsFiltrados[0].categoria.nombre)
-  // const {_id:idDependencia, nombre:nombreDependencia} = dependencia
-  // const { _id:idUsuario, nombre:nombreUsuario} = usuario
-  // const{ _id:idCategoria, nombre:nombreCategoria} = categoria
+
   //#endregion
 
   //#region DATOS TABLA
@@ -475,22 +269,6 @@ const Tickets = ({ history }) => {
             />
           </TabPanel>
         </div>
-
-        {/* <Tabs defaultActiveKey="nuevo" onChange={cambiaTab}>
-          <TabPane tab="NUEVOS" key="nuevo">
-            <TablaTickets tickets={valores} data={data} columns={columns} />
-          </TabPane>
-
-          <TabPane tab="EN PROCESO" key="proceso">
-            <TablaTickets tickets={valores} data={data} columns={columns} />
-          </TabPane>
-          <TabPane tab="RESUELTOS" key="resuelto">
-            <TablaTickets tickets={valores} data={data} columns={columns} />
-          </TabPane>
-          <TabPane tab="CANCELADOS" key="cancelado">
-            <TablaTickets tickets={valores} data={data} columns={columns} />
-          </TabPane>
-        </Tabs> */}
       </Card>
     </div>
   );

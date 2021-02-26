@@ -66,16 +66,16 @@ const NuevoTicket = () => {
     cargarDependencias();
     cargarCategorias();
   }, []);
-
+// console.log(categorias[0] .[_id"]
   const [ticket, setTicket] = useState({
     //codigo - hacer consulta al api, traer el ultio y aumentar codigo
     titulo: "",
     descripcion: "",
     tipo: "soporte",
-    dependencia: "6014cf4f7c97f543c4e9233b",
-    categoria: "6014d2bf5f0dec0f105498f6",
+    dependencia: "",
+    categoria: "",
     prioridad: "baja",
-  });
+  }); //colocar por defecto la categoria y dependencia mas usadas
 
   //DESTRUCTURING
   const {
