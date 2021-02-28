@@ -83,10 +83,7 @@ const EditarTickets = () => {
   });
   // producto a editar
   let ticketEditar = useSelector((state) => state.tickets.ticketEditar);
-  // if (!ticketEditar) {
-  //   console.log('holaaaa')
-  //   setTicket(JSON.parse(localStorage.getItem("ticketEditado")));
-  // }
+
   //DESTRUCTURING
   let {
     _id,

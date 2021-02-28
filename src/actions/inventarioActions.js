@@ -3,21 +3,21 @@ import tokenAuth from "../config/tokenAuth";
 
 //IMPORTANDO TYPES
 import {
-  COMENZAR_DESCARGA_DEPENDENCIAS,
-  DESCARGA_DEPENDENCIAS_ERROR,
-  DESCARGA_DEPENDENCIAS_EXITO,
+  COMENZAR_DESCARGA_INVENTARIO,
+  DESCARGA_INVENTARIO_EXITO,
+  DESCARGA_INVENTARIO_ERROR
 } from "../types";
 
-//#region OBTENIENDO LAS DEPENENCIAS DEL API
-export function obtenerDependenciasAction() {
+//#region OBTENIENDO LOS TICKETS DEL API
+export function obtenerInventarioAction() {
   return async (dispatch) => {
-    dispatch(descargarDependencias());
+    dispatch(descargarInventario());
     const token = localStorage.getItem("gessys_token");
     if (token) {
       tokenAuth(token);
     }
     try {
-      const respuesta = await clienteAxios.get("/dependencias", {
+      const respuesta = await clienteAxios.get("/inventario", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,13 +30,13 @@ export function obtenerDependenciasAction() {
   };
 }
 
-//iniciando la descarga de las  dependencias
-const descargarDependencias = () => ({
-  type: COMENZAR_DESCARGA_DEPENDENCIAS,
+//iniciando la descarga del invetnario
+const descargarInventario = () => ({
+  type: COMENZAR_DESCARGA_INVENTARIO,
   payload: true,
 });
 
-//almacenando las dependencias devueltas del api al state
+//almacenando los tickets devueltos del api al state
 const descargaDependenciasExitosa = (dependencias) => ({
   type: DESCARGA_DEPENDENCIAS_EXITO,
   payload: dependencias,
