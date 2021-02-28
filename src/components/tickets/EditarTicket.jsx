@@ -63,16 +63,9 @@ const EditarTickets = () => {
   const dependencias = useSelector((state) => state.dependencias.dependencias);
   const categorias = useSelector((state) => state.categorias.categorias);
   const usuarioAuth = useSelector((state) => state.auth.usuario);
-  // producto a editar
-  const ticketEditar = useSelector((state) => state.tickets.ticketEditar);
-
-  // if(!ticket) return;
-  //STATE LOCAL
-  const [mensaje, setMensaje] = useState({
-    descripcion: "",
-    ticket: ticketEditar._id,
-  });
   const [ticket, setTicket] = useState({
+    _id: "",
+    codigo: "",
     titulo: "",
     tipo: "",
     dependencia: "",
@@ -81,20 +74,21 @@ const EditarTickets = () => {
     estado: "",
     usuario: "",
     creacion: "",
+    actualizacion: "",
+    descripcion: "prueba fecha",
+    mensaje: "",
+    nombreCategoria: "",
+    nombreDependencia: "",
+    nombreUsuario: "",
   });
-
-  useEffect(() => {
-    setTicket(ticketEditar);
-    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
-    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-    cargarDependencias();
-    cargarCategorias();
-
-    // estadoControles(usuarioAuth.perfil);
-  }, [ticketEditar]);
-
+  // producto a editar
+  let ticketEditar = useSelector((state) => state.tickets.ticketEditar);
+  // if (!ticketEditar) {
+  //   console.log('holaaaa')
+  //   setTicket(JSON.parse(localStorage.getItem("ticketEditado")));
+  // }
   //DESTRUCTURING
-  const {
+  let {
     _id,
     titulo,
     descripcion: descripcionEditar,
@@ -109,25 +103,45 @@ const EditarTickets = () => {
     nombreUsuario,
     creacion,
   } = ticket;
+  //STATE LOCAL
+  const [mensaje, setMensaje] = useState({
+    descripcion: "",
+    ticket: ticket._id,
+  });
+
+  // if(!ticket) return;
+  useEffect(() => {
+    setTicket(ticketEditar);
+    const cargarDependencias = () => dispatch(obtenerDependenciasAction());
+    const cargarCategorias = () => dispatch(obtenerCategoriasAction());
+    cargarDependencias();
+    cargarCategorias();
+    // estadoControles(usuarioAuth.perfil);
+  }, [ticketEditar]);
+
+  useEffect(() => {
+    setTicket(JSON.parse(localStorage.getItem("ticketEditado")));
+  }, []);
 
   const { descripcion } = mensaje;
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
-  //colocar en blanco categoria al cambiar la dependencia
-  useEffect(() => {
-    
-    setTicket({
-      categoria: "",
-    });
-  }, [dependencia]);
 
   //capturar datos del formulario
   const handleChangeTicket = (event) => {
-    setTicket({
-      ...ticket,
-      [event.target.name]: event.target.value,
-    });
+    if (event.target.name === "dependencia") {
+      setTicket({
+        ...ticket,
+        [event.target.name]: event.target.value,
+        categoria: "",
+      });
+    } else {
+      setTicket({
+        ...ticket,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
   const handleChangeMensaje = (event) => {
     setMensaje({
@@ -163,6 +177,14 @@ const EditarTickets = () => {
     history.push("/tickets");
   };
 
+  // //colocar en blanco categoria al cambiar la dependencia
+  // useEffect(() => {
+  //   if(ticket) return
+  //   setTicket({
+  //     ...ticket,
+  //     categoria: "",
+  //   });
+  // }, [dependencia]);
   const onSubmitMensaje = (event) => {
     event.preventDefault();
     if (descripcion.trim() === "") {
@@ -182,7 +204,7 @@ const EditarTickets = () => {
       ...mensaje,
       descripcion: "",
     });
-    cargarMensajes(ticketEditar._id);
+    cargarMensajes(ticket._id);
   };
 
   //#region DECLARANDO OPCIONES PARA EL SELECT DE DEPENDENCIAS
@@ -275,7 +297,8 @@ const EditarTickets = () => {
             onClick={onSubmitMensaje}
             align="right"
           ></Button>
-          <Mensajes ticketEditar={ticketEditar} />
+          {ticket ? <Mensajes /> : null}
+
           <Card
             style={{
               borderRadius: "7px 7px 7px 7px",

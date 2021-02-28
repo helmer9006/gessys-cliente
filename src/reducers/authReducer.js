@@ -15,7 +15,6 @@ const initialState = {
   loading: false,
   error: null,
 };
-console.log('token reducer ',localStorage.getItem("gessys_token"))
 export default function (state = initialState, action) {
   switch (action.type) {
     case AUTENTICAR_USUARIO:

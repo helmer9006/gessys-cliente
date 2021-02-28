@@ -201,6 +201,5 @@ const filtrarTickets =  (tickets) => {
     }
      datos.push(objeto);
   });
-  console.log(datos);
   return datos;
 };

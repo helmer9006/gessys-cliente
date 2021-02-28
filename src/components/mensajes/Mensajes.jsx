@@ -7,20 +7,24 @@ import { useSelector, useDispatch } from "react-redux";
 //ACTIONS DE REDUX
 import { obtenerMensajesAction } from "../../actions/mensajesActions";
 
-const Mensajes = ({ ticketEditar }) => {
+const Mensajes = () => {
   const dispatch = useDispatch();
   const { Text, Link } = Typography;
 
   //#endregion
+  const mensajesStore = useSelector((state) => state.mensajes.mensajes);
+  let ticketEditar = useSelector((state) => state.tickets.ticketEditar);
 
   useEffect(() => {
     //consultar API
     const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
+    if(!ticketEditar){
+      ticketEditar = JSON.parse(localStorage.getItem("ticketEditado"));
+    }
     cargarMensajes(ticketEditar._id);
-  }, []);
+  }, [ticketEditar]);
 
   //#region OBTENER ESTADOS DEL STORE
-  const mensajesStore = useSelector((state) => state.mensajes.mensajes);
 
   //#region ESTRUCTURAR MENSAJES
   const formato = (mensajes) => {
@@ -47,7 +51,7 @@ const Mensajes = ({ ticketEditar }) => {
     <>
       {listaMensajes.length === 0
         ? null
-        : listaMensajes.map((mensaje) => (
+        : listaMensajes.map((mensaje, idx) => (
             <Card
               style={{
                 borderRadius: "7px 7px 7px 7px",
@@ -56,7 +60,7 @@ const Mensajes = ({ ticketEditar }) => {
                 backgroundColor: "#fff",
                 margin: "30px 0px 10px 0px",
               }}
-              key={mensaje._id}
+              key={idx}
             >
               <Row justify="start" gutter={8} align="middle">
                 <Col>

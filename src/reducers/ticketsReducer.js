@@ -37,6 +37,7 @@ export default function (state = initialState, action) {
             tickets: [...state.tickets, action.payload]
         }
       case DESCARGA_TICKETS_EXITO:
+        localStorage.removeItem('ticketEditado');
         return {
           ...state,
           loading: false,
@@ -54,12 +55,12 @@ export default function (state = initialState, action) {
             error: true
           }
           case  OBTENER_TICKET_EDITAR:
+            localStorage.setItem("ticketEditado", JSON.stringify(action.payload))
             return {
                 ...state,
                 ticketEditar: action.payload
             }
             case TICKET_EDITADO_EXITO:
-              localStorage.setItem('ticketEditado', action.payload)
               return {
                   ...state,
                   ticketEditar: null,
