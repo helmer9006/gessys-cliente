@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
-import Avatar from '../Avatar'
+import Avatar from "../Avatar";
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
@@ -17,10 +17,11 @@ const Mensajes = () => {
 
   useEffect(() => {
     //consultar API
-    const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
-    if(!ticketEditar){
+
+    if (!ticketEditar) {
       ticketEditar = JSON.parse(localStorage.getItem("ticketEditado"));
     }
+    const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
     cargarMensajes(ticketEditar._id);
   }, [ticketEditar]);
 

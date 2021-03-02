@@ -37,6 +37,7 @@ import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearMensajesAction } from "../../actions/mensajesActions";
 import { obtenerMensajesAction } from "../../actions/mensajesActions";
+import { obtenerTicketEditarAction } from "../../actions/ticketsActions";
 
 const EditarTickets = () => {
   const { Text, Link } = Typography;
@@ -100,11 +101,6 @@ const EditarTickets = () => {
     nombreUsuario,
     creacion,
   } = ticket;
-  //STATE LOCAL
-  const [mensaje, setMensaje] = useState({
-    descripcion: "",
-    ticket: ticket._id,
-  });
 
   // if(!ticket) return;
   useEffect(() => {
@@ -113,12 +109,22 @@ const EditarTickets = () => {
     const cargarCategorias = () => dispatch(obtenerCategoriasAction());
     cargarDependencias();
     cargarCategorias();
-    // estadoControles(usuarioAuth.perfil);
+    estadoControles(usuarioAuth.perfil);
   }, [ticketEditar]);
 
   useEffect(() => {
     setTicket(JSON.parse(localStorage.getItem("ticketEditado")));
+    setMensaje({
+      ...mensaje,
+      ticket: JSON.parse(localStorage.getItem("ticketEditado"))._id,
+    });
   }, []);
+
+  //STATE LOCAL
+  const [mensaje, setMensaje] = useState({
+    descripcion: "",
+    ticket: "",
+  });
 
   const { descripcion } = mensaje;
 
@@ -174,14 +180,6 @@ const EditarTickets = () => {
     history.push("/tickets");
   };
 
-  // //colocar en blanco categoria al cambiar la dependencia
-  // useEffect(() => {
-  //   if(ticket) return
-  //   setTicket({
-  //     ...ticket,
-  //     categoria: "",
-  //   });
-  // }, [dependencia]);
   const onSubmitMensaje = (event) => {
     event.preventDefault();
     if (descripcion.trim() === "") {
@@ -196,11 +194,12 @@ const EditarTickets = () => {
       return;
     }
     dispatch(CrearMensajesAction(mensaje));
-    const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
+
     setMensaje({
       ...mensaje,
       descripcion: "",
     });
+    const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
     cargarMensajes(ticket._id);
   };
 
