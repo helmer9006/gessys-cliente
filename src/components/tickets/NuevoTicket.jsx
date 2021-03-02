@@ -23,6 +23,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { sizing } from "@material-ui/system";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 //#endregion
 
@@ -271,6 +272,17 @@ const NuevoTicket = () => {
               </MenuItem>
             </Select>
           </FormControl>
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            startIcon={<ArrowBackIosIcon />}
+            size="large"
+            type="submit"
+            onClick={() => history.push("/tickets")}
+          >
+            VOLVER
+          </Button>
           <Button
             variant="contained"
             color="primary"

@@ -22,7 +22,8 @@ import RepeatRoundedIcon from "@material-ui/icons/RepeatRounded";
 import DoneAllRoundedIcon from "@material-ui/icons/DoneAllRounded";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import AppBar from "@material-ui/core/AppBar";
-
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 //ANT DESING
 import {
   FullscreenExitOutlined,
@@ -269,6 +270,15 @@ const Tickets = ({ history }) => {
             />
           </TabPanel>
         </div>
+        <Link to={`tickets/nuevo`}>
+          <Fab
+            color="primary"
+            aria-label="add"
+            style={{ position: "fixed", bottom: 15, right: 15 }}
+          >
+            <AddIcon />
+          </Fab>
+        </Link>
       </Card>
     </div>
   );
