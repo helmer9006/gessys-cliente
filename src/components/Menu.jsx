@@ -5,7 +5,7 @@ import {
   UserOutlined,
   SettingOutlined,
   MedicineBoxOutlined,
-  AudioOutlined
+  HddOutlined,
 } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
@@ -21,6 +21,9 @@ const Menus = () => {
         </Menu.Item>
         <Menu.Item key="4" icon={<SettingOutlined />}>
           <Link to="/configuracion">Configuracion</Link>
+        </Menu.Item>
+        <Menu.Item key='5' icon={<HddOutlined />} >
+          <Link to="/inventario">Inventario</Link>
         </Menu.Item>
       </Menu>
     </>

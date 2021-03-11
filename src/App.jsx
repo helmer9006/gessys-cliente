@@ -7,7 +7,10 @@ import NuevoTicket from "./components/tickets/NuevoTicket";
 import EditarTicket from "./components/tickets/EditarTicket";
 import ComponentMenu from "./components/Menu";
 import Login from "./components/Login";
-import { useHistory } from 'react-router-dom';
+import InventarioIndex from './components/inventario/containers/index';
+import InventarioCreate from './components/inventario/containers/create';
+import InventarioShow from './components/inventario/containers/show';
+import { useHistory } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Route,
@@ -126,7 +129,7 @@ const App = () => {
                 type="flex"
                 align="middle"
                 justify="end"
-                // style={{ height: "100%" }}
+              // style={{ height: "100%" }}
               >
                 <p style={{ margin: "15px" }}>
                   {" "}
@@ -139,8 +142,8 @@ const App = () => {
                     </Button>
                   </Link>
                 ) : null}
-                 {/* <Avatar size="large" icon={<UserOutlined />} /> */} 
-                
+                {/* <Avatar size="large" icon={<UserOutlined />} /> */}
+
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"
@@ -155,6 +158,9 @@ const App = () => {
                 <Route exact path="/tickets/editar/:id" component={EditarTicket} />
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
+                <Route exact path='/inventario' component={InventarioIndex} />
+                <Route exact path='/inventario/nuevo' component={InventarioCreate} />
+                <Route exact path="/inventario/:id" component={InventarioShow} />
               </Switch>
             </Content>
             <Footer style={{ textAlign: "center" }}>
