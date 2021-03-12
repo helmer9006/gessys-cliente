@@ -8,6 +8,7 @@ import {
   } from "../types";
   
   const initialState = {
+    inventarioPorCategoria: [],
     inventario: [],
     mensajeError: null,
     error: null,
@@ -17,21 +18,21 @@ import {
   export default function (state = initialState, action) {
     switch (action.type) {
   
-      case COMENZAR_DESCARGA_DEPENDENCIAS:
+      case COMENZAR_DESCARGA_INVENTARIO:
         return {
           ...state,
           loading: action.payload
         }
-        case DESCARGA_DEPENDENCIAS_EXITO:
+        case DESCARGA_INVENTARIO_EXITO:
           return {
             ...state,
             loading: false,
-            dependencias: action.payload,
+            inventarioPorCategoria: action.payload,
             error: null,
             mensajeError: null
           }  
   
-          case DESCARGA_DEPENDENCIAS_ERROR:
+          case DESCARGA_INVENTARIO_ERROR:
             return {
               ...state,
               loading: false,

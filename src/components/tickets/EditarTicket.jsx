@@ -364,6 +364,7 @@ const EditarTickets = () => {
               onChange={handleChangeTicket}
               label="Tipo"
               disabled={estadoElementos}
+              
             >
               <MenuItem value="">
                 <em>Seleccionar Tipo</em>

@@ -35,6 +35,8 @@ import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearTicketsAction } from "../../actions/ticketsActions";
 import { obtenerTicketsAction } from "../../actions/ticketsActions";
+import { obtenerInventarioCategoriaAction } from "../../actions/inventarioActions";
+
 
 const NuevoTicket = () => {
   const useStyles = makeStyles((theme) => ({
@@ -57,9 +59,11 @@ const NuevoTicket = () => {
     tipo: "soporte",
     dependencia: "",
     categoria: "",
+    inventario: "",
     prioridad: "baja",
   }); //colocar por defecto la categoria y dependencia mas usadas
 
+  const [hiddenInventario, setHiddenInventario] = useState(true);
   //DESTRUCTURING
   const {
     titulo,
@@ -67,6 +71,7 @@ const NuevoTicket = () => {
     tipo,
     dependencia,
     categoria,
+    inventario,
     prioridad,
   } = ticket;
 
@@ -77,6 +82,9 @@ const NuevoTicket = () => {
   const mensajeError = useSelector((state) => state.dependencias.mensajeError);
   const dependencias = useSelector((state) => state.dependencias.dependencias);
   const categorias = useSelector((state) => state.categorias.categorias);
+  const inventarioPorCategoria = useSelector(
+    (state) => state.inventario.inventarioPorCategoria
+  );
 
   //#endregion
 
@@ -94,6 +102,21 @@ const NuevoTicket = () => {
       categoria: "",
     });
   }, [dependencia]);
+
+  useEffect(() => {
+    if (!categoria) return;
+    setHiddenInventario(true);
+    dispatch(obtenerInventarioCategoriaAction(categoria));
+  }, [categoria]);
+
+  // if(inventarioPorCategoria.length > 0){
+  //   setHiddenInventario('false')
+  // }
+
+  useEffect(() => {
+    if (inventarioPorCategoria.length === 0) return;
+    setHiddenInventario(false);
+  }, [inventarioPorCategoria]);
 
   const handleChange = (event) => {
     setTicket({
@@ -117,7 +140,7 @@ const NuevoTicket = () => {
       prioridad.trim() === ""
     ) {
       message.error({
-        content: "Todos los campos son obligatorios",
+        content: "Algunos son obligatorios",
         className: "custom-class",
         duration: 3,
         style: {
@@ -166,6 +189,18 @@ const NuevoTicket = () => {
     OpcionesCategorias.push(
       <MenuItem key={element._id} value={element._id}>
         {element.nombre}
+      </MenuItem>
+    );
+  });
+
+  //#endregion
+
+  //#CREANDO OPCIONES DE INVENTARIO
+  const OpcionesInventario = [];
+  inventarioPorCategoria.forEach((element) => {
+    OpcionesInventario.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.codigo} - {element.marca} {element.modelo}
       </MenuItem>
     );
   });
@@ -230,6 +265,28 @@ const NuevoTicket = () => {
               {OpcionesCategorias}
             </Select>
           </FormControl>
+
+          <FormControl
+            variant="outlined"
+            className="anchoCompleto"
+            label="inventario"
+            hidden={hiddenInventario}
+          >
+            <InputLabel id="inventario">Inventario/Inmueble</InputLabel>
+            <Select
+              labelId="inventario"
+              name="inventario"
+              id="inventario"
+              value={inventario}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>Seleccionar Inventario</em>
+              </MenuItem>
+              {OpcionesInventario}
+            </Select>
+          </FormControl>
+
           <FormControl variant="outlined" className="anchoCompleto">
             <InputLabel id="tipo">Tipo</InputLabel>
             <Select

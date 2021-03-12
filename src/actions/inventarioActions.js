@@ -9,41 +9,41 @@ import {
 } from "../types";
 
 //#region OBTENIENDO LOS TICKETS DEL API
-export function obtenerInventarioAction() {
+export function obtenerInventarioCategoriaAction(categoria) {
   return async (dispatch) => {
-    dispatch(descargarInventario());
+    dispatch(descargarInventarioCategoria());
     const token = localStorage.getItem("gessys_token");
     if (token) {
       tokenAuth(token);
     }
     try {
-      const respuesta = await clienteAxios.get("/inventario", {
+      const respuesta = await clienteAxios.get(`inventario/ticket/${categoria}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      dispatch(descargaDependenciasExitosa(respuesta.data));
+      dispatch(descargaInventarioCategoriaExito(respuesta.data));
     } catch (error) {
       console.log(error);
-      dispatch(descargaDependenciasError(error.response.data.msg));
+      dispatch(descargaInventarioCategoriaError(error.response.data.msg));
     }
   };
 }
 
-//iniciando la descarga del invetnario
-const descargarInventario = () => ({
+//iniciando la descarga del inventario
+const descargarInventarioCategoria = () => ({
   type: COMENZAR_DESCARGA_INVENTARIO,
   payload: true,
 });
 
-//almacenando los tickets devueltos del api al state
-const descargaDependenciasExitosa = (dependencias) => ({
-  type: DESCARGA_DEPENDENCIAS_EXITO,
-  payload: dependencias,
+//almacenando los registros devueltos del api al state
+const descargaInventarioCategoriaExito = (inventario) => ({
+  type: DESCARGA_INVENTARIO_EXITO,
+  payload: inventario,
 });
 
 //notificando error y enviando mensaje de error al state
-const descargaDependenciasError = (error) => ({
-  type: DESCARGA_DEPENDENCIAS_ERROR,
+const descargaInventarioCategoriaError = (error) => ({
+  type: DESCARGA_INVENTARIO_ERROR,
   payload: error,
 });
