@@ -37,7 +37,6 @@ import { CrearTicketsAction } from "../../actions/ticketsActions";
 import { obtenerTicketsAction } from "../../actions/ticketsActions";
 import { obtenerInventarioCategoriaAction } from "../../actions/inventarioActions";
 
-
 const NuevoTicket = () => {
   const useStyles = makeStyles((theme) => ({
     root: {
