@@ -27,8 +27,8 @@ export function obtenerTicketsAction() {
       tokenAuth(token);
     }
     try {
-    const respuesta = await clienteAxios.get("/tickets");
-     const tickets = await filtrarTickets(respuesta.data)
+      const respuesta = await clienteAxios.get("/tickets");
+      const tickets = await filtrarTickets(respuesta.data);
       dispatch(descargaTicketsExitosa(tickets));
     } catch (error) {
       const validarData = getJson(
@@ -78,6 +78,9 @@ const autenticarUsuarioError = (error) => ({
 //#region CREANDO TICKETS EN EL API
 export function CrearTicketsAction(ticket) {
   console.log(ticket);
+  if (ticket.inventario === "") {
+    delete ticket.inventario;
+  }
   return async (dispatch) => {
     dispatch(crearTicket());
     try {
@@ -179,11 +182,10 @@ const editarTicketError = () => ({
   payload: true,
 });
 
-
-const filtrarTickets =  (tickets) => {
+const filtrarTickets = (tickets) => {
   // console.log(tickets);
   let datos = [];
-   tickets.map((item) => {
+  tickets.map((item) => {
     let objeto = {};
     for (let indice in item) {
       if (indice === "categoria") {
@@ -199,7 +201,7 @@ const filtrarTickets =  (tickets) => {
         objeto[indice] = item[indice];
       }
     }
-     datos.push(objeto);
+    datos.push(objeto);
   });
   return datos;
 };
