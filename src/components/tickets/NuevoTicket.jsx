@@ -128,7 +128,7 @@ const NuevoTicket = () => {
   // mandar llamar el action de productoAction
   const crearTicket = (ticket) => dispatch(CrearTicketsAction(ticket));
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     if (
       titulo.trim() === "" ||
@@ -150,7 +150,7 @@ const NuevoTicket = () => {
     }
     //SINO HAY ERRORES
 
-    crearTicket(ticket);
+     await crearTicket(ticket);
     dispatch(obtenerTicketsAction());
     history.push("/tickets");
   };

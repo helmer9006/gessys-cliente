@@ -1,5 +1,6 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
+import getJson from "../functions/getJson";
 //IMPORTANDO TYPES
 import {
   AGREGAR_MENSAJE,
@@ -23,16 +24,20 @@ export function obtenerMensajesAction(idTicket) {
       const respuesta = await clienteAxios.get(`/mensajes/${idTicket}`);
       dispatch(descargaMensajesExitosa(respuesta.data));
     } catch (error) {
-      console.log(error)
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al obtener tickets"
+      );
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
           // marginTop: '20vh',
         },
       });
-      dispatch(descargaMensajesError(error.response.data.msg));
+      dispatch(descargaMensajesError(validarData));
 
     }
   };
@@ -76,17 +81,20 @@ export function CrearMensajesAction(mensaje) {
         },
       });
     } catch (error) {
-      console.log(error)
-      console.log(error.response.data.errors);
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al obtener tickets"
+      );
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
           // marginTop: '20vh',
         },
       });
-      dispatch(crearMensajeError(error.response.data.msg));
+      dispatch(crearMensajeError(validarData));
     }
   };
 }

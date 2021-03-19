@@ -37,7 +37,7 @@ import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearMensajesAction } from "../../actions/mensajesActions";
 import { obtenerMensajesAction } from "../../actions/mensajesActions";
-import { obtenerTicketEditarAction } from "../../actions/ticketsActions";
+import { obtenerInventarioCategoriaAction } from "../../actions/inventarioActions";
 
 const EditarTickets = () => {
   const { Text, Link } = Typography;
@@ -71,6 +71,7 @@ const EditarTickets = () => {
     tipo: "",
     dependencia: "",
     categoria: "",
+    inventario: "",
     prioridad: "",
     estado: "",
     usuario: "",
@@ -82,6 +83,10 @@ const EditarTickets = () => {
     nombreDependencia: "",
     nombreUsuario: "",
   });
+
+  const inventarioPorCategoria = useSelector(
+    (state) => state.inventario.inventarioPorCategoria
+  );
   // producto a editar
   let ticketEditar = useSelector((state) => state.tickets.ticketEditar);
 
@@ -94,6 +99,7 @@ const EditarTickets = () => {
     dependencia,
     nombreDependencia,
     categoria,
+    inventario,
     nombreCategoria,
     prioridad,
     estado,
@@ -120,6 +126,12 @@ const EditarTickets = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!categoria) return;
+    dispatch(obtenerInventarioCategoriaAction(categoria));
+    setHiddenInventario(false);
+  }, [categoria]);
+
   //STATE LOCAL
   const [mensaje, setMensaje] = useState({
     descripcion: "",
@@ -130,7 +142,7 @@ const EditarTickets = () => {
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
-
+  const [hiddenInventario, setHiddenInventario] = useState(false);
   //capturar datos del formulario
   const handleChangeTicket = (event) => {
     if (event.target.name === "dependencia") {
@@ -257,6 +269,18 @@ const EditarTickets = () => {
 
   //#endregion
 
+  //#CREANDO OPCIONES DE INVENTARIO
+  const OpcionesInventario = [];
+
+  console.log(inventarioPorCategoria);
+  inventarioPorCategoria.forEach((element) => {
+    OpcionesInventario.push(
+      <MenuItem key={element._id} value={element._id}>
+        {element.codigo} - {element.marca} {element.modelo}
+      </MenuItem>
+    );
+  });
+
   return (
     <Card title="Editando Ticket">
       <Row gutter={[8, 8]}>
@@ -354,6 +378,27 @@ const EditarTickets = () => {
               {OpcionesCategorias}
             </Select>
           </FormControl>
+          <FormControl
+            variant="outlined"
+            className="anchoCompleto"
+            label="inventario"
+            hidden={hiddenInventario}
+          >
+            <InputLabel id="inventario">Inventario/Inmueble</InputLabel>
+            <Select
+              labelId="inventario"
+              name="inventario"
+              id="inventario"
+              value={inventario}
+              onChange={handleChangeTicket}
+            >
+              <MenuItem value="">
+                <em>Seleccionar Inventario</em>
+              </MenuItem>
+              {OpcionesInventario}
+            </Select>
+          </FormControl>
+
           <FormControl variant="outlined" className="anchoCompleto">
             <InputLabel id="tipo">Tipo</InputLabel>
             <Select
@@ -364,7 +409,6 @@ const EditarTickets = () => {
               onChange={handleChangeTicket}
               label="Tipo"
               disabled={estadoElementos}
-              
             >
               <MenuItem value="">
                 <em>Seleccionar Tipo</em>
