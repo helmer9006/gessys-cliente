@@ -19,7 +19,10 @@ const Historial = ({ item, onEdit, onDelete, showFile }) => {
                 <CardContent style={{ width: '90%' }}>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <Typography style={{ fontSize: 14, }} color='textSecondary' gutterBottom>{moment(item.creacion).format('DD/MM/YYYY ')}</Typography>
-                        <a style={{ fontSize: 14, color: '#1890ff', marginLeft: 15 }} href={item.anexo[0].url} target='_blank'>{'Ver archivo'}</a>
+                        {
+                            item.anexo[0]?.url &&
+                            <a style={{ fontSize: 14, color: '#1890ff', marginLeft: 15 }} href={item.anexo[0].url} target='_blank'>{`Ver ${item.anexo[0].titulo || 'archivo'}`}</a>
+                        }
                     </div>
                     <Typography>{item.observacion}</Typography>
                 </CardContent>

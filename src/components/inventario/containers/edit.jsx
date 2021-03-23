@@ -297,15 +297,6 @@ const Edit = ({ inventario }) => {
             <Card style={{ padding: 15, marginTop: 15 }}>
                 <Typography variant="h5" component="h2" style={{ paddingBottom: 15 }}>Editar</Typography>
                 <div style={{ display: 'flex', paddingBottom: 15, justifyContent: 'space-between' }}>
-                    <FormControl style={{ width: '32%' }}>
-                        <TextField
-                            name='codigo'
-                            label='Código'
-                            variant='outlined'
-                            value={state.inventario.codigo}
-                            disabled
-                        />
-                    </FormControl>
                     <FormControl variant='outlined' style={{ width: '32%' }}>
                         <InputLabel id='dependencia'>Dependencia</InputLabel>
                         <Select
@@ -339,6 +330,22 @@ const Edit = ({ inventario }) => {
                                 <em>Seleccionar Tipo Inventario</em>
                             </MenuItem>
                             {setOptions('tipoInventario')}
+                        </Select>
+                    </FormControl>
+                    <FormControl variant='outlined' style={{ width: '32%' }}>
+                        <InputLabel id='categoria'>Categoria</InputLabel>
+                        <Select
+                            labelId='categoria'
+                            name='categoria'
+                            value={state.inventario.categoria}
+                            onChange={({ target: { name, value } }) => getCampos(value)}
+                            label='Categoria'
+                            disabled={condicion}
+                        >
+                            <MenuItem value=''>
+                                <em>Seleccionar Categoria</em>
+                            </MenuItem>
+                            {setOptions('categoria')}
                         </Select>
                     </FormControl>
                 </div>
@@ -409,21 +416,14 @@ const Edit = ({ inventario }) => {
                             {setOptions('usuario')}
                         </Select>
                     </FormControl>
-                    <FormControl variant='outlined' style={{ width: '49%' }}>
-                        <InputLabel id='categoria'>Categoria</InputLabel>
-                        <Select
-                            labelId='categoria'
-                            name='categoria'
-                            value={state.inventario.categoria}
-                            onChange={({ target: { name, value } }) => getCampos(value)}
-                            label='Categoria'
-                            disabled={condicion}
-                        >
-                            <MenuItem value=''>
-                                <em>Seleccionar Categoria</em>
-                            </MenuItem>
-                            {setOptions('categoria')}
-                        </Select>
+                    <FormControl style={{ width: '49%' }}>
+                        <TextField
+                            name='codigo'
+                            label='Código'
+                            variant='outlined'
+                            value={state.inventario.codigo}
+                            disabled
+                        />
                     </FormControl>
                 </div>
 

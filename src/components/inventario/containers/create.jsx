@@ -74,7 +74,6 @@ const Create = ({ history }) => {
         try {
             const token = localStorage.getItem('gessys_token');
             (token) && tokenAuth(token);
-            await getCodigo();
             await getUsuarios();
             await getDependencias();
             await getCategorias();
@@ -85,9 +84,17 @@ const Create = ({ history }) => {
         }
     }
 
-    const getCodigo = async () => {
+    const getCodigo = async (categoria) => {
         try {
-            const response = await axios.get('/inventario/ultimo');
+            // nombre de la categoria
+            let txt = '';
+            state.categorias.map(item => {
+                if(item._id === categoria) {
+                    txt = item.nombre;
+                }
+            });
+
+            const response = await axios.get(`/inventario/${categoria}`);
             if (response.status === 200) {
                 const codigo = response.data?.codigo;
                 const split = codigo.split('-');
@@ -95,7 +102,7 @@ const Create = ({ history }) => {
                 num = num.toString().padStart(4, '0');
 
                 // Coloca el codigo 
-                handleChange('codigo', `${split[0]}-${num}`);
+                handleChange('codigo', `${txt.substr(0, 3)}-${num}`);
             } else {
                 console.log('[Index] getCodigo', response);
             }
@@ -242,7 +249,7 @@ const Create = ({ history }) => {
     }
 
     const validarFormulario = async () => {
-        await getCodigo();
+        await getCodigo(state.inventario.categoria);
 
         let valid = true;
         for (let i in state.inventario) {
@@ -304,15 +311,6 @@ const Create = ({ history }) => {
     return (
         <Card style={{ padding: 15 }}>
             <div style={{ display: 'flex', paddingBottom: 15, justifyContent: 'space-between' }}>
-                <FormControl style={{ width: '32%' }}>
-                    <TextField
-                        name="codigo"
-                        label="Código"
-                        variant="outlined"
-                        value={state.inventario.codigo}
-                        disabled
-                    />
-                </FormControl>
                 <FormControl variant="outlined" style={{ width: '32%' }}>
                     <InputLabel id="dependencia">Dependencia</InputLabel>
                     <Select
@@ -344,6 +342,24 @@ const Create = ({ history }) => {
                             <em>Seleccionar Tipo Inventario</em>
                         </MenuItem>
                         {setOptions('tipoInventario')}
+                    </Select>
+                </FormControl>
+                <FormControl variant="outlined" style={{ width: '32%' }}>
+                    <InputLabel id="categoria">Categoria</InputLabel>
+                    <Select
+                        labelId="categoria"
+                        name="categoria"
+                        value={state.inventario.categoria}
+                        onChange={({ target: { name, value } }) => {
+                            getCampos(value);
+                            getCodigo(value);
+                        }}
+                        label="Categoria"
+                    >
+                        <MenuItem value="">
+                            <em>Seleccionar Categoria</em>
+                        </MenuItem>
+                        {setOptions('categoria')}
                     </Select>
                 </FormControl>
             </div>
@@ -409,20 +425,14 @@ const Create = ({ history }) => {
                         {setOptions('usuario')}
                     </Select>
                 </FormControl>
-                <FormControl variant="outlined" style={{ width: '49%' }}>
-                    <InputLabel id="categoria">Categoria</InputLabel>
-                    <Select
-                        labelId="categoria"
-                        name="categoria"
-                        value={state.inventario.categoria}
-                        onChange={({ target: { name, value } }) => getCampos(value)}
-                        label="Categoria"
-                    >
-                        <MenuItem value="">
-                            <em>Seleccionar Categoria</em>
-                        </MenuItem>
-                        {setOptions('categoria')}
-                    </Select>
+                <FormControl style={{ width: '49%' }}>
+                    <TextField
+                        name="codigo"
+                        label="Código"
+                        variant="outlined"
+                        value={state.inventario.codigo}
+                        disabled
+                    />
                 </FormControl>
             </div>
 
