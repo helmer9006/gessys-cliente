@@ -6,7 +6,7 @@ import dependenciasReducer from "./dependenciasReducer";
 import categoriasReducer from "./categoriasReducer";
 import mensajesReducer from "./mensajesReducer";
 import inventarioReducer from "./inventarioReducer";
-
+import usuariosReducer from "./usuariosReducer";
 export default combineReducers({
   tickets: ticketsReducer,
   auth: authReducer,
@@ -15,4 +15,5 @@ export default combineReducers({
   categorias: categoriasReducer,
   mensajes: mensajesReducer,
   inventario: inventarioReducer,
+  usuarios: usuariosReducer,
 });

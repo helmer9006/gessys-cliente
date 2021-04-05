@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import MaterialTable from "material-table";
 import { useHistory } from "react-router-dom";
-import { esES } from "@material-ui/core/locale";
 
 // Redux
 import { useDispatch } from "react-redux";
@@ -43,6 +42,7 @@ const TablaTickets = ({ tickets, data, columns }) => {
         // setSelectedRow(selectedRow.tableData.id);
         redireccionarEdicion(selectedRow);
       }}
+      options={{ pageSize: 15, pageSizeOptions:[20, 30, 50] }}
       // options={{
       //   actionsColumnIndex: -1,
       //   selection: true, //para activar los input de selección

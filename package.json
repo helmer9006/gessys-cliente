@@ -16,6 +16,7 @@
     "formik": "^2.2.6",
     "lodash": "^4.17.20",
     "material-table": "^1.69.2",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.2",
@@ -25,7 +26,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "sweetalert2": "^10.12.5",
-    "yup": "^0.32.8"
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",

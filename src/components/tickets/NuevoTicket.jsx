@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useFormik } from "formik";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Row, Card, Col, message } from "antd";
 
@@ -9,20 +7,12 @@ import {
   FormControl,
   InputLabel,
   Button,
-  Input,
-  TextareaAutosize,
   TextField,
-  OutlinedInput,
-  InputAdornment,
   Select,
   MenuItem,
 } from "@material-ui/core";
-import Icon from "@material-ui/core/Icon";
 import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import { sizing } from "@material-ui/system";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 //#endregion
@@ -124,8 +114,8 @@ const NuevoTicket = () => {
     });
   };
 
-  //mandar a llamar el action de productos
-  // mandar llamar el action de productoAction
+  //mandar a llamar el action de tickets
+  // mandar llamar el action de ticketAction
   const crearTicket = (ticket) => dispatch(CrearTicketsAction(ticket));
 
   const onSubmit = async (event) => {

@@ -9,13 +9,12 @@ import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
 //MATERIAL UI
 import { Link } from "react-router-dom";
-import { Card, Button, Row, Col, Tag, Tabs } from "antd";
+import { Card,Tabs } from "antd";
 import TablaTickets from "./tablaTickets";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TabsUI from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import RepeatRoundedIcon from "@material-ui/icons/RepeatRounded";
@@ -27,11 +26,7 @@ import AddIcon from "@material-ui/icons/Add";
 //ANT DESING
 import {
   FullscreenExitOutlined,
-  PlusOutlined,
-  CloseCircleOutlined,
 } from "@ant-design/icons";
-
-import Pruebas from "./prueba";
 
 const useStyles = makeStyles(() => ({
   root: {

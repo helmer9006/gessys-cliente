@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, Input } from "antd";
+import { Card } from "antd";
 //ACTIONS DE REDUX
-import { FullscreenExitOutlined, AudioOutlined } from "@ant-design/icons";
+import { FullscreenExitOutlined } from "@ant-design/icons";
 
 
 const Configuracion = () => {

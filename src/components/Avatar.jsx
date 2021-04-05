@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import classNames from "classnames";
 const Avatar = ({name='', size}) => {
   // const [size, setSize] = useState("");

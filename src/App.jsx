@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
-import Usuarios from "./components/Usuarios";
+import Dashboard from "./components/Dashboard";
+import Usuarios from "./components/usuarios/Usuarios";
+import NuevoUsuarios from "./components/usuarios/NuevoUsuario";
+import EditarUsuario from "./components/usuarios/EditarUsuario";
 import Configuracion from "./components/Configuracion";
 import Tickets from "./components/tickets/Tickets";
 import NuevoTicket from "./components/tickets/NuevoTicket";
@@ -22,7 +25,6 @@ import {
   CerrarSesionUsuarioAction,
   extraerUsuarioStorageAction,
 } from "./actions/authActions";
-
 
 //ANT DESING
 import {
@@ -56,7 +58,7 @@ const App = () => {
   //extraer usuario autenticado del storage
   const extraerUsuarioStorage = () => dispatch(extraerUsuarioStorageAction());
 
-  useEffect(() =>  {
+  useEffect(() => {
     extraerUsuarioStorage();
   }, []);
 
@@ -120,14 +122,9 @@ const App = () => {
           <Layout className="site-layout">
             <Header
               className="site-layout-background"
-              style={{ padding: "20px"}}
+              style={{ padding: "20px" }}
             >
-              <Row
-                type="flex"
-                align="middle"
-                justify="end"
-                height= '30px'
-              >
+              <Row type="flex" align="middle" justify="end" height="30px">
                 <p style={{ margin: "15px" }}>
                   {" "}
                   Hola, <strong> {usuario.nombre}</strong>
@@ -150,6 +147,7 @@ const App = () => {
             </Header>
             <Content style={{ margin: " 0px 0px" }}>
               <Switch>
+                <Route exact path="/" component={Dashboard} />
                 <Route exact path="/tickets" component={Tickets} />
                 <Route exact path="/tickets/nuevo" component={NuevoTicket} />
                 <Route
@@ -159,6 +157,12 @@ const App = () => {
                 />
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
+                <Route exact path="/usuarios/nuevo" component={NuevoUsuarios} />
+                <Route
+                  exact
+                  path="/usuarios/editar/:id"
+                  component={EditarUsuario}
+                />
               </Switch>
             </Content>
             <Footer style={{ textAlign: "center" }}>

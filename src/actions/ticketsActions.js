@@ -1,7 +1,8 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
 import getJson from "../functions/getJson";
-
+import moment from "moment";
+import "moment/locale/es";
 //IMPORTANDO TYPES
 import {
   COMENZAR_DESCARGA_TICKETS,
@@ -81,6 +82,7 @@ export function CrearTicketsAction(ticket) {
   if (ticket.inventario === "") {
     delete ticket.inventario;
   }
+
   return async (dispatch) => {
     dispatch(crearTicket());
     try {
@@ -128,7 +130,7 @@ const crearTicketsError = (error) => ({
 
 //#endregion
 
-// COLOCANDO EN EL STATE EL PRODUCTO A EDITAR
+//#region COLOCANDO EN EL STATE EL PRODUCTO A EDITAR
 export function obtenerTicketEditarAction(ticket) {
   return (dispatch) => {
     dispatch(obtenerTicketEditar(ticket));
@@ -139,8 +141,9 @@ const obtenerTicketEditar = (ticket) => ({
   type: OBTENER_TICKET_EDITAR,
   payload: ticket,
 });
+//#endregion
 
-// EDITAR UN REGISTRO DE TICKET EN EL API Y STATE
+//#region EDITAR UN REGISTRO DE TICKET EN EL API Y STATE
 
 // Edita un registro en la api y state
 export function editarTicketAction(ticket) {
@@ -150,7 +153,9 @@ export function editarTicketAction(ticket) {
     if (token) {
       tokenAuth(token);
     }
-
+    if (ticket.creacion) {
+      delete ticket.creacion;
+    }
     try {
       await clienteAxios.put(`/tickets`, ticket);
       dispatch(editarTicketExito(ticket));
@@ -163,13 +168,28 @@ export function editarTicketAction(ticket) {
         },
       });
     } catch (error) {
-      console.log(error);
-      dispatch(editarTicketError());
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al editar ticket"
+      );
+      console.log(validarData);
+      message.error({
+        content: `${validarData}`,
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+
+      dispatch(editarTicketError(validarData));
     }
   };
 }
 const editarTicket = () => ({
   type: COMENZAR_EDICION_TICKET,
+  payload: true,
 });
 
 const editarTicketExito = (ticket) => ({
@@ -177,11 +197,14 @@ const editarTicketExito = (ticket) => ({
   payload: ticket,
 });
 
-const editarTicketError = () => ({
+const editarTicketError = (error) => ({
   type: TICKET_EDITADO_ERROR,
-  payload: true,
+  payload: error,
 });
 
+//#endregion
+
+//#region FILTRANDO TICKETS
 const filtrarTickets = (tickets) => {
   // console.log(tickets);
   let datos = [];
@@ -197,6 +220,8 @@ const filtrarTickets = (tickets) => {
       } else if (indice === "usuario") {
         objeto[indice] = item[indice]._id;
         objeto["nombreUsuario"] = item[indice].nombre;
+      } else if (indice === "creacion" || indice === "actualizacion") {
+        objeto[indice] = moment(item[indice]).format("DD-MM-YYYY hh:mm a");
       } else {
         objeto[indice] = item[indice];
       }
@@ -205,3 +230,5 @@ const filtrarTickets = (tickets) => {
   });
   return datos;
 };
+
+//#endregion
