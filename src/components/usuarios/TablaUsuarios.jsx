@@ -32,12 +32,12 @@ const TablaUsuarios = () => {
   const cargando = useSelector((state) => state.usuarios.loading);
   const usuarios = useSelector((state) => state.usuarios.usuarios);
 
-  //prueba fecha
-  usuarios.forEach((element) => {
-    var m = moment(element.creacion).format('DD-MM-YYYY hh:mm:ss a');
-    console.log(m);
-    // console.log(m.utc().add("hours", -5).format("HH:mm:ss")); // 22:23:41
-  });
+  // //prueba fecha
+  // usuarios.forEach((element) => {
+  //   var m = moment(element.creacion).format('DD-MM-YYYY hh:mm:ss a');
+  //   console.log(m);
+  //   // console.log(m.utc().add("hours", -5).format("HH:mm:ss")); // 22:23:41
+  // });
 
   //*******************************************************/
   const [selectedRow, setSelectedRow] = useState(null);

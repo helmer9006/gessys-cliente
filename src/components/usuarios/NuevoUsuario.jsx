@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Row, Card, Col, message } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import fs from "fs";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
@@ -13,7 +14,9 @@ import {
   Select,
   MenuItem,
   Fab,
+  Avatar,
 } from "@material-ui/core";
+
 import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -26,7 +29,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 //ACTIONS DE REDUX
 import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
-import {CrearUsuarioAction} from '../../actions/usuariosActions';
+import { CrearUsuarioAction } from "../../actions/usuariosActions";
 
 //#region ESTILOS MATERIAL
 const useStyles = makeStyles((theme) => ({
@@ -57,11 +60,8 @@ const NuevoUsuario = () => {
     cargarDependencias();
   }, []);
 
-
-   // mandar llamar el action de ticketAction
-   const crearUsuario = (usuario) => dispatch(CrearUsuarioAction(usuario));
-
-
+  // mandar llamar el action de ticketAction
+  const crearUsuario = (usuario) => dispatch(CrearUsuarioAction(usuario));
 
   //#region  FOORMULARIO Y VALIDACION CON FORMIK YUP
 
@@ -93,8 +93,11 @@ const NuevoUsuario = () => {
         "La identificación es obligatoria."
       ),
     }),
-    onSubmit: async (usuario) => {
-      await crearUsuario(usuario)
+    onSubmit: async (usuario, e) => {
+      console.log(usuario.foto);
+      console.log(e);
+      return;
+      await crearUsuario(usuario);
       history.push("/usuarios");
     },
   });
@@ -316,7 +319,6 @@ const NuevoUsuario = () => {
                 type="file"
                 value={formik.values.foto}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
 
               <Fab
@@ -330,6 +332,14 @@ const NuevoUsuario = () => {
               </Fab>
             </label>
           </FormControl>
+
+          {formik.values.foto ? (
+            <Avatar
+              alt="Remy Sharp"
+              src={formik.values.foto}
+              className={classes.large}
+            />
+          ) : null}
         </Col>
       </Row>
       <Row>
