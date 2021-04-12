@@ -89,14 +89,14 @@ const Create = ({ history }) => {
             // nombre de la categoria
             let txt = '';
             state.categorias.map(item => {
-                if(item._id === categoria) {
+                if (item._id === categoria) {
                     txt = item.nombre;
                 }
             });
 
             const response = await axios.get(`/inventario/${categoria}`);
             if (response.status === 200) {
-                const codigo = response.data?.codigo;
+                const codigo = response.data?.codigo ?? 'a-0'; // Por si llega null en la respuesta.
                 const split = codigo.split('-');
                 let num = parseInt(split[1]) + 1;
                 num = num.toString().padStart(4, '0');
@@ -253,7 +253,7 @@ const Create = ({ history }) => {
 
         let valid = true;
         for (let i in state.inventario) {
-            if (state.inventario[i] === '') {
+            if (state.inventario[i] === '' && i !== 'anexo') {
                 valid = false;
             }
             if (i === 'nuevosCampos') {
@@ -286,6 +286,7 @@ const Create = ({ history }) => {
             console.log(state);
             const response = await axios.post('/inventario/', state.inventario);
             if (response.status === 200) {
+                message.info(response.data.msg);
                 history.push('/inventario');
             }
         } catch (e) {

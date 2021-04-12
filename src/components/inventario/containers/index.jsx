@@ -68,8 +68,16 @@ const Index = ({ history }) => {
     }
 
     const showAnexo = (item) => {
-        console.log(item.anexo)
-        window.open(item.anexo);
+        console.log(item)
+        if (item.anexo) {
+            window.open(item.anexo);
+        } else {
+            message.error({
+                content: 'No hay anexo asociado',
+                className: 'custom-class',
+                duration: 3,
+            });
+        }
     }
 
     const columns = [

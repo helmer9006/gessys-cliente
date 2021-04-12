@@ -282,7 +282,8 @@ const Edit = ({ inventario }) => {
         try {
             const response = await axios.put('/inventario', state.inventario);
             if (response.status === 200) {
-                history.push('/inventario');
+                message.info(response.data.msg);
+                updateState({ edit: false })
             }
         } catch (e) {
             console.log('[Create] submit error', e);
