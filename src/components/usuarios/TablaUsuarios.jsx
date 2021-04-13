@@ -81,7 +81,7 @@ const TablaUsuarios = () => {
       ) : (
         <MaterialTable
           columns={columns}
-          data={usuarios}
+          data={usuarios||[]}
           title=""
           //actions={[
           // {

@@ -70,8 +70,8 @@ export function CrearUsuarioAction(usuario) {
   return async (dispatch) => {
     dispatch(crearUsuario());
     try {
-      console.log(usuario.foto)
-      return
+      // console.log(usuario.foto)
+      // return
       // insertar en el API
       await clienteAxios.post("/usuarios", usuario);
       dispatch(crearUsuarioExito(usuario));

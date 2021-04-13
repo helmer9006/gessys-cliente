@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import { Row, Card, Col, message } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { fileToBase64 } from "../../utils";
+import { objetoValidacionEditar } from "./objetoValidacion";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
@@ -90,6 +92,36 @@ const EditarUsuario = () => {
     estado,
   } = usuarioEditar;
 
+  const [image_avatar, setIAvatar] = useState({
+    file: null, // e.currentTarget
+    b64: null,
+  });
+
+  //Funcion para capturar la foto seleccionado
+  const setAvatarFile = async (e) => {
+    const file = e.currentTarget.files[0];
+    console.log(file.type);
+    if (
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/jpg" &&
+      file.type !== "image/svg+xml" &&
+      file.type !== "image/gif"
+    ) {
+      message.error({
+        content: "Formato de imágen incorrecto..",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+      return;
+    }
+    // await fileToBase64(file, setIAvatar);
+    fileToBase64(file, setIAvatar);
+  };
+
   const formik = useFormik({
     initialValues: {
       _id: _id,
@@ -103,21 +135,20 @@ const EditarUsuario = () => {
       foto: "",
       estado: estado,
     },
-    validationSchema: Yup.object({
-      nombre: Yup.string().required("El nombre es obligatorio."),
-      email: Yup.string()
-        .email("El el correo no es válido.")
-        .required("El correo es obligatorio."),
-      dependencia: Yup.string().required("La dependencia es obligatoria."),
-      perfil: Yup.string().required("El perfil es obligatorio."),
-      tipoIdentificacion: Yup.string().required(
-        "El tipo de identificación es obligatorio."
-      ),
-      identificacion: Yup.string().required(
-        "La identificación es obligatoria."
-      ),
-    }),
+    validationSchema: Yup.object(objetoValidacionEditar()),
     onSubmit: (usuario) => {
+      usuario.foto = image_avatar.b64;
+      if (usuario.foto === null) {
+        message.error({
+          content: "No ha finalizado de cargar la foto, espere un momento..",
+          className: "custom-class",
+          duration: 3,
+          style: {
+            // marginTop: '20vh',
+          },
+        });
+        return;
+      }
       editarUsuario(usuario);
       history.push("/usuarios");
     },
@@ -338,9 +369,7 @@ const EditarUsuario = () => {
                 id="foto"
                 name="foto"
                 type="file"
-                value={formik.values.foto}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                onChange={setAvatarFile}
               />
 
               <Fab

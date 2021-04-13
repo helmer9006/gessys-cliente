@@ -4,6 +4,8 @@ import { Row, Card, Col, message } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import fs from "fs";
+import { fileToBase64 } from "../../utils";
+import { objetoValidacionNuevo } from "./objetoValidacion";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
@@ -22,6 +24,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { Alert } from "antd";
+
 //#endregion
 
 //REDUX
@@ -64,6 +67,34 @@ const NuevoUsuario = () => {
   const crearUsuario = (usuario) => dispatch(CrearUsuarioAction(usuario));
 
   //#region  FOORMULARIO Y VALIDACION CON FORMIK YUP
+  const [image_avatar, setIAvatar] = useState({
+    file: null, // e.currentTarget
+    b64: null,
+  });
+
+  const setAvatarFile = async (e) => {
+    const file = e.currentTarget.files[0];
+
+    if (
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/jpg" &&
+      file.type !== "image/svg+xml" &&
+      file.type !== "image/gif"
+    ) {
+      message.error({
+        content: "Formato de imágen incorrecto..",
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+      return;
+    }
+    // await fileToBase64(file, setIAvatar);
+    fileToBase64(file, setIAvatar);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -76,28 +107,21 @@ const NuevoUsuario = () => {
       identificacion: "",
       foto: "",
     },
-    validationSchema: Yup.object({
-      nombre: Yup.string().required("El nombre es obligatorio."),
-      email: Yup.string()
-        .email("El el correo no es válido.")
-        .required("El correo es obligatorio."),
-      password: Yup.string()
-        .required("La contraseña es obligatoria.")
-        .min(6, "La contraseña debe contener al menos 6 caracteres."),
-      dependencia: Yup.string().required("La dependencia es obligatoria."),
-      perfil: Yup.string().required("El perfil es obligatorio."),
-      tipoIdentificacion: Yup.string().required(
-        "El tipo de identificación es obligatorio."
-      ),
-      identificacion: Yup.string().required(
-        "La identificación es obligatoria."
-      ),
-    }),
-    onSubmit: async (usuario, e) => {
-      console.log(usuario.foto);
-      console.log(e);
-      return;
-      await crearUsuario(usuario);
+    validationSchema: Yup.object(objetoValidacionNuevo()),
+    onSubmit: (usuario, e) => {
+      usuario.foto = image_avatar.b64;
+      if (usuario.foto === null) {
+        message.error({
+          content: "No ha finalizado de cargar la foto, espere un momento..",
+          className: "custom-class",
+          duration: 3,
+          style: {
+            // marginTop: '20vh',
+          },
+        });
+        return;
+      }
+      crearUsuario(usuario);
       history.push("/usuarios");
     },
   });
@@ -317,8 +341,7 @@ const NuevoUsuario = () => {
                 id="foto"
                 name="foto"
                 type="file"
-                value={formik.values.foto}
-                onChange={formik.handleChange}
+                onChange={setAvatarFile}
               />
 
               <Fab
@@ -357,6 +380,7 @@ const NuevoUsuario = () => {
           </Button>
           <Button
             variant="contained"
+            id="guardarUsuario"
             color="primary"
             className={classes.button}
             startIcon={<SaveIcon />}
