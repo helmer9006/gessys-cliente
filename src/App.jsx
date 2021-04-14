@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 import Usuarios from "./components/usuarios/Usuarios";
 import NuevoUsuarios from "./components/usuarios/NuevoUsuario";
 import EditarUsuario from "./components/usuarios/EditarUsuario";

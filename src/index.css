@@ -107,3 +107,8 @@ hr {
   /* border-radius: 100%; */
   /* margin-top: 20px; */
 }
+
+.site-card-border-less-wrapper {
+  padding: 30px;
+  background: #ececec;
+}
