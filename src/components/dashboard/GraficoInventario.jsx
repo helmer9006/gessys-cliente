@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "@ant-design/charts";
 
-const GraficoInventario = () => {
+const GraficoInventario = ({datos}) => {
+
+  console.log(datos)
   // STATE LOCAL
   const [countTickets, setCountTickets] = useState({
     airesAcondicionados: 20,

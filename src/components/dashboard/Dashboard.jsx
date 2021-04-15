@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import GraficoInventario from "./GraficoInventario";
 import GraficoTickets from "./GraficoTickets";
+import clienteAxios from "./../../config/axios";
+import tokenAuth from "./../../config/tokenAuth";
+
 //ANT DESING
 import { Card, Row, Col, Typography } from "antd";
 import { Pie } from "@ant-design/charts";
@@ -23,8 +26,39 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const { Title } = Typography;
+
+  //ESTADO GLOBAL
   const tickets = useSelector((state) => state.tickets.tickets);
+
+  useEffect(() => {
+    makeRequests();
+  }, []);
+  //INSTANCIA ESTILOS DE MATERIAL
   const classes = useStyles();
+
+  // STATE LOCAL
+  const [countEstadistico, setCountEstadistico] = useState({});
+
+  const makeRequests = async () => {
+    const token = localStorage.getItem("gessys_token");
+    if (token) {
+      tokenAuth(token);
+    }
+    try {
+      const respuesta = await clienteAxios.get("/dashboard");
+      setCountEstadistico(respuesta.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const {
+    cantDependencias,
+    cantInventarios,
+    cantTickets,
+    cantUsuarios,
+   } = countEstadistico;
+
   return (
     <div className="site-card-border-less-wrapper">
       <Row gutter={[16, 16]}>
@@ -35,7 +69,7 @@ const Dashboard = () => {
                 INVENTARIOS
               </p>
               <Title style={{ textAlign: "center", fontSize: "35px" }}>
-                150
+                {cantInventarios}
               </Title>
             </div>
           </Paper>
@@ -45,7 +79,7 @@ const Dashboard = () => {
             <div style={{ padding: "20px" }}>
               <p style={{ textAlign: "center", fontSize: "20px" }}>TICKETS</p>
               <Title style={{ textAlign: "center", fontSize: "35px" }}>
-                320
+                {cantTickets}
               </Title>
             </div>
           </Paper>
@@ -55,7 +89,7 @@ const Dashboard = () => {
             <div style={{ padding: "20px" }}>
               <p style={{ textAlign: "center", fontSize: "20px" }}>USUARIOS</p>
               <Title style={{ textAlign: "center", fontSize: "35px" }}>
-                40
+                {cantUsuarios}
               </Title>
             </div>
           </Paper>
@@ -67,7 +101,7 @@ const Dashboard = () => {
                 DEPENDENCIAS
               </p>
               <Title style={{ textAlign: "center", fontSize: "35px" }}>
-                50
+                {cantDependencias}
               </Title>
             </div>
           </Paper>
@@ -75,13 +109,13 @@ const Dashboard = () => {
       </Row>
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Paper className={classes.root} style={{ padding: "10px" }}>
-            <GraficoTickets />
+          <Paper className={classes.root} >
+            <GraficoTickets datos={countEstadistico} />
           </Paper>
         </Col>
         <Col span={12}>
           <Paper className={classes.root}>
-            <GraficoInventario />;
+            <GraficoInventario datos={countEstadistico} />
           </Paper>
         </Col>
       </Row>
