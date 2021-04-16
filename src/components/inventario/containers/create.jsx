@@ -19,6 +19,8 @@ import axios from '../../../config/axios';
 import tokenAuth from '../../../config/tokenAuth';
 import CampoNuevo from '../components/campoNuevo';
 
+import { fileToBase64Create } from '../components/convertFile';
+
 const Create = ({ history }) => {
 
     const [state, setState] = useState({
@@ -297,16 +299,7 @@ const Create = ({ history }) => {
 
     const handleFile = async ({ target }) => {
         updateState({ uploading: true });
-        const url = await uploadFile(target.files[0]);
-        setState((prev) => ({ ...prev, uploading: false, inventario: { ...prev.inventario, anexo: url } }));
-    }
-
-    const uploadFile = async (file) => {
-        let fd = new FormData();
-        fd.append('archivo', file);
-
-        const response = await axios.post('/archivos', fd);
-        return response.data?.archivo?.path;
+        fileToBase64Create(target.files[0], setState);
     }
 
     return (
