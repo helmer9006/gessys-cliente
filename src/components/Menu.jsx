@@ -9,6 +9,7 @@ import {
   SettingOutlined,
   MedicineBoxOutlined,
   DashboardOutlined,
+  HddOutlined,
 } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
@@ -28,7 +29,10 @@ const Menus = () => {
             <Menu.Item key="3" icon={<UserOutlined />}>
               <Link to="/usuarios">Usuario</Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<SettingOutlined />}>
+            <Menu.Item key="4" icon={<HddOutlined />}>
+              <Link to="/inventario">Inventario</Link>
+            </Menu.Item>
+            <Menu.Item key="5" icon={<SettingOutlined />}>
               <Link to="/configuracion">Configuracion</Link>
             </Menu.Item>
           </>
@@ -39,6 +43,9 @@ const Menus = () => {
             </Menu.Item>
             <Menu.Item key="2" icon={<MedicineBoxOutlined />}>
               <Link to="/tickets">Tickets</Link>
+            </Menu.Item>
+            <Menu.Item key="3" icon={<HddOutlined />}>
+              <Link to="/inventario">Inventario</Link>
             </Menu.Item>
             <Menu.Item key="4" icon={<SettingOutlined />}>
               <Link to="/configuracion">Configuracion</Link>

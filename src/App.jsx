@@ -12,6 +12,9 @@ import ComponentMenu from "./components/Menu";
 import Login from "./components/Login";
 import { useHistory } from "react-router-dom";
 import Avatar from "./components/Avatar";
+import InventarioIndex from "./components/inventario/containers/index";
+import InventarioCreate from "./components/inventario/containers/create";
+import InventarioShow from "./components/inventario/containers/show";
 import {
   BrowserRouter as Router,
   Route,
@@ -126,18 +129,9 @@ const App = () => {
             >
               <Row type="flex" align="middle" justify="end" height="30px">
                 <p style={{ margin: "15px" }}>
-                  {" "}
                   Hola, <strong> {usuario.nombre}</strong>
                 </p>
-                {/* {location.pathname != "/configuracion" ? (
-                  <Link to={`${location.pathname}/nuevo`}>
-                    <Button type="primary" icon={<PlusOutlined />}>
-                      Nuevo
-                    </Button>
-                  </Link>
-                ) : null} */}
-                {/* <Avatar size="large" icon={<UserOutlined />} /> */}
-                {/* <Avatar name={usuario.nombre} size="small" /> */}
+
                 <Dropdown.Button
                   overlay={menuAuth}
                   placement="bottomCenter"
@@ -157,11 +151,23 @@ const App = () => {
                 />
                 <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
+
                 <Route exact path="/usuarios/nuevo" component={NuevoUsuarios} />
                 <Route
                   exact
                   path="/usuarios/editar/:id"
                   component={EditarUsuario}
+                />
+                <Route exact path="/inventario" component={InventarioIndex} />
+                <Route
+                  exact
+                  path="/inventario/nuevo"
+                  component={InventarioCreate}
+                />
+                <Route
+                  exact
+                  path="/inventario/:id"
+                  component={InventarioShow}
                 />
               </Switch>
             </Content>
