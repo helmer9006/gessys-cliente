@@ -111,9 +111,9 @@ const Usuarios = () => {
         bordered={true}
         style={{ width: FullscreenExitOutlined }}
       >
-        <Paper className={classes.root}>
+        {/* <Paper className={classes.root}> */}
           <TablaUsuarios />
-        </Paper>
+        {/* </Paper> */}
         <Link to={`usuarios/nuevo`}>
           <Fab
             color="primary"

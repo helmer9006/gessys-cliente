@@ -19,9 +19,7 @@ code {
   background-image: url('./assets/img/Logo_Gessys_150_43.png');
 }
 
-.site-layout .site-layout-background {
-  background: #fff;
-}
+
 
 .ant-layout-header {
   line-height: 0px;
@@ -111,4 +109,8 @@ hr {
 .site-card-border-less-wrapper {
   padding: 30px;
   background: #ececec;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
 }
