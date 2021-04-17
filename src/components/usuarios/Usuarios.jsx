@@ -106,24 +106,16 @@ const Usuarios = () => {
   };
   return (
     <div className="site-card-border-less-wrapper">
-      <Card
-        title="Usuarios"
-        bordered={true}
-        style={{ width: FullscreenExitOutlined }}
-      >
-        {/* <Paper className={classes.root}> */}
-          <TablaUsuarios />
-        {/* </Paper> */}
-        <Link to={`usuarios/nuevo`}>
-          <Fab
-            color="primary"
-            aria-label="add"
-            style={{ position: "fixed", bottom: 15, right: 15 }}
-          >
-            <AddIcon />
-          </Fab>
-        </Link>
-      </Card>
+      <TablaUsuarios />
+      <Link to={`usuarios/nuevo`}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          style={{ position: "fixed", bottom: 15, right: 15 }}
+        >
+          <AddIcon />
+        </Fab>
+      </Link>
     </div>
   );
 };

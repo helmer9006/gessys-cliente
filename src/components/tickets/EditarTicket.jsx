@@ -113,7 +113,7 @@ const EditarTickets = () => {
   useEffect(() => {
     setTicket(JSON.parse(localStorage.getItem("ticketEditado")));
     setMensaje({
-      ...mensaje,
+      ...mensajeM,
       ticket: JSON.parse(localStorage.getItem("ticketEditado"))._id,
     });
   }, []);
@@ -125,12 +125,12 @@ const EditarTickets = () => {
   }, [categoria]);
 
   //STATE LOCAL
-  const [mensaje, setMensaje] = useState({
+  const [mensajeM, setMensaje] = useState({
     descripcion: "",
     ticket: "",
   });
 
-  const { descripcion } = mensaje;
+  const { descripcion } = mensajeM;
 
   const [estadoElementos, setEstadoElementos] = useState(false);
   const [estadoElementoEstado, setEstadoElementoEstado] = useState(false);
@@ -152,7 +152,7 @@ const EditarTickets = () => {
   };
   const handleChangeMensaje = (event) => {
     setMensaje({
-      ...mensaje,
+      ...mensajeM,
       [event.target.name]: event.target.value,
     });
   };
@@ -197,10 +197,10 @@ const EditarTickets = () => {
       });
       return;
     }
-    dispatch(CrearMensajesAction(mensaje));
+    dispatch(CrearMensajesAction(mensajeM));
 
     setMensaje({
-      ...mensaje,
+      ...mensajeM,
       descripcion: "",
     });
     const cargarMensajes = (_id) => dispatch(obtenerMensajesAction(_id));
@@ -263,8 +263,6 @@ const EditarTickets = () => {
 
   //#CREANDO OPCIONES DE INVENTARIO
   const OpcionesInventario = [];
-
-  console.log(inventarioPorCategoria);
   inventarioPorCategoria.forEach((element) => {
     OpcionesInventario.push(
       <MenuItem key={element._id} value={element._id}>
@@ -295,7 +293,7 @@ const EditarTickets = () => {
               rows={16}
               variant="outlined"
               onChange={handleChangeMensaje}
-              value={mensaje.descripcion}
+              value={mensajeM.descripcion}
               // Col={16}
             />
           </FormControl>
@@ -381,7 +379,7 @@ const EditarTickets = () => {
               labelId="inventario"
               name="inventario"
               id="inventario"
-              value={inventario}
+              value={inventario ?? ""}
               onChange={handleChangeTicket}
             >
               <MenuItem value="">

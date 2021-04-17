@@ -3,7 +3,7 @@ import MaterialTable from "material-table";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispath } from "react-redux";
 import moment from "moment";
-import 'moment/locale/es';
+import "moment/locale/es";
 
 // Redux
 import { useDispatch } from "react-redux";
@@ -68,8 +68,9 @@ const TablaUsuarios = () => {
     { title: "Nombre", field: "nombre" },
     { title: "Correo", field: "email" },
     { title: "Perfil", field: "perfil" },
-    { title: "Estado", field: "estado" },
     { title: "Creacion", field: "creacion" },
+    { title: "Actualizacion", field: "actualizacion" },
+    { title: "Estado", field: "estado" },
   ];
 
   return (
@@ -81,8 +82,8 @@ const TablaUsuarios = () => {
       ) : (
         <MaterialTable
           columns={columns}
-          data={usuarios||[]}
-          title=""
+          data={usuarios || []}
+          title="GESTION DE USUARIOS"
           //actions={[
           // {
           //icon: "edit",

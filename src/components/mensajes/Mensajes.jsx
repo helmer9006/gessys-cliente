@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
 import Avatar from "../Avatar";
+import moment from "moment";
+
 //REDUX
 import { useSelector, useDispatch } from "react-redux";
 
@@ -25,7 +27,6 @@ const Mensajes = () => {
     cargarMensajes(ticketEditar._id);
   }, [ticketEditar]);
 
-  //#region OBTENER ESTADOS DEL STORE
 
   //#region ESTRUCTURAR MENSAJES
   const formato = (mensajes) => {
@@ -45,7 +46,7 @@ const Mensajes = () => {
     return datos;
   };
   const listaMensajes = formato(mensajesStore);
-  listaMensajes.sort((a, b) => a - b); //ordenando lista
+  // listaMensajes.sort((a, b) => a - b); //ordenando lista
   //#endregion
 
   return (
@@ -71,7 +72,7 @@ const Mensajes = () => {
                   <Text strong>{mensaje.nombreUsuario}</Text>
                 </Col>
                 <Col>
-                  <Text>{mensaje.creacion}</Text>
+                  <Text>{moment(mensaje.creacion).format("DD-MM-YYYY hh:mm a") }</Text>
                 </Col>
               </Row>
               <br />

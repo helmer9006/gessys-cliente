@@ -17,6 +17,7 @@ import {
   Fab,
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
@@ -55,6 +56,12 @@ const EditarUsuario = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  //ESTADO LOCAL
+
+  const [estadoDesactivar, setEstadoDesactivar] = useState(true);
+  const [ocultar, setOcultar] = useState(true);
+  const [ocultarEditar, setOcultarEditar] = useState(false);
 
   //CONSULTAR ESTADO GLOBAL
   const usuarioEditar = useSelector((state) => state.usuarios.usuarioEditar);
@@ -187,6 +194,7 @@ const EditarUsuario = () => {
               value={formik.values.nombre}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={estadoDesactivar}
             />
           </FormControl>
           {formik.touched.nombre && formik.errors.nombre ? (
@@ -208,6 +216,7 @@ const EditarUsuario = () => {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={estadoDesactivar}
               // Col={16}
             />
           </FormControl>
@@ -232,6 +241,7 @@ const EditarUsuario = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={estadoDesactivar}
               // Col={16}
             />
           </FormControl>
@@ -254,6 +264,7 @@ const EditarUsuario = () => {
               value={formik.values.dependencia}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={estadoDesactivar}
             >
               <MenuItem value="">
                 <em>Seleccionar Dependencia</em>
@@ -282,6 +293,7 @@ const EditarUsuario = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               label="Tipo Identificacion"
+              disabled={estadoDesactivar}
             >
               <MenuItem value="">
                 <em>Seleccionar Tipo Identificación</em>
@@ -315,6 +327,7 @@ const EditarUsuario = () => {
               value={formik.values.identificacion}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={estadoDesactivar}
             />
           </FormControl>
           {formik.touched.identificacion && formik.errors.identificacion ? (
@@ -338,6 +351,7 @@ const EditarUsuario = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               label="Perfil"
+              disabled={estadoDesactivar}
             >
               <MenuItem value="">
                 <em>Seleccionar Perfil</em>
@@ -370,6 +384,7 @@ const EditarUsuario = () => {
                 name="foto"
                 type="file"
                 onChange={setAvatarFile}
+                disabled={estadoDesactivar}
               />
 
               <Fab
@@ -395,8 +410,9 @@ const EditarUsuario = () => {
             size="large"
             type="submit"
             onClick={() => history.push("/usuarios")}
+            hidden={ocultar}
           >
-            VOLVER
+            Volver
           </Button>
           <Button
             variant="contained"
@@ -406,8 +422,25 @@ const EditarUsuario = () => {
             size="large"
             type="submit"
             onClick={formik.handleSubmit}
+            hidden={ocultar}
           >
-            Guardar Usuario
+            Guardar usuario
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            startIcon={<EditIcon />}
+            size="large"
+            type="submit"
+            onClick={() => {
+              setOcultar(false);
+              setEstadoDesactivar(false);
+              setOcultarEditar(true);
+            }}
+            hidden={ocultarEditar}
+          >
+            Editar usuario
           </Button>
         </Col>
       </Row>
