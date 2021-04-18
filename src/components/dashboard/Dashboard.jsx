@@ -53,11 +53,11 @@ const Dashboard = () => {
   };
 
   const {
-    cantDependencias,
+    cantMensajes,
     cantInventarios,
     cantTickets,
     cantUsuarios,
-   } = countEstadistico;
+  } = countEstadistico;
 
   return (
     <div className="site-card-border-less-wrapper">
@@ -97,11 +97,9 @@ const Dashboard = () => {
         <Col span={6}>
           <Paper className={classes.root}>
             <div style={{ padding: "20px" }}>
-              <p style={{ textAlign: "center", fontSize: "20px" }}>
-                DEPENDENCIAS
-              </p>
+              <p style={{ textAlign: "center", fontSize: "20px" }}>MENSAJES</p>
               <Title style={{ textAlign: "center", fontSize: "35px" }}>
-                {cantDependencias}
+                {cantMensajes}
               </Title>
             </div>
           </Paper>
@@ -109,7 +107,7 @@ const Dashboard = () => {
       </Row>
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Paper className={classes.root} >
+          <Paper className={classes.root}>
             <GraficoTickets datos={countEstadistico} />
           </Paper>
         </Col>

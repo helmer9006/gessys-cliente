@@ -112,9 +112,10 @@ const Index = ({ history }) => {
             onClick: (e, item) => onDelete(item._id),
           },
         ]}
-        options={{
-          actionsColumnIndex: -1,
-        }}
+        // options={{
+        //   actionsColumnIndex: -1,
+        // }}
+        options={{ actionsColumnIndex: -1, pageSize: 10, pageSizeOptions:[20, 30, 50] }}
       />
       <Fab
         onClick={onCreate}

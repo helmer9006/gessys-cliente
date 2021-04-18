@@ -83,7 +83,7 @@ const TablaUsuarios = () => {
         <MaterialTable
           columns={columns}
           data={usuarios || []}
-          title="GESTION DE USUARIOS"
+          title="Usuarios"
           //actions={[
           // {
           //icon: "edit",
@@ -101,7 +101,7 @@ const TablaUsuarios = () => {
             setSelectedRow(selectedRow.tableData.id);
             redireccionarEdicion(selectedRow);
           }}
-          options={{ pageSize: 15 }}
+          options={{ pageSize: 10 }}
           // options={{
           //   actionsColumnIndex: -1,
           //   selection: true, //para activar los input de selección

@@ -197,11 +197,11 @@ const Tickets = ({ history }) => {
 
   return (
     <div className="site-card-border-less-wrapper">
-      <Card
+      {/* <Card
         title="Tickets"
         bordered={false}
         style={{ width: FullscreenExitOutlined }}
-      >
+      > */}
         {usuarioState.perfil === "administrador" ||
         usuarioState.perfil === "especial" ? (
           <Paper className={classes.root}>
@@ -274,7 +274,7 @@ const Tickets = ({ history }) => {
             <AddIcon />
           </Fab>
         </Link>
-      </Card>
+      {/* </Card> */}
     </div>
   );
 };

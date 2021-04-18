@@ -19,8 +19,6 @@ code {
   background-image: url('./assets/img/Logo_Gessys_150_43.png');
 }
 
-
-
 .ant-layout-header {
   line-height: 0px;
 }
@@ -98,9 +96,8 @@ hr {
   height: 10px;
   width: 100%;
   /* background-image: linear-gradient(to left, yellow, blue, red); */
-  background: rgb(199,173,218);
-  background: linear-gradient(90deg, rgba(199,173,218,1) 0%, rgba(255,140,140,1) 50%, rgba(217,235,39,1) 100%);
-  
+  background: rgb(199, 173, 218);
+  background: linear-gradient(90deg, rgba(199, 173, 218, 1) 0%, rgba(255, 140, 140, 1) 50%, rgba(217, 235, 39, 1) 100%);
   margin: auto;
   /* border-radius: 100%; */
   /* margin-top: 20px; */
@@ -113,4 +110,8 @@ hr {
 
 .site-layout .site-layout-background {
   background: #fff;
+}
+
+.MuiAppBar-colorDefault {
+  background-color: #fff !important;
 }

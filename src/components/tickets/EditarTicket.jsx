@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "../Avatar";
 import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
@@ -101,7 +101,7 @@ const EditarTickets = () => {
   } = ticket;
 
   // if(!ticket) return;
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTicket(ticketEditar);
     const cargarDependencias = () => dispatch(obtenerDependenciasAction());
     const cargarCategorias = () => dispatch(obtenerCategoriasAction());
@@ -184,7 +184,7 @@ const EditarTickets = () => {
     history.push("/tickets");
   };
 
-  const onSubmitMensaje = (event) => {
+  const onSubmitMensaje = async (event) => {
     event.preventDefault();
     if (descripcion.trim() === "") {
       message.error({
@@ -197,7 +197,7 @@ const EditarTickets = () => {
       });
       return;
     }
-    dispatch(CrearMensajesAction(mensajeM));
+    await dispatch(CrearMensajesAction(mensajeM));
 
     setMensaje({
       ...mensajeM,
@@ -259,6 +259,8 @@ const EditarTickets = () => {
     }
   };
 
+
+
   //#endregion
 
   //#CREANDO OPCIONES DE INVENTARIO
@@ -294,6 +296,7 @@ const EditarTickets = () => {
               variant="outlined"
               onChange={handleChangeMensaje}
               value={mensajeM.descripcion}
+              disabled={ estado === 'resuelto' && usuarioAuth.perfil === 'estandar' ? true : false }
               // Col={16}
             />
           </FormControl>
@@ -306,6 +309,7 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitMensaje}
             align="right"
+            disabled={ estado === 'resuelto' && usuarioAuth.perfil === 'estandar' ? true : false }
           ></Button>
           {ticket ? <Mensajes /> : null}
 
@@ -330,7 +334,7 @@ const EditarTickets = () => {
               </Col>
             </Row>
             <br />
-            <Text>{descripcionEditar}</Text>
+            <Text className="salto-linea">{descripcionEditar}</Text>
           </Card>
         </Col>
         <Col span={6} pull={18}>
@@ -381,6 +385,7 @@ const EditarTickets = () => {
               id="inventario"
               value={inventario ?? ""}
               onChange={handleChangeTicket}
+              disabled={estadoElementos}
             >
               <MenuItem value="">
                 <em>Seleccionar Inventario</em>
@@ -482,7 +487,7 @@ const EditarTickets = () => {
             type="submit"
             onClick={onSubmitEditar}
           >
-            Guardar Cambios
+            Guardar
           </Button>
         </Col>
       </Row>
