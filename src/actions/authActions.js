@@ -24,7 +24,7 @@ export function AutenticarUsuarioAction(paramUsuario) {
       // ENDPOINT LOGIN
       const res = await clienteAxios.post("auth", paramUsuario);
       //ENDPOINT TRAER DATOS USUARIO LOGUEADO
-      const result = await clienteAxios.get("auth", {
+      const result = await clienteAxios.post("auth", {
         headers: {
           Authorization: "Bearer " + res.data.token, //el token se pasa en el header
         },
