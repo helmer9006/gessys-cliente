@@ -17,7 +17,7 @@ export function obtenerInventarioCategoriaAction(categoria) {
       tokenAuth(token);
     }
     try {
-      const respuesta = await clienteAxios.get(`inventario/ticket/${categoria}`, {
+      const respuesta = await clienteAxios.get(`/inventario/ticket/${categoria}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

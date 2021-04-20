@@ -121,7 +121,6 @@ const Login = ({ history }) => {
 
     // crear el nuevo producto
     loginUsuario(usuario);
-    console.log(usuario);
     // redireccionar
     // history.push('/');
   };

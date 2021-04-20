@@ -1,7 +1,6 @@
 import clienteAxios from "../config/axios.js";
 import tokenAuth from "../config/tokenAuth";
-import getJson from '../functions/getJson';
-
+import getJson from "../functions/getJson";
 
 //IMPORTANDO TYPES
 import {
@@ -22,9 +21,9 @@ export function AutenticarUsuarioAction(paramUsuario) {
     dispatch(autenticarUsuario());
     try {
       // ENDPOINT LOGIN
-      const res = await clienteAxios.post("auth", paramUsuario);
+      const res = await clienteAxios.post("/auth", paramUsuario);
       //ENDPOINT TRAER DATOS USUARIO LOGUEADO
-      const result = await clienteAxios.post("auth", {
+      const result = await clienteAxios.get("/auth", {
         headers: {
           Authorization: "Bearer " + res.data.token, //el token se pasa en el header
         },
@@ -34,8 +33,12 @@ export function AutenticarUsuarioAction(paramUsuario) {
       //Si todo sale bien, actualizar el state
       dispatch(autenticarUsuarioExito({ token: token, usuario: usuario }));
     } catch (error) {
-      console.log(error);
-      const validarData = getJson(error,['response', 'data', 'msg'], 'El servidor no esta disponible')
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "El servidor no esta disponible"
+      );
+      console.log(validarData);
       // Si hay error
       dispatch(autenticarUsuarioError(validarData));
       message.error({
@@ -58,35 +61,36 @@ export function extraerUsuarioStorageAction() {
       tokenAuth(token);
     }
     try {
-      const respuesta = await clienteAxios.get("auth");
+      const respuesta = await clienteAxios.get("/auth");
       dispatch(usuarioAutenticado(respuesta.data.usuario));
     } catch (error) {
-      console.log(error);
       // Si hay error
-      const validarData = getJson(error,['response', 'data', 'msg'], 'El servidor no esta disponible')
-        dispatch(autenticarUsuarioError(validarData));
-        // dispatch(autenticarUsuarioError(error.response.data.msg));
-        message.error({
-          content: `${validarData}`,
-          className: "custom-class",
-          duration: 3,
-          style: {
-            // marginTop: '20vh',
-          },
-        });
-      
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "El servidor no esta disponible"
+      );
+      dispatch(autenticarUsuarioError(validarData));
+      console.log(validarData);
+      // dispatch(autenticarUsuarioError(error.response.data.msg));
+      message.error({
+        content: `${validarData}`,
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
     }
   };
 }
 
 //CERRAR SESION
 export function CerrarSesionUsuarioAction() {
- 
   return async (dispatch) => {
     try {
       //actualizar el state
       dispatch(CerrarSesionUsuario());
-
     } catch (error) {
       console.log(error);
       // Si hay error
@@ -127,4 +131,3 @@ const usuarioAutenticado = (usuario) => ({
   type: USUARIO_AUTENTICADO,
   payload: usuario,
 });
-
