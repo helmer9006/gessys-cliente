@@ -112,7 +112,7 @@ export function CrearTicketsAction(ticket) {
           // marginTop: '20vh',
         },
       });
-      dispatch(crearTicketsError(error.response.data.msg));
+      dispatch(crearTicketsError(validarData));
     }
   };
 }
