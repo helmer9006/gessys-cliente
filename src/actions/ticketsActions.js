@@ -98,9 +98,14 @@ export function CrearTicketsAction(ticket) {
         },
       });
     } catch (error) {
-      console.log(error.response.data.errors);
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al guardar ticket"
+      );
+      console.log(validarData);
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
