@@ -82,9 +82,12 @@ export function CrearTicketsAction(ticket) {
   if (ticket.inventario === "") {
     delete ticket.inventario;
   }
-
   return async (dispatch) => {
     dispatch(crearTicket());
+    const token = localStorage.getItem("gessys_token");
+    if (token) {
+      tokenAuth(token);
+    }
     try {
       // insertar en la API
       await clienteAxios.post("/tickets", ticket);

@@ -70,6 +70,10 @@ const descargaUsuariosError = (error) => ({
 export function CrearUsuarioAction(usuario) {
   return async (dispatch) => {
     dispatch(crearUsuario());
+    const token = localStorage.getItem("gessys_token");
+    if (token) {
+      tokenAuth(token);
+    }
     try {
       // console.log(usuario.foto)
       // return
