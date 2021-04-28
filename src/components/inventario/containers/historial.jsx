@@ -43,6 +43,7 @@ const Historial = ({ inventario }) => {
         },
         uploading: false,
         visibleModalCreate: false,
+        visibleModalEdit: false,
     });
 
     const updateState = (newState, setForm = false) => {
