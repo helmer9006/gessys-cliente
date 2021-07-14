@@ -24,7 +24,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { useSelector, useDispatch } from "react-redux";
 
 //ACTIONS DE REDUX
-import { editarTicketAction } from "../../actions/ticketsActions";
+import { editarTicketAction, obtenerTicketsAction } from "../../actions/ticketsActions";
 import { obtenerDependenciasAction } from "../../actions/dependenciasActions";
 import { obtenerCategoriasAction } from "../../actions/categoriasActions";
 import { CrearMensajesAction } from "../../actions/mensajesActions";
@@ -56,6 +56,9 @@ const EditarTickets = () => {
   const dependencias = useSelector((state) => state.dependencias.dependencias);
   const categorias = useSelector((state) => state.categorias.categorias);
   const usuarioAuth = useSelector((state) => state.auth.usuario);
+  const obtenerTickets = () => dispatch(obtenerTicketsAction());
+
+  
   const [ticket, setTicket] = useState({
     _id: "",
     codigo: "",
@@ -159,7 +162,7 @@ const EditarTickets = () => {
 
   //mandar a llamar el action de tickets
 
-  const onSubmitEditar = (event) => {
+   const onSubmitEditar = (event) => {
     event.preventDefault();
     if (
       titulo.trim() === "" ||
@@ -181,6 +184,7 @@ const EditarTickets = () => {
     //SINO HAY ERRORES
 
     dispatch(editarTicketAction(ticket));
+     obtenerTickets();
     history.push("/tickets");
   };
 
