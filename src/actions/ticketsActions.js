@@ -82,9 +82,12 @@ export function CrearTicketsAction(ticket) {
   if (ticket.inventario === "") {
     delete ticket.inventario;
   }
-
   return async (dispatch) => {
     dispatch(crearTicket());
+    const token = localStorage.getItem("gessys_token");
+    if (token) {
+      tokenAuth(token);
+    }
     try {
       // insertar en la API
       await clienteAxios.post("/tickets", ticket);
@@ -98,16 +101,21 @@ export function CrearTicketsAction(ticket) {
         },
       });
     } catch (error) {
-      console.log(error.response.data.errors);
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al guardar ticket"
+      );
+      console.log(validarData);
       message.error({
-        content: `${error.response.data.msg}`,
+        content: `${validarData}`,
         className: "custom-class",
         duration: 3,
         style: {
           // marginTop: '20vh',
         },
       });
-      dispatch(crearTicketsError(error.response.data.msg));
+      dispatch(crearTicketsError(validarData));
     }
   };
 }
