@@ -163,6 +163,7 @@ const EditarTickets = () => {
   //mandar a llamar el action de tickets
 
    const onSubmitEditar = (event) => {
+    
     event.preventDefault();
     if (
       titulo.trim() === "" ||
@@ -184,7 +185,7 @@ const EditarTickets = () => {
     //SINO HAY ERRORES
 
     dispatch(editarTicketAction(ticket));
-     obtenerTickets();
+    obtenerTickets(); 
     history.push("/tickets");
   };
 
