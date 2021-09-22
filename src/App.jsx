@@ -172,7 +172,7 @@ const App = () => {
               </Switch>
             </Content>
             <Footer style={{ textAlign: "center" }}>
-              Gestión UCM ©2020 Creado por Helmer Villarreal
+              Gestión UCM ©2021 Creado por Helmer Villarreal
             </Footer>
           </Layout>
         </Layout>

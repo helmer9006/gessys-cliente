@@ -16,6 +16,9 @@ import {
   COMENZAR_EDICION_TICKET,
   TICKET_EDITADO_EXITO,
   TICKET_EDITADO_ERROR,
+  ESTADISTICA_TICKETS,
+  ESTADISTICA_TICKETS_ERROR,
+  ESTADISTICA_TICKETS_EXITO,
 } from "../types";
 import { message } from "antd";
 
@@ -207,6 +210,56 @@ const editarTicketExito = (ticket) => ({
 
 const editarTicketError = (error) => ({
   type: TICKET_EDITADO_ERROR,
+  payload: error,
+});
+
+//#endregion
+
+//#region OBTENIENDO LA ESTADISTRICA DE TICKETS DE LOS 30 ÚLTIMOS DIAS
+export function obtenerEstadisticaTicketsAction() {
+  return async (dispatch) => {
+    dispatch(descargarEstadisticaTickets());
+    const token = localStorage.getItem("gessys_token");
+    if (token) {
+      tokenAuth(token);
+    }
+    try {
+      const respuesta = await clienteAxios.get("/tickets/fecha");
+      dispatch(descargaEstadisticaTicketsExitosa(respuesta.data));
+    } catch (error) {
+      const validarData = getJson(
+        error,
+        ["response", "data", "msg"],
+        "Error al obtener estadistica de tickets"
+      );
+      message.error({
+        content: `${validarData}`,
+        className: "custom-class",
+        duration: 3,
+        style: {
+          // marginTop: '20vh',
+        },
+      });
+      dispatch(descargaEstadisticaTicketsError(validarData));
+    }
+  };
+}
+
+//iniciando la descarga de los tickets
+const descargarEstadisticaTickets = () => ({
+  type: ESTADISTICA_TICKETS,
+  payload: true,
+});
+
+//almacenando los tickets devueltos del api al state
+const descargaEstadisticaTicketsExitosa = (tickets) => ({
+  type: ESTADISTICA_TICKETS_EXITO,
+  payload: tickets,
+});
+
+//notificando error y enviando mensaje de error al state
+const descargaEstadisticaTicketsError = (error) => ({
+  type: ESTADISTICA_TICKETS_ERROR,
   payload: error,
 });
 

@@ -11,6 +11,9 @@ import {
   COMENZAR_EDICION_TICKET,
   TICKET_EDITADO_EXITO,
   TICKET_EDITADO_ERROR,
+  ESTADISTICA_TICKETS,
+  ESTADISTICA_TICKETS_ERROR,
+  ESTADISTICA_TICKETS_EXITO,
 } from "../types";
 
 const initialState = {
@@ -20,6 +23,7 @@ const initialState = {
   loading: false,
   ticketEditar: null,
   ticketEliminar: null,
+  estadisticaTickets: null,
 };
 
 export default function (state = initialState, action) {
@@ -27,6 +31,7 @@ export default function (state = initialState, action) {
     case AGREGAR_TICKET:
     case COMENZAR_DESCARGA_TICKETS:
     case COMENZAR_EDICION_TICKET:
+    case ESTADISTICA_TICKETS:
       return {
         ...state,
         loading: action.payload,
@@ -49,6 +54,7 @@ export default function (state = initialState, action) {
     case TICKET_EDITADO_ERROR:
     case AGREGAR_TICKET_ERROR:
     case DESCARGA_TICKETS_ERROR:
+    case ESTADISTICA_TICKETS_ERROR:
       return {
         ...state,
         loading: false,
@@ -69,6 +75,12 @@ export default function (state = initialState, action) {
         tickets: state.tickets.map((ticket) =>
           ticket._id === action.payload._id ? (ticket = action.payload) : ticket
         ),
+      };
+    case ESTADISTICA_TICKETS_EXITO:
+      return {
+        ...state,
+        loading: false,
+        estadisticaTickets: action.payload
       };
     default:
       return state;

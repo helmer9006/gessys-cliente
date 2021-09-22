@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GraficoInventario from "./GraficoInventario";
 import GraficoTickets from "./GraficoTickets";
+import GraficoTicketsDiarios from "./GraficoTicketsDiarios";
 import clienteAxios from "./../../config/axios";
 import tokenAuth from "./../../config/tokenAuth";
 
@@ -64,11 +65,11 @@ const Dashboard = () => {
       <Row gutter={[16, 16]}>
         <Col span={6}>
           <Paper className={classes.root}>
-            <div style={{ padding: "20px" }}>
-              <p style={{ textAlign: "center", fontSize: "20px" }}>
+            <div style={{ padding: "5px" }}>
+              <p style={{ textAlign: "center", fontSize: "20px", marginBottom: "0"}}>
                 INVENTARIOS
               </p>
-              <Title style={{ textAlign: "center", fontSize: "35px" }}>
+              <Title style={{ textAlign: "center", fontSize: "35px", marginBottom: "0"}}>
                 {cantInventarios}
               </Title>
             </div>
@@ -76,9 +77,9 @@ const Dashboard = () => {
         </Col>
         <Col span={6}>
           <Paper className={classes.root}>
-            <div style={{ padding: "20px" }}>
-              <p style={{ textAlign: "center", fontSize: "20px" }}>TICKETS</p>
-              <Title style={{ textAlign: "center", fontSize: "35px" }}>
+            <div style={{ padding: "5px" }}>
+              <p style={{ textAlign: "center", fontSize: "20px", marginBottom: "0" }}>TICKETS</p>
+              <Title style={{ textAlign: "center", fontSize: "35px", marginBottom: "0" }}>
                 {cantTickets}
               </Title>
             </div>
@@ -86,9 +87,9 @@ const Dashboard = () => {
         </Col>
         <Col span={6}>
           <Paper className={classes.root}>
-            <div style={{ padding: "20px" }}>
-              <p style={{ textAlign: "center", fontSize: "20px" }}>USUARIOS</p>
-              <Title style={{ textAlign: "center", fontSize: "35px" }}>
+            <div style={{ padding: "5px" }}>
+              <p style={{ textAlign: "center", fontSize: "20px", marginBottom: "0" }}>USUARIOS</p>
+              <Title style={{ textAlign: "center", fontSize: "35px", marginBottom: "0" }}>
                 {cantUsuarios}
               </Title>
             </div>
@@ -96,9 +97,9 @@ const Dashboard = () => {
         </Col>
         <Col span={6}>
           <Paper className={classes.root}>
-            <div style={{ padding: "20px" }}>
-              <p style={{ textAlign: "center", fontSize: "20px" }}>MENSAJES</p>
-              <Title style={{ textAlign: "center", fontSize: "35px" }}>
+            <div style={{ padding: "5px" }}>
+              <p style={{ textAlign: "center", fontSize: "20px", marginBottom: "0" }}>MENSAJES</p>
+              <Title style={{ textAlign: "center", fontSize: "35px", marginBottom: "0" }}>
                 {cantMensajes}
               </Title>
             </div>
@@ -107,16 +108,24 @@ const Dashboard = () => {
       </Row>
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Paper className={classes.root}>
-            <GraficoTickets datos={countEstadistico} />
+          <Paper className={classes.root} style={{ height: "350px" }}>
+              <GraficoTickets datos={countEstadistico} />
           </Paper>
         </Col>
         <Col span={12}>
-          <Paper className={classes.root}>
+          <Paper className={classes.root}  style={{ height: "350px" }}>
             <GraficoInventario datos={countEstadistico} />
           </Paper>
         </Col>
       </Row>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Paper className={classes.root}  style={{ height: "350px" }}>
+            <GraficoTicketsDiarios />
+          </Paper>
+        </Col>
+      </Row>
+
     </div>
   );
 };
