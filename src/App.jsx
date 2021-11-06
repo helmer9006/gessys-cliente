@@ -15,6 +15,7 @@ import Avatar from "./components/Avatar";
 import InventarioIndex from "./components/inventario/containers/index";
 import InventarioCreate from "./components/inventario/containers/create";
 import InventarioShow from "./components/inventario/containers/show";
+import Reportes from "./components/reportes/Reportes";
 import {
   BrowserRouter as Router,
   Route,
@@ -49,11 +50,30 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
+import Typography from "@material-ui/core/Typography";
+
 //REDUX
 import { Provider } from "react-redux";
 import store from "./store";
 
 const { Header, Content, Footer, Sider } = Layout;
+
+//Funcionar copyright pie de página
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {" Gessys Copyright © by "}
+      <a color="inherit" href="https://www.linkedin.com/in/helmer-villarreal-desarrolador-web-full-stack-a9129019a/">
+        Helmer Villarreal
+      </a>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+
 
 const App = () => {
   const history = useHistory();
@@ -61,8 +81,11 @@ const App = () => {
   //extraer usuario autenticado del storage
   const extraerUsuarioStorage = () => dispatch(extraerUsuarioStorageAction());
 
+
   useEffect(() => {
-    extraerUsuarioStorage();
+    if (localStorage.getItem("gessys_token") != null) {
+      extraerUsuarioStorage();
+    }
   }, []);
 
   const location = useLocation();
@@ -149,8 +172,10 @@ const App = () => {
                   path="/tickets/editar/:id"
                   component={EditarTicket}
                 />
-                <Route exact path="/configuracion" component={Configuracion} />
                 <Route exact path="/usuarios" component={Usuarios} />
+                <Route exact path="/reportes" component={Reportes} />
+                <Route exact path="/configuracion" component={Configuracion} />
+
 
                 <Route exact path="/usuarios/nuevo" component={NuevoUsuarios} />
                 <Route
@@ -172,7 +197,7 @@ const App = () => {
               </Switch>
             </Content>
             <Footer style={{ textAlign: "center" }}>
-              Gestión UCM ©2021 Creado por Helmer Villarreal
+              <Copyright />
             </Footer>
           </Layout>
         </Layout>

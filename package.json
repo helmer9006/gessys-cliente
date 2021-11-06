@@ -1,54 +1,59 @@
 {
-  "name": "gestion",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@ant-design/charts": "^1.1.2",
-    "@ant-design/icons": "^4.2.2",
-    "@emotion/core": "^10.0.35",
-    "@emotion/styled": "^10.0.27",
-    "@material-ui/core": "^4.11.2",
-    "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "antd": "^4.7.3",
-    "axios": "^0.21.0",
-    "caniuse-lite": "^1.0.30001244",
-    "formik": "^2.2.6",
-    "lodash": "^4.17.20",
-    "material-table": "^1.69.2",
-    "moment": "^2.29.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-redux": "^7.2.2",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
-    "sweetalert2": "^10.12.5",
-    "yup": "^0.32.9"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "gestion",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@ant-design/charts": "^1.1.2",
+        "@ant-design/icons": "^4.2.2",
+        "@date-io/date-fns": "^1.1.0",
+        "@date-io/moment": "^2.11.0",
+        "@emotion/core": "^10.0.35",
+        "@emotion/styled": "^10.0.27",
+        "@material-ui/core": "^4.11.2",
+        "@material-ui/icons": "^4.11.2",
+        "@material-ui/pickers": "^3.2.2",
+        "@react-pdf/renderer": "^2.0.20",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.5.0",
+        "@testing-library/user-event": "^7.2.1",
+        "antd": "^4.7.3",
+        "axios": "^0.21.0",
+        "caniuse-lite": "^1.0.30001244",
+        "formik": "^2.2.6",
+        "lodash": "^4.17.20",
+        "material-table": "^1.69.2",
+        "moment": "^2.29.1",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-redux": "^7.2.2",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "3.4.3",
+        "react-to-pdf": "^0.0.14",
+        "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
+        "sweetalert2": "^10.12.5",
+        "yup": "^0.32.9"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

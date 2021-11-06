@@ -2,116 +2,125 @@
 
 @import '~antd/dist/antd.css';
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .logo {
-  height: 43px;
-  margin: 16px;
-  background-repeat: no-repeat;
-  background-image: url('./assets/img/Logo_Gessys_150_43.png');
+    height: 43px;
+    margin: 16px;
+    background-repeat: no-repeat;
+    background-image: url('./assets/img/Logo_Gessys_150_43.png');
 }
 
 .ant-layout-header {
-  line-height: 0px;
+    line-height: 0px;
 }
 
 .anchoCompleto {
-  margin: 0.5rem !important;
-  width: 100%;
+    margin: 0.5rem !important;
+    width: 100%;
 }
 
 .message {
-  color: #fff;
-  padding: 18px 20px;
-  line-height: 26px;
-  font-size: 16px;
-  border-radius: 7px;
-  margin-bottom: 30px;
-  width: 90%;
-  position: relative;
-  background-color: #DCF8C6;
+    color: #fff;
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    margin-bottom: 30px;
+    width: 90%;
+    position: relative;
+    background-color: #DCF8C6;
 }
 
 .salto-linea {
-  white-space: pre-line;
+    white-space: pre-line;
 }
+
 
 /* AVATAR */
 
 .avatar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  background-color: #7B1FA2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: #7B1FA2;
 }
 
 .avatar.small {
-  width: 40px;
-  height: 40px;
+    width: 40px;
+    height: 40px;
 }
 
 .avatar.medium {
-  width: 60px;
-  height: 60px;
+    width: 60px;
+    height: 60px;
 }
 
 .avatar.big {
-  width: 80px;
-  height: 80px;
+    width: 80px;
+    height: 80px;
 }
 
 .avatar span {
-  /* font-family: var(--font-primary); */
-  font-size: 16px;
-  color: white;
-  font-weight: 400;
+    /* font-family: var(--font-primary); */
+    font-size: 16px;
+    color: white;
+    font-weight: 400;
 }
 
 .avatar.medium span {
-  font-size: 22px;
+    font-size: 22px;
 }
 
 .avatar.big span {
-  font-size: 30px;
+    font-size: 30px;
 }
+
 
 /* GUTTER ANT D */
 
 .gutter-box {
-  padding: 5px 0;
+    padding: 5px 0;
 }
 
 hr {
-  border: 0;
-  height: 10px;
-  width: 100%;
-  /* background-image: linear-gradient(to left, yellow, blue, red); */
-  background: rgb(199, 173, 218);
-  background: linear-gradient(90deg, rgba(199, 173, 218, 1) 0%, rgba(255, 140, 140, 1) 50%, rgba(217, 235, 39, 1) 100%);
-  margin: auto;
-  /* border-radius: 100%; */
-  /* margin-top: 20px; */
+    border: 0;
+    height: 10px;
+    width: 100%;
+    /* background-image: linear-gradient(to left, yellow, blue, red); */
+    background: rgb(199, 173, 218);
+    background: linear-gradient(90deg, rgba(199, 173, 218, 1) 0%, rgba(255, 140, 140, 1) 50%, rgba(217, 235, 39, 1) 100%);
+    margin: auto;
+    /* border-radius: 100%; */
+    /* margin-top: 20px; */
 }
 
 .site-card-border-less-wrapper {
-  padding: 30px;
-  background: #ececec;
+    padding: 30px;
+    background: #ececec;
 }
 
 .site-layout .site-layout-background {
-  background: #fff;
+    background: #fff;
 }
 
 .MuiAppBar-colorDefault {
-  background-color: #fff !important;
+    background-color: #fff !important;
+}
+
+.flex-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    align-items: start;
 }

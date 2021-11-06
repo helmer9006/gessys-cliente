@@ -10,6 +10,7 @@ import {
   MedicineBoxOutlined,
   DashboardOutlined,
   HddOutlined,
+  ContainerOutlined
 } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
@@ -32,7 +33,10 @@ const Menus = () => {
             <Menu.Item key="4" icon={<HddOutlined />}>
               <Link to="/inventario">Inventario</Link>
             </Menu.Item>
-            <Menu.Item key="5" icon={<SettingOutlined />}>
+            <Menu.Item key="5" icon={<ContainerOutlined />}>
+              <Link to="/reportes">Reportes</Link>
+            </Menu.Item>
+            <Menu.Item key="6" icon={<SettingOutlined />}>
               <Link to="/configuracion">Configuracion</Link>
             </Menu.Item>
           </>

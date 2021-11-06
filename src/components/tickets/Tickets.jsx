@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 //ACTIONS DE REDUX
 import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
+
 //MATERIAL UI
 import { Link } from "react-router-dom";
-import { Card,Tabs } from "antd";
+import { Card, Tabs } from "antd";
 import TablaTickets from "./tablaTickets";
+import Tabla from "./../Tabla";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TabsUI from "@material-ui/core/Tabs";
@@ -94,6 +96,9 @@ const Tickets = ({ history }) => {
       titulo: "",
     },
   ]);
+
+  const { perfil } = usuarioState;
+
   const classes = useStyles();
   const [value, setValue] = useState(0); //estado tab para filtro tickets y mis tickets seleccionado
   const [valueEstado, setValueEstado] = useState(0); // estado tab de filtro por estado seleccionado
@@ -130,7 +135,7 @@ const Tickets = ({ history }) => {
     let listEstados = ["nuevo", "proceso", "resuelto", "cancelado"];
 
     let res = null;
-    const { id, dependencia } = usuarioState;
+    const { id, dependencia, perfil } = usuarioState;
     switch (valueArg) {
       case 1: //TICKETS
         res = ticketsArg.filter(
@@ -202,78 +207,78 @@ const Tickets = ({ history }) => {
         bordered={false}
         style={{ width: FullscreenExitOutlined }}
       > */}
-        {usuarioState.perfil === "administrador" ||
+      {usuarioState.perfil === "administrador" ||
         usuarioState.perfil === "especial" ? (
-          <Paper className={classes.root}>
-            <TabsUI
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
-            >
-              <Tab label="MIS TICKETS" className={classes.tab} id="nuevos" />
-              <Tab label="TICKETS" className={classes.tab} />
-            </TabsUI>
-          </Paper>
-        ) : null}
-
-        <div className={classes.root} style={{ marginTop: "20px" }}>
-          <AppBar position="static" color="default">
-            <TabsUI
-              value={valueEstado}
-              onChange={handleChangeEstados}
-              //   variant="scrollable"
-              //   scrollButtons="on"
-              indicatorColor="primary"
-              textColor="primary"
-              // aria-label="scrollable force tabs example"
-              centered
-            >
-              <Tab label="nuevo" icon={<LocalOfferRoundedIcon />} />
-              <Tab label="proceso" icon={<RepeatRoundedIcon />} />
-              <Tab label="resuelto" icon={<DoneAllRoundedIcon />} />
-              <Tab label="cancelado" icon={<CloseRoundedIcon />} />
-            </TabsUI>
-          </AppBar>
-          <TabPanel value={valueEstado} index={0}>
-            <TablaTickets
-              tickets={ticketsFiltrados}
-              data={data}
-              columns={columns}
-            />
-          </TabPanel>
-          <TabPanel value={valueEstado} index={1}>
-            <TablaTickets
-              tickets={ticketsFiltrados}
-              data={data}
-              columns={columns}
-            />
-          </TabPanel>
-          <TabPanel value={valueEstado} index={2}>
-            <TablaTickets
-              tickets={ticketsFiltrados}
-              data={data}
-              columns={columns}
-            />
-          </TabPanel>
-          <TabPanel value={valueEstado} index={3}>
-            <TablaTickets
-              tickets={ticketsFiltrados}
-              data={data}
-              columns={columns}
-            />
-          </TabPanel>
-        </div>
-        <Link to={`tickets/nuevo`}>
-          <Fab
-            color="primary"
-            aria-label="add"
-            style={{ position: "fixed", bottom: 15, right: 15 }}
+        <Paper className={classes.root}>
+          <TabsUI
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
           >
-            <AddIcon />
-          </Fab>
-        </Link>
+            <Tab label="MIS TICKETS" className={classes.tab} id="nuevos" />
+            <Tab label="TICKETS" className={classes.tab} />
+          </TabsUI>
+        </Paper>
+      ) : null}
+
+      <div className={classes.root} style={{ marginTop: "20px" }}>
+        <AppBar position="static" color="default">
+          <TabsUI
+            value={valueEstado}
+            onChange={handleChangeEstados}
+            //   variant="scrollable"
+            //   scrollButtons="on"
+            indicatorColor="primary"
+            textColor="primary"
+            // aria-label="scrollable force tabs example"
+            centered
+          >
+            <Tab label="nuevo" icon={<LocalOfferRoundedIcon />} />
+            <Tab label="proceso" icon={<RepeatRoundedIcon />} />
+            <Tab label="resuelto" icon={<DoneAllRoundedIcon />} />
+            <Tab label="cancelado" icon={<CloseRoundedIcon />} />
+          </TabsUI>
+        </AppBar>
+        <TabPanel value={valueEstado} index={0}>
+          <Tabla
+            data={ticketsFiltrados}
+            // data={data}
+            columns={columns}
+          />
+        </TabPanel>
+        <TabPanel value={valueEstado} index={1}>
+          <Tabla
+            data={ticketsFiltrados}
+            // data={data}
+            columns={columns}
+          />
+        </TabPanel>
+        <TabPanel value={valueEstado} index={2}>
+          <Tabla
+            data={ticketsFiltrados}
+            // data={data}
+            columns={columns}
+          />
+        </TabPanel>
+        <TabPanel value={valueEstado} index={3}>
+          <Tabla
+            data={ticketsFiltrados}
+            // data={data}
+            columns={columns}
+          />
+        </TabPanel>
+      </div>
+      <Link to={`tickets/nuevo`}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          style={{ position: "fixed", bottom: 15, right: 15 }}
+        >
+          <AddIcon />
+        </Fab>
+      </Link>
       {/* </Card> */}
     </div>
   );

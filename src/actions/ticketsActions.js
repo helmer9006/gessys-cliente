@@ -5,152 +5,150 @@ import moment from "moment";
 import "moment/locale/es";
 //IMPORTANDO TYPES
 import {
-  COMENZAR_DESCARGA_TICKETS,
-  DESCARGA_TICKETS_ERROR,
-  DESCARGA_TICKETS_EXITO,
-  AGREGAR_TICKET,
-  AGREGAR_TICKET_EXITO,
-  AGREGAR_TICKET_ERROR,
-  AUTENTICAR_USUARIO_ERROR,
-  OBTENER_TICKET_EDITAR,
-  COMENZAR_EDICION_TICKET,
-  TICKET_EDITADO_EXITO,
-  TICKET_EDITADO_ERROR,
-  ESTADISTICA_TICKETS,
-  ESTADISTICA_TICKETS_ERROR,
-  ESTADISTICA_TICKETS_EXITO,
+    COMENZAR_DESCARGA_TICKETS,
+    DESCARGA_TICKETS_ERROR,
+    DESCARGA_TICKETS_EXITO,
+    AGREGAR_TICKET,
+    AGREGAR_TICKET_EXITO,
+    AGREGAR_TICKET_ERROR,
+    AUTENTICAR_USUARIO_ERROR,
+    OBTENER_TICKET_EDITAR,
+    COMENZAR_EDICION_TICKET,
+    TICKET_EDITADO_EXITO,
+    TICKET_EDITADO_ERROR,
+    ESTADISTICA_TICKETS,
+    ESTADISTICA_TICKETS_ERROR,
+    ESTADISTICA_TICKETS_EXITO,
 } from "../types";
 import { message } from "antd";
 
 //#region OBTENIENDO LOS TICKETS DEL API
 export function obtenerTicketsAction() {
-  return async (dispatch) => {
-    dispatch(descargarTickets());
-    const token = localStorage.getItem("gessys_token");
-    if (token) {
-      tokenAuth(token);
-    }
-    try {
-      const respuesta = await clienteAxios.get("/tickets");
-      const tickets = await filtrarTickets(respuesta.data);
-      dispatch(descargaTicketsExitosa(tickets));
-    } catch (error) {
-      const validarData = getJson(
-        error,
-        ["response", "data", "msg"],
-        "Error al obtener tickets"
-      );
-      message.error({
-        content: `${validarData}`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
-      dispatch(descargaTicketsError(validarData));
-    }
-  };
+    return async(dispatch) => {
+        dispatch(descargarTickets());
+        const token = localStorage.getItem("gessys_token");
+        if (token) {
+            tokenAuth(token);
+        }
+        try {
+            const respuesta = await clienteAxios.get("/tickets");
+            const tickets = await filtrarTickets(respuesta.data);
+            dispatch(descargaTicketsExitosa(tickets));
+        } catch (error) {
+            const validarData = getJson(
+                error, ["response", "data", "msg"],
+                "Error al obtener tickets"
+            );
+            message.error({
+                content: `${validarData}`,
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
+            dispatch(descargaTicketsError(validarData));
+        }
+    };
 }
 
 //iniciando la descarga de los tickets
 const descargarTickets = () => ({
-  type: COMENZAR_DESCARGA_TICKETS,
-  payload: true,
+    type: COMENZAR_DESCARGA_TICKETS,
+    payload: true,
 });
 
 //almacenando los tickets devueltos del api al state
 const descargaTicketsExitosa = (tickets) => ({
-  type: DESCARGA_TICKETS_EXITO,
-  payload: tickets,
+    type: DESCARGA_TICKETS_EXITO,
+    payload: tickets,
 });
 
 //notificando error y enviando mensaje de error al state
 const descargaTicketsError = (error) => ({
-  type: DESCARGA_TICKETS_ERROR,
-  payload: error,
+    type: DESCARGA_TICKETS_ERROR,
+    payload: error,
 });
 
 ////si hay error
 const autenticarUsuarioError = (error) => ({
-  type: AUTENTICAR_USUARIO_ERROR,
-  payload: error,
+    type: AUTENTICAR_USUARIO_ERROR,
+    payload: error,
 });
 
 //#endregion
 
 //#region CREANDO TICKETS EN EL API
 export function CrearTicketsAction(ticket) {
-  console.log(ticket);
-  if (ticket.inventario === "") {
-    delete ticket.inventario;
-  }
-  return async (dispatch) => {
-    dispatch(crearTicket());
-    const token = localStorage.getItem("gessys_token");
-    if (token) {
-      tokenAuth(token);
+    console.log(ticket);
+    if (ticket.inventario === "") {
+        delete ticket.inventario;
     }
-    try {
-      // insertar en la API
-      await clienteAxios.post("/tickets", ticket);
-      dispatch(crearTicketExito(ticket));
-      message.success({
-        content: "Ticket Creado correctamente",
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
-    } catch (error) {
-      const validarData = getJson(
-        error,
-        ["response", "data", "msg"],
-        "Error al guardar ticket"
-      );
-      console.log(validarData);
-      message.error({
-        content: `${validarData}`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
-      dispatch(crearTicketsError(validarData));
-    }
-  };
+    return async(dispatch) => {
+        dispatch(crearTicket());
+        const token = localStorage.getItem("gessys_token");
+        if (token) {
+            tokenAuth(token);
+        }
+        try {
+            // insertar en la API
+            await clienteAxios.post("/tickets", ticket);
+            dispatch(crearTicketExito(ticket));
+            message.success({
+                content: "Ticket Creado correctamente",
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
+        } catch (error) {
+            const validarData = getJson(
+                error, ["response", "data", "msg"],
+                "Error al guardar ticket"
+            );
+            console.log(validarData);
+            message.error({
+                content: `${validarData}`,
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
+            dispatch(crearTicketsError(validarData));
+        }
+    };
 }
 
 const crearTicket = () => ({
-  type: AGREGAR_TICKET,
-  payload: true,
+    type: AGREGAR_TICKET,
+    payload: true,
 });
 
 const crearTicketExito = (ticket) => ({
-  type: AGREGAR_TICKET_EXITO,
-  payload: ticket,
+    type: AGREGAR_TICKET_EXITO,
+    payload: ticket,
 });
 
 //notificando error y enviando mensaje de error al state
 const crearTicketsError = (error) => ({
-  type: AGREGAR_TICKET_ERROR,
-  payload: error,
+    type: AGREGAR_TICKET_ERROR,
+    payload: error,
 });
 
 //#endregion
 
 //#region COLOCANDO EN EL STATE EL PRODUCTO A EDITAR
 export function obtenerTicketEditarAction(ticket) {
-  return (dispatch) => {
-    dispatch(obtenerTicketEditar(ticket));
-  };
+    return (dispatch) => {
+        dispatch(obtenerTicketEditar(ticket));
+    };
 }
 
 const obtenerTicketEditar = (ticket) => ({
-  type: OBTENER_TICKET_EDITAR,
-  payload: ticket,
+    type: OBTENER_TICKET_EDITAR,
+    payload: ticket,
 });
 //#endregion
 
@@ -158,138 +156,136 @@ const obtenerTicketEditar = (ticket) => ({
 
 // Edita un registro en la api y state
 export function editarTicketAction(ticket) {
-  return async (dispatch) => {
-    dispatch(editarTicket());
-    const token = localStorage.getItem("gessys_token");
-    if (token) {
-      tokenAuth(token);
-    }
-    if (ticket.creacion) {
-      delete ticket.creacion;
-    }
-    try {
-      await clienteAxios.put(`/tickets`, ticket);
-      dispatch(editarTicketExito(ticket));
-      message.success({
-        content: `Ticket actualizado correctamente.`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
-    } catch (error) {
-      const validarData = getJson(
-        error,
-        ["response", "data", "msg"],
-        "Error al editar ticket"
-      );
-      console.log(validarData);
-      message.error({
-        content: `${validarData}`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
+    return async(dispatch) => {
+        dispatch(editarTicket());
+        const token = localStorage.getItem("gessys_token");
+        if (token) {
+            tokenAuth(token);
+        }
+        if (ticket.creacion) {
+            delete ticket.creacion;
+        }
+        try {
+            await clienteAxios.put(`/tickets`, ticket);
+            dispatch(editarTicketExito(ticket));
+            message.success({
+                content: `Ticket actualizado correctamente.`,
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
+        } catch (error) {
+            const validarData = getJson(
+                error, ["response", "data", "msg"],
+                "Error al editar ticket"
+            );
+            console.log(validarData);
+            message.error({
+                content: `${validarData}`,
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
 
-      dispatch(editarTicketError(validarData));
-    }
-  };
+            dispatch(editarTicketError(validarData));
+        }
+    };
 }
 const editarTicket = () => ({
-  type: COMENZAR_EDICION_TICKET,
-  payload: true,
+    type: COMENZAR_EDICION_TICKET,
+    payload: true,
 });
 
 const editarTicketExito = (ticket) => ({
-  type: TICKET_EDITADO_EXITO,
-  payload: ticket,
+    type: TICKET_EDITADO_EXITO,
+    payload: ticket,
 });
 
 const editarTicketError = (error) => ({
-  type: TICKET_EDITADO_ERROR,
-  payload: error,
+    type: TICKET_EDITADO_ERROR,
+    payload: error,
 });
 
 //#endregion
 
 //#region OBTENIENDO LA ESTADISTRICA DE TICKETS DE LOS 30 ÚLTIMOS DIAS
 export function obtenerEstadisticaTicketsAction() {
-  return async (dispatch) => {
-    dispatch(descargarEstadisticaTickets());
-    const token = localStorage.getItem("gessys_token");
-    if (token) {
-      tokenAuth(token);
-    }
-    try {
-      const respuesta = await clienteAxios.get("/tickets/fecha");
-      dispatch(descargaEstadisticaTicketsExitosa(respuesta.data));
-    } catch (error) {
-      const validarData = getJson(
-        error,
-        ["response", "data", "msg"],
-        "Error al obtener estadistica de tickets"
-      );
-      message.error({
-        content: `${validarData}`,
-        className: "custom-class",
-        duration: 3,
-        style: {
-          // marginTop: '20vh',
-        },
-      });
-      dispatch(descargaEstadisticaTicketsError(validarData));
-    }
-  };
+    return async(dispatch) => {
+        dispatch(descargarEstadisticaTickets());
+        const token = localStorage.getItem("gessys_token");
+        if (token) {
+            tokenAuth(token);
+        }
+        try {
+            const respuesta = await clienteAxios.get("/tickets/fecha");
+            dispatch(descargaEstadisticaTicketsExitosa(respuesta.data));
+        } catch (error) {
+            const validarData = getJson(
+                error, ["response", "data", "msg"],
+                "Error al obtener estadistica de tickets"
+            );
+            message.error({
+                content: `${validarData}`,
+                className: "custom-class",
+                duration: 3,
+                style: {
+                    // marginTop: '20vh',
+                },
+            });
+            dispatch(descargaEstadisticaTicketsError(validarData));
+        }
+    };
 }
 
 //iniciando la descarga de los tickets
 const descargarEstadisticaTickets = () => ({
-  type: ESTADISTICA_TICKETS,
-  payload: true,
+    type: ESTADISTICA_TICKETS,
+    payload: true,
 });
 
 //almacenando los tickets devueltos del api al state
-const descargaEstadisticaTicketsExitosa = (tickets) => ({
-  type: ESTADISTICA_TICKETS_EXITO,
-  payload: tickets,
+const descargaEstadisticaTicketsExitosa = (estadistica) => ({
+    type: ESTADISTICA_TICKETS_EXITO,
+    payload: estadistica,
 });
 
 //notificando error y enviando mensaje de error al state
 const descargaEstadisticaTicketsError = (error) => ({
-  type: ESTADISTICA_TICKETS_ERROR,
-  payload: error,
+    type: ESTADISTICA_TICKETS_ERROR,
+    payload: error,
 });
 
 //#endregion
 
 //#region FILTRANDO TICKETS
 const filtrarTickets = (tickets) => {
-  // console.log(tickets);
-  let datos = [];
-  tickets.map((item) => {
-    let objeto = {};
-    for (let indice in item) {
-      if (indice === "categoria") {
-        objeto[indice] = item[indice]._id;
-        objeto["nombreCategoria"] = item[indice].nombre;
-      } else if (indice === "dependencia") {
-        objeto[indice] = item[indice]._id;
-        objeto["nombreDependencia"] = item[indice].nombre;
-      } else if (indice === "usuario") {
-        objeto[indice] = item[indice]._id;
-        objeto["nombreUsuario"] = item[indice].nombre;
-      } else if (indice === "creacion" || indice === "actualizacion") {
-        objeto[indice] = moment(item[indice]).format("DD-MM-YYYY hh:mm a");
-      } else {
-        objeto[indice] = item[indice];
-      }
-    }
-    datos.push(objeto);
-  });
-  return datos;
+    // console.log(tickets);
+    let datos = [];
+    tickets.map((item) => {
+        let objeto = {};
+        for (let indice in item) {
+            if (indice === "categoria") {
+                objeto[indice] = item[indice]._id;
+                objeto["nombreCategoria"] = item[indice].nombre;
+            } else if (indice === "dependencia") {
+                objeto[indice] = item[indice]._id;
+                objeto["nombreDependencia"] = item[indice].nombre;
+            } else if (indice === "usuario") {
+                objeto[indice] = item[indice]._id;
+                objeto["nombreUsuario"] = item[indice].nombre;
+            } else if (indice === "creacion" || indice === "actualizacion") {
+                objeto[indice] = moment(item[indice]).format("DD-MM-YYYY hh:mm a");
+            } else {
+                objeto[indice] = item[indice];
+            }
+        }
+        datos.push(objeto);
+    });
+    return datos;
 };
 
 //#endregion

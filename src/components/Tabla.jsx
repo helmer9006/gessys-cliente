@@ -1,29 +1,31 @@
 import React, { useState } from "react";
 import MaterialTable from "material-table";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { obtenerTicketEditarAction } from "../../actions/ticketsActions";
+import { obtenerTicketEditarAction } from "./../actions/ticketsActions";
 
-const TablaTickets = ({ tickets, columns }) => {
+const Tabla = ({ data, columns }) => {
+  let location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory(); // habilitar history para redirección
 
+  
   //*******************************************************/
   const [selectedRow, setSelectedRow] = useState(null);
 
   //**************************************************/
   // función que redirige de forma programada
-  const redireccionarEdicion = (ticket) => {
-    dispatch(obtenerTicketEditarAction(ticket));
-    history.push(`/tickets/editar/${ticket._id}`);
+  const redireccionarEdicion = (datoSeleccionado) => {
+    dispatch(obtenerTicketEditarAction(datoSeleccionado));
+    history.push(`${location.pathname}/editar/${datoSeleccionado._id}`);
   };
 
   return (
     <MaterialTable
       columns={columns}
-      data={tickets}
+      data={data}
       title=""
       //actions={[
       // {
@@ -70,4 +72,4 @@ const TablaTickets = ({ tickets, columns }) => {
   );
 };
 
-export default TablaTickets;
+export default Tabla;
