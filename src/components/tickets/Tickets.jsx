@@ -10,8 +10,7 @@ import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
 //MATERIAL UI
 import { Link } from "react-router-dom";
-import { Card, Tabs } from "antd";
-import TablaTickets from "./tablaTickets";
+import { Tabs } from "antd";
 import Tabla from "./../Tabla";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -25,10 +24,6 @@ import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import AppBar from "@material-ui/core/AppBar";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-//ANT DESING
-import {
-  FullscreenExitOutlined,
-} from "@ant-design/icons";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -202,11 +197,6 @@ const Tickets = ({ history }) => {
 
   return (
     <div className="site-card-border-less-wrapper">
-      {/* <Card
-        title="Tickets"
-        bordered={false}
-        style={{ width: FullscreenExitOutlined }}
-      > */}
       {usuarioState.perfil === "administrador" ||
         usuarioState.perfil === "especial" ? (
         <Paper className={classes.root}>

@@ -20,6 +20,8 @@
         "axios": "^0.21.0",
         "caniuse-lite": "^1.0.30001244",
         "formik": "^2.2.6",
+        "jspdf": "^2.1.0",
+        "jspdf-autotable": "^3.5.9",
         "lodash": "^4.17.20",
         "material-table": "^1.69.2",
         "moment": "^2.29.1",
@@ -33,6 +35,7 @@
         "redux-thunk": "^2.3.0",
         "reselect": "^4.0.0",
         "sweetalert2": "^10.12.5",
+        "xlsx": "^0.17.3",
         "yup": "^0.32.9"
     },
     "scripts": {

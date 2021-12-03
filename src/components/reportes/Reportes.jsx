@@ -18,11 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 //#endregion
 
-import PropTypes from "prop-types";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+
 import { FullscreenExitOutlined } from '@ant-design/icons';
 import { obtenerTicketsAction } from "../../actions/ticketsActions";
 
@@ -48,7 +44,6 @@ const Reportes = () => {
             ...reportes,
             [event.target.name]: event.target.value,
         })
-
     };
 
 
@@ -76,8 +71,6 @@ const Reportes = () => {
                         name="reporte"
                     >
                         <MenuItem value={1}>Informe de tickets por usuario</MenuItem>
-                        <MenuItem value={2}>Informe de usuarios registrado</MenuItem>
-                        <MenuItem value={3}>Informe de Inventario</MenuItem>
                     </Select>
                 </FormControl>
                 {reportes.reporte == 1 && tickets  ? <ReporteTicketsPorUsuario /> : null}
