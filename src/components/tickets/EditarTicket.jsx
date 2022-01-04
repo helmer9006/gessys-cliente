@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "../Avatar";
-import { Row, Card, Col, message, Divider, Typography, Space } from "antd";
+import { Row, Card, Col, message, Typography } from "antd";
 
 //#region IMPORTANDO COMPONENTE DE MATERIAL-UI
 import {
